@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
 
-  <script src="https://cdn.staticfile.net/mdui/2.1.1/mdui.global.js"></script>
-  <link rel="stylesheet" href="https://cdn.staticfile.net/mdui/2.1.1/mdui.css">
+  <script src="https://cdn.staticfile.net/mdui/2.1.0/mdui.global.js"></script>
+  <link rel="stylesheet" href="https://cdn.staticfile.net/mdui/2.1.0/mdui.css">
   <script src="https://cdn.staticfile.net/Chart.js/4.4.1/chart.umd.min.js"></script>
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -20,7 +20,7 @@
 
   <link rel="stylesheet" href="css/index.css" />
 
-  <title>Oni</title>
+  <title>ONi</title>
 </head>
 
 <body style="margin: 0;">
@@ -29,13 +29,11 @@
     <%- include("navrail.ejs") %>
   </div>
 
-  <div style="overflow: hidden;">
+  <div style="overflow: hidden;position: relative; ">
 
-    <mdui-top-app-bar scroll-behavior="elevate" scroll-target="#main-content-area">
-      <%- include("topbar.ejs") %>
-    </mdui-top-app-bar>
+    <%- include("topbar.ejs") %>
 
-    <div id="main-content-area" style="height: calc(100vh - 64px);overflow: auto;">
+    <div id="main-content-area" style="height: calc(100dvh - 7rem);overflow: auto;">
       <%- include("content/overview.ejs") %>
       <%- include("content/events.ejs") %>
       <%- include("content/stats.ejs") %>
@@ -44,8 +42,33 @@
       <%- include("content/debug.ejs") %>
     </div>
 
+    <div id="bg-texture">
+      <img src="resources/texture_1.png" />
+    </div>
+
   </div>
 
+
+
+  <style>
+    #bg-texture {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 120%;
+      height: 120%;
+      z-index: -2;
+      opacity: 0.008;
+      filter: invert();
+      mix-blend-mode: lighten;
+    }
+
+    #bg-texture img {
+      object-fit: cover;
+      width: 120%;
+      height: 120%;
+    }
+  </style>
 
   <mdui-dialog id="settings-dialog">
     <%- include("settings.ejs") %>
@@ -66,11 +89,40 @@
       drawer.parentNode.insertBefore(rail, drawer)
 
       document.getElementById("navi-toggler").style["display"] = "none"
-      rail.style.paddingTop = "69px"
+      rail.placement = "left"
     }
   </script>
 
+  <script>
+    // 等待页面加载完毕后样式注入
+    window.onload = function() {
+      // 顶栏
+      const e1 = document.querySelector("mdui-top-app-bar-title")
+      const sr = e1.shadowRoot
+      sr.childNodes[1].classList.replace("variant-small", "variant-medium")
+      sr.childNodes[3].classList.replace("variant-small", "variant-medium")
 
+
+      // 侧边栏
+      const e2 = document.getElementById("navi-drawer")
+      let s2 = document.createElement('style')
+      s2.innerHTML = `
+      .panel {
+      height: 100% !important;
+      width: 5.0625rem !important;
+      border-radius: 0 !important;
+      }
+      `
+      e2.shadowRoot.appendChild(s2)
+
+    }
+  </script>
+
+  <style>
+    mdui-top-app-bar:not([shrink]) {
+      background-color: transparent;
+    }
+  </style>
 
 </body>
 

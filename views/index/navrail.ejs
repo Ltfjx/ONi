@@ -1,5 +1,5 @@
-<mdui-navigation-drawer id="navi-drawer" modal close-on-esc close-on-overlay-click>
-  <mdui-navigation-rail divider id="navi-rail">
+<mdui-navigation-drawer id="navi-drawer" placement="right" modal close-on-esc close-on-overlay-click>
+  <mdui-navigation-rail id="navi-rail" placement="right" divider>
 
     <mdui-navigation-rail-item icon="home--outlined" id="rail-overview">
       总览
@@ -39,20 +39,26 @@
     <mdui-button-icon slot="bottom" id="buttonSettings" icon="settings">
     </mdui-button-icon>
 
+    <img id="navi-rail-bg" src="resources/icon.png" />
+
+
   </mdui-navigation-rail>
 
-  <script>
-    // 样式注入
-    let style = document.createElement('style')
-    style.innerHTML = `
-        .panel {
-        height: 100% !important;
-        width: 5.0625rem !important;
-        border-radius: 0 !important;
-        }
-        `
-        console.log(style)
-    document.getElementById("navi-drawer").shadowRoot.appendChild(style)
-  </script>
+  <style>
+    #navi-rail-bg {
+      position: absolute;
+      bottom: -80px;
+      right: -90px;
+      width: 200px;
+      height: 200px;
+      opacity: 0.2;
+      filter: grayscale(100%);
+    }
+
+    #navi-rail {
+      overflow: hidden;
+    }
+
+  </style>
 
 </mdui-navigation-drawer>
