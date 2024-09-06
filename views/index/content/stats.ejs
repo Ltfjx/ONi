@@ -1,0 +1,30 @@
+<div id="stats-content" class="panel-content" hidden>
+
+    <div style="display: flex;align-items: center;">
+        <div>简化</div>
+        <mdui-slider oninput="panelStatsAdjustSL()" id="slider-SL" tickmarks step="1" max="20" value="10"
+            style="width: 15rem;"></mdui-slider>
+    </div>
+
+    <div class="stats-chart-container">
+        
+        <mdui-card class="stats-chart-card" variant="filled">
+            <div class="chart">
+                <canvas id="chart-battery"></canvas>
+            </div>
+        </mdui-card>
+
+        <mdui-card class="stats-chart-card" variant="filled">
+            <div class="chart">
+                <canvas id="chart-benzene"></canvas>
+            </div>
+        </mdui-card>
+
+        <mdui-card class="stats-chart-card" variant="filled">
+            <div class="chart">
+                <canvas id="chart-nitrobenzene"></canvas>
+            </div>
+        </mdui-card>
+
+    </div>
+</div>

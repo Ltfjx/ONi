@@ -1,0 +1,79 @@
+<div id="overview-content" class="panel-content">
+
+    <div style="margin-bottom: 1rem;">
+        <h2 style="margin-bottom: 0.25rem;margin-top: 0.25rem;" id="text-overview-welcome">PotatoCraft GTNH</h2>
+        <div style="opacity: 0.5;display: flex;align-items: center;">
+            <mdui-icon name="account_circle"></mdui-icon>
+            <div id="text-overview-welcome-sub">&nbsp;</div>
+        </div>
+    </div>
+
+    <mdui-card class="overview-server-status-card" variant="filled">
+        <div style="display: flex;align-items: center;margin-top: 1rem;margin-left: 1.5rem;margin-bottom: 0.5rem;">
+            <div style="font-size: larger;"><b>服务器状态</b></div>
+            <div style="opacity: 0.5;">&nbsp;@&nbsp;</div>
+            <div id="overview-server-status-card-text-ip" style="opacity: 0.5;">gtnh.akyuu.cn</div>
+        </div>
+
+        <div style="display: flex;align-items: center;margin-bottom: 0.5rem; margin-left: 1.5rem;">
+            <mdui-icon name="bolt"></mdui-icon>
+            &nbsp;
+            <div><b id="overview-server-status-card-text-online">运行正常</b></div>
+            &nbsp;
+            <div id="overview-server-status-card-text-players" style="opacity: 0.5;">(0/1)</div>
+        </div>
+
+        <div style="display: flex;align-items: center;margin-bottom: 0.5rem; margin-left: 1.5rem;">
+            <mdui-icon name="engineering"></mdui-icon>
+            &nbsp;
+            <div><b id="overview-server-status-card-text-list-text">在线员工：</b><span
+                    id="overview-server-status-card-text-list">Akyuu</span></div>
+        </div>
+
+        <div style="display: flex;align-items: center;margin-bottom: 1rem; margin-left: 1.5rem;">
+            <div id="overview-server-status-card-text-motd" style="opacity: 0.25;font-size: smaller;">GT New Horizons
+            </div>
+        </div>
+
+
+    </mdui-card>
+
+
+    <div class="overview-circle-container">
+
+        <mdui-card class="overview-circle-card" variant="filled">
+            <div style="font-size: larger;"><b>兰波顿超级电容库</b></div>
+            <div id="progressbar-battery-text" class="overview-progressbar-text">0/1 EU</div>
+            <div id="progressbar-battery" class="overview-progressbar-circle"></div>
+            <div id="progressbar-battery-textio" class="overview-progressbar-text">avg: 0 EU/t</div>
+        </mdui-card>
+
+        <mdui-card class="overview-circle-card" variant="filled">
+            <div style="font-size: larger;"><b>OniBOT 在线状态</b></div>
+            <div id="progressbar-onibot-text" style="opacity: 0.4;margin-bottom: 1rem;">0/1 设备</div>
+            <div id="progressbar-onibot" style="height: 150px;width: 150px;position: relative;"></div>
+        </mdui-card>
+
+        <mdui-card class="overview-circle-card" variant="filled">
+            <div style="font-size: larger;"><b>AE 负载</b></div>
+            <div id="progressbar-ae-cpus-text" style="opacity: 0.4;margin-bottom: 1rem;">0/1 核心工作中</div>
+            <div id="progressbar-ae-cpus" style="height: 150px;width: 150px;position: relative;"></div>
+        </mdui-card>
+
+    </div>
+
+    <mdui-card variant="filled"
+        style="width: 100%;padding: 1rem;margin-bottom: 1rem;display: flex;flex-direction: column;">
+        <div style="font-size: larger;margin-bottom: 1rem;"><b>YOT 储罐 - 苯</b></div>
+        <mdui-linear-progress id="progressbar-benzene" value="0" max="100" style="height: 1rem;"></mdui-linear-progress>
+        <div id="progressbar-benzene-text" style="opacity: 0.4">0/1 KL</div>
+    </mdui-card>
+
+    <mdui-card variant="filled" style="width: 100%;padding: 1rem;display: flex;flex-direction: column;">
+        <div style="font-size: larger;margin-bottom: 1rem;"><b>YOT 储罐 - 硝基苯</b></div>
+        <mdui-linear-progress id="progressbar-nitrobenzene" value="0" max="100"
+            style="height: 1rem;"></mdui-linear-progress>
+        <div id="progressbar-nitrobenzene-text" style="opacity: 0.4">0/1 KL</div>
+    </mdui-card>
+
+</div>

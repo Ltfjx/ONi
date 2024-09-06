@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+
+  <script src="https://cdn.staticfile.net/mdui/2.1.1/mdui.global.js"></script>
+  <link rel="stylesheet" href="https://cdn.staticfile.net/mdui/2.1.1/mdui.css">
+  <script src="https://cdn.staticfile.net/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Two+Tone" rel="stylesheet">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="shortcut icon" href="resources/icon.png">
+
+  <link rel="stylesheet" href="css/index.css" />
+
+  <title>Oni</title>
+</head>
+
+<body style="margin: 0;">
+
+  <div>
+    <%- include("navrail.ejs") %>
+  </div>
+
+  <div style="overflow: hidden;">
+
+    <mdui-top-app-bar scroll-behavior="elevate" scroll-target="#main-content-area">
+      <%- include("topbar.ejs") %>
+    </mdui-top-app-bar>
+
+    <div id="main-content-area" style="height: calc(100vh - 64px);overflow: auto;">
+      <%- include("content/overview.ejs") %>
+      <%- include("content/events.ejs") %>
+      <%- include("content/stats.ejs") %>
+      <%- include("content/ae.ejs") %>
+      <%- include("content/bot.ejs") %>
+      <%- include("content/debug.ejs") %>
+    </div>
+
+  </div>
+
+
+  <mdui-dialog id="settings-dialog">
+    <%- include("settings.ejs") %>
+  </mdui-dialog>
+
+  <script src="js/progressbar.min.js"></script>
+  <script src="js/index.js"></script>
+
+  <!-- 导轨双方案切换 -->
+  <script>
+    if (window.innerWidth / window.innerHeight > 0.7) {
+      console.log("横屏")
+
+      const drawer = document.getElementById('navi-drawer')
+      const rail = document.getElementById('navi-rail')
+
+      drawer.removeChild(rail)
+      drawer.parentNode.insertBefore(rail, drawer)
+
+      document.getElementById("navi-toggler").style["display"] = "none"
+      rail.style.paddingTop = "69px"
+    }
+  </script>
+
+
+
+</body>
+
+</html>

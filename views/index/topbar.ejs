@@ -1,0 +1,17 @@
+<mdui-button-icon icon="menu" id="navi-toggler" onclick="toggleLeftNavi()"></mdui-button-icon>
+<script>
+  function toggleLeftNavi(tf) {
+    const e = document.getElementById("navi-drawer")
+    if (typeof tf === "undefined") {
+      e.open = !e.open
+    } else {
+      e.open = tf
+    }
+  }
+</script>
+<img src="resources/icon.png" alt="Oni" style="height: 2.5rem; margin-right: 0.5rem;margin-left: 0.5rem;border-radius: 8px;" />
+<mdui-top-app-bar-title>
+  <div>Oni</div>
+</mdui-top-app-bar-title>
+<div style="align-self: center; opacity: 0.2;" id="slogan"></div>
+<div style="flex-grow: 1"></div>

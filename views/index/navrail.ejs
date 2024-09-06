@@ -1,0 +1,58 @@
+<mdui-navigation-drawer id="navi-drawer" modal close-on-esc close-on-overlay-click>
+  <mdui-navigation-rail divider id="navi-rail">
+
+    <mdui-navigation-rail-item icon="home--outlined" id="rail-overview">
+      总览
+    </mdui-navigation-rail-item>
+
+    <mdui-navigation-rail-item icon="crisis_alert" id="rail-events">
+      事件
+    </mdui-navigation-rail-item>
+
+    <mdui-navigation-rail-item icon="insert_chart--outlined" id="rail-stats">
+      统计
+    </mdui-navigation-rail-item>
+
+    <mdui-navigation-rail-item icon="grid_on--outlined" id="rail-ae">
+      AE
+    </mdui-navigation-rail-item>
+
+    <mdui-navigation-rail-item icon="adb--outlined" id="rail-bot">
+      BOT
+    </mdui-navigation-rail-item>
+
+    <mdui-navigation-rail-item icon="terminal--outlined" id="rail-debug">
+      调试
+    </mdui-navigation-rail-item>
+
+    <!-- 深色模式切换 -->
+    <mdui-button-icon slot="bottom" id="buttonDarkMode" icon="dark_mode">
+    </mdui-button-icon>
+
+    <!-- 设置配色 -->
+    <mdui-button-icon slot="bottom" id="buttonColor" icon="color_lens">
+
+    </mdui-button-icon>
+    <input type="color" id="colorPicker" hidden>
+
+    <!-- 设置 -->
+    <mdui-button-icon slot="bottom" id="buttonSettings" icon="settings">
+    </mdui-button-icon>
+
+  </mdui-navigation-rail>
+
+  <script>
+    // 样式注入
+    let style = document.createElement('style')
+    style.innerHTML = `
+        .panel {
+        height: 100% !important;
+        width: 5.0625rem !important;
+        border-radius: 0 !important;
+        }
+        `
+        console.log(style)
+    document.getElementById("navi-drawer").shadowRoot.appendChild(style)
+  </script>
+
+</mdui-navigation-drawer>

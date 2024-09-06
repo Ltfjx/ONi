@@ -1,0 +1,30 @@
+{
+  "name": "oni",
+  "version": "1.0.0",
+  "description": "A web panel designed for GTNH | Powered by OpenComputers",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon",
+    "start": "node ./lib/index.js"
+  },
+  "author": "Ltfjx",
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "@types/ejs": "^3.1.5",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.5.4",
+    "@types/ws": "^8.5.12",
+    "nodemon": "^3.1.4",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "log4js": "^6.9.1",
+    "ws": "^8.18.0",
+    "yaml": "^2.5.1"
+  }
+}
