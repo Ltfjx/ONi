@@ -4,15 +4,15 @@
         "content": [
             {
                 "type": "card",
+                "id": "user-info",
+                "config": {}
+            },
+            {
+                "type": "card",
                 "id": "server-status",
                 "config": {
                     "target": "gtnh.akyuu.cn"
                 }
-            },
-            {
-                "type": "card",
-                "id": "user-info",
-                "config": {}
             }
         ]
     },

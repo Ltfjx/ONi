@@ -73,28 +73,28 @@ wss.on('connection', (ws: WebSocket, socket: http.IncomingMessage, request: http
     logger.info(`New WebSocket connection ${session.sessionId.substring(0, 8)}`)
 
     ws.on('message', (message: string) => {
+        logger.trace(message)
         const raw = JSON.parse(message)
-        switch (raw.type) {
-            case "auth_request": {
-                const user = userList.find(user => user.token === raw.data.token)
-                if (user) {
-                    session.authenticated = true
-                    session.user = user
-                    ws.send(JSON.stringify({ type: "auth_response", data: { success: true, user: session.user } }))
-                } else {
-                    ws.send(JSON.stringify({ type: "auth_response", data: { success: false, user: undefined } }))
-                    ws.close()
-                }
-                break
+        if (raw.type == "auth_request") {
+            const user = userList.find(user => user.token === raw.data.token)
+            if (user) {
+                session.authenticated = true
+                session.user = user
+                ws.send(JSON.stringify({ type: "auth_response", uuid: raw.uuid, success: true, data: { success: true, user: session.user } }))
+            } else {
+                logger.warn(`Invalid token ${raw.data.token} for user ${raw.uuid}`)
+                ws.send(JSON.stringify({ type: "auth_response", uuid: raw.uuid, success: false, data: { user: undefined } }))
+                ws.close()
             }
-            case "get_request": {
-                const target = raw.data.target
-                ws.send(JSON.stringify({ type: "get_response", uuid: raw.uuid, data: { success: true } }))
-                break
+        } else if (raw.type == "get_request") {
+            const target = raw.data.target
+            if (target == "layout/overview") {
+                ws.send(JSON.stringify({ type: "get_response", uuid: raw.uuid, success: true, data: JSON.parse(fs.readFileSync('./data/layout/overview.json', 'utf8')) }))
+            } else {
+                ws.send(JSON.stringify({ type: "get_response", uuid: raw.uuid, success: false, data: {} }))
             }
-            default: {
-                logger.warn(`Unknown message type ${raw.type}`)
-            }
+        } else {
+            logger.warn(`Unknown message type ${raw.type}`)
         }
     })
 

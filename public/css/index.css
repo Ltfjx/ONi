@@ -1,24 +1,61 @@
 .panel-content {
-  margin: 1rem;
+  margin: 0.8rem;
 }
 
-/* // Panel-Overview // */
-.overview-server-status-card {
-  margin-bottom: 1rem;
-  align-items: start;
+.grid-s {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.8rem;
+  justify-content: center;
+  margin-bottom: 0.8rem;
+}
+
+@media (max-width: 200px) {
+  .grid-s {
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+  }
+}
+
+.grid-m {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 0.8rem;
+  justify-content: center;
+  margin-bottom: 0.8rem;
+}
+
+@media (max-width: 430px) {
+  .grid-m {
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+  }
+}
+
+.grid-l {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(630px, 1fr));
+  gap: 0.8rem;
+  justify-content: center;
+  margin-bottom: 0.8rem;
+}
+
+@media (max-width: 750px) {
+  .grid-l {
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+  }
+}
+
+.card {
   display: flex;
   flex-direction: column;
-  align-items: start;
+  padding: 1.5rem;
+  gap: 0.5rem;
 }
 
-
-.overview-circle-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 1rem;
-  justify-content: center;
-  margin-bottom: 1rem;
+mdui-card[variant="filled"] {
+  background-color: rgba(var(--mdui-color-surface-container-highest), 0.7);
 }
+
+/**/
 
 .overview-circle-card {
   padding: 1rem;
@@ -74,7 +111,8 @@
   position: relative;
   width: 100%;
   height: 0;
-  padding-bottom: 50%; /* 这将使高度为宽度的一半 */
+  padding-bottom: 50%;
+  /* 这将使高度为宽度的一半 */
 }
 
 
