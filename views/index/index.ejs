@@ -49,7 +49,6 @@
   </div>
 
 
-
   <style>
     #bg-texture {
       position: absolute;
@@ -58,7 +57,7 @@
       width: 120%;
       height: 120%;
       z-index: -2;
-      opacity: 0.008;
+      opacity: 0.01;
       filter: invert();
       mix-blend-mode: lighten;
     }
@@ -68,6 +67,29 @@
       width: 120%;
       height: 120%;
     }
+
+    mdui-top-app-bar:not([shrink]) {
+      background: linear-gradient(to bottom, rgba(var(--mdui-color-surface-container)), rgba(0, 0, 0, 0));
+    }
+
+
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background-color: #8888880F;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: #88888880;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: #555;
+    }
   </style>
 
   <mdui-dialog id="settings-dialog">
@@ -76,26 +98,15 @@
 
   <script src="js/progressbar.min.js"></script>
   <script src="js/index.js"></script>
+  <script src="js/style.js"></script>
+  <script src="js/top-bar.js"></script>
+  <script src="js/nav-rail.js"></script>
 
-  <!-- 导轨双方案切换 -->
-  <script>
-    if (window.innerWidth / window.innerHeight > 0.7) {
-      console.log("横屏")
-
-      const drawer = document.getElementById('navi-drawer')
-      const rail = document.getElementById('navi-rail')
-
-      drawer.removeChild(rail)
-      drawer.parentNode.insertBefore(rail, drawer)
-
-      document.getElementById("navi-toggler").style["display"] = "none"
-      rail.placement = "left"
-    }
-  </script>
 
   <script>
-    // 等待页面加载完毕后样式注入
+    // 样式注入
     window.onload = function() {
+
       // 顶栏
       const e1 = document.querySelector("mdui-top-app-bar-title")
       const sr = e1.shadowRoot
@@ -114,14 +125,11 @@
       }
       `
       e2.shadowRoot.appendChild(s2)
-
     }
   </script>
 
   <style>
-    mdui-top-app-bar:not([shrink]) {
-      background-color: transparent;
-    }
+
   </style>
 
 </body>

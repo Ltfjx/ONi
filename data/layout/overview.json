@@ -1,0 +1,73 @@
+[
+    {
+        "type": "grid-m",
+        "content": [
+            {
+                "type": "card",
+                "id": "server-status",
+                "config": {
+                    "target": "gtnh.akyuu.cn"
+                }
+            },
+            {
+                "type": "card",
+                "id": "user-info",
+                "config": {}
+            }
+        ]
+    },
+    {
+        "type": "grid-s",
+        "content": [
+            {
+                "type": "card",
+                "id": "indicator-circular",
+                "config": {
+                    "target": "battery",
+                    "unit": "K",
+                    "bottom": "avg"
+                }
+            },
+            {
+                "type": "card",
+                "id": "indicator-circular",
+                "config": {
+                    "target": "oni-bot",
+                    "unit": "",
+                    "bottom": ""
+                }
+            },
+            {
+                "type": "card",
+                "id": "indicator-circular",
+                "config": {
+                    "target": "ae-load",
+                    "unit": "",
+                    "bottom": ""
+                }
+            }
+        ]
+    },
+    {
+        "type": "grid-l",
+        "content": [
+            {
+                "type": "card",
+                "id": "indicator-bar",
+                "config": {
+                    "target": "benzene",
+                    "unit": "K"
+                }
+            },
+            {
+                "type": "card",
+                "id": "indicator-bar",
+                "config": {
+                    "target": "nitro-benzene",
+                    "unit": "",
+                    "bottom": ""
+                }
+            }
+        ]
+    }
+]

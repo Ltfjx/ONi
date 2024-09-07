@@ -1,80 +1,4 @@
 
-
-
-// 深色模式
-!(function () {
-    const darkMode = localStorage.getItem('darkMode')
-    if (darkMode === 'true' || (darkMode === null && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.getElementById("buttonDarkMode").icon = "light_mode"
-        mdui.setTheme("dark")
-    }
-})()
-
-document.getElementById("buttonDarkMode").addEventListener("click", () => {
-
-    if (mdui.getTheme() == "light") {
-        document.getElementById("buttonDarkMode").icon = "light_mode"
-        localStorage.setItem('darkMode', 'true')
-        mdui.setTheme("dark")
-    } else {
-        document.getElementById("buttonDarkMode").icon = "dark_mode"
-        localStorage.setItem('darkMode', 'false')
-        mdui.setTheme("light")
-    }
-})
-
-// Slogan
-!(function () {
-    function isMobileDevice() {
-        const ua = navigator.userAgent.toLowerCase()
-        const kw = ['iphone', 'ipod', 'android', 'windows phone', 'blackberry', 'mobile']
-        return kw.some(keyword => ua.includes(keyword))
-    }
-    if (!isMobileDevice()) {
-        const slogan = ["豆！豆！痛いよ！", "人間！妖怪！誰でも歓迎！"]
-        let elem = document.getElementById("slogan")
-        elem.innerText = `"${slogan[Math.floor(Math.random() * slogan.length)]}"`
-    }
-
-})()
-
-// 配色自定义系统
-!(function () {
-    let colorPicker = document.getElementById("colorPicker")
-    let color = localStorage.getItem("customColor")
-    if (color != undefined) {
-        mdui.setColorScheme(color)
-    }
-    colorPicker.addEventListener('input', function () {
-        mdui.setColorScheme(colorPicker.value)
-        localStorage.setItem("customColor", colorPicker.value)
-    })
-    document.getElementById("buttonColor").addEventListener("click", () => {
-        colorPicker.click()
-    })
-})()
-
-
-// 导轨
-!(function () {
-    let railItems = ["overview", "events", "stats", "ae", "bot", "debug"]
-    let railItemsDisplay = ["总览", "事件", "统计", "AE", "BOT", "调试"]
-    function hideAll() {
-        railItems.forEach(item => {
-            document.getElementById(`${item}-content`).setAttribute("hidden", "true")
-        })
-    }
-    railItems.forEach(item => {
-        document.getElementById(`rail-${item}`).addEventListener("click", () => {
-            hideAll()
-            document.getElementById(`${item}-content`).removeAttribute("hidden")
-            toggleLeftNavi(false)
-            document.getElementById("navi-label").innerText = railItemsDisplay[railItems.indexOf(item)]
-        })
-    })
-    document.getElementById(`rail-${railItems[0]}`).click()
-})()
-
 // 设置项初始化
 var token = ""
 var settings = {
@@ -108,4 +32,55 @@ var settings = {
     })
 })()
 
+// 建立ws连接
 
+let ws = new WebSocket("ws://" + location.host + "/ws/web")
+
+ws.onopen = () => {
+    console.log("ws连接成功")
+    ws.send(JSON.stringify({ type: "auth_request", data: { "token": token } }))
+}
+
+ws.onmessage = (event) => {
+    const raw = JSON.parse(event.data)
+    switch (raw.type) {
+        case "auth_response": {
+            if (raw.data.success == true) {
+                init()
+            }
+            break
+        }
+        default: {
+            console.warn("未知数据类型：" + data)
+            break
+        }
+    }
+    ws.onclose = () => {
+        console.log("ws连接断开")
+    }
+    ws.onerror = (event) => {
+        console.log("ws连接出错：" + event)
+    }
+}
+
+function get(target) {
+    ws.send(JSON.stringify({ type: "get_request", uuid: crypto.randomUUID(), data: { target: target } }))
+    return new Promise((resolve, reject) => {
+        const handler = (event) => {
+            const raw = JSON.parse(event.data)
+            if (raw.type == "get_response" && raw.uuid == uuid) {
+                ws.removeEventListener("message", handler)
+                if (raw.data.status == "success") {
+                    resolve(raw.data.value)
+                } else {
+                    reject(raw.data.message)
+                }
+            }
+        }
+        ws.addEventListener("message", handler)
+    })
+}
+
+function init() {
+    get("test")
+}

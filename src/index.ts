@@ -3,7 +3,7 @@ import yaml from "yaml"
 import fs from "fs"
 import express from "express"
 import ejs from "ejs"
-import { WebSocketServer } from "ws"
+import { WebSocket, WebSocketServer } from "ws"
 import http from "http"
 
 log4js.configure({
@@ -43,16 +43,61 @@ logger.level = config.log_level
 logger.info("Config file loaded.")
 logger.trace(config)
 
+
+interface User {
+    uuid: string
+    name: string
+    token: string
+}
+
+var userList: User[] = JSON.parse(fs.readFileSync('./data/user/user.json', 'utf8'))
+logger.trace(userList)
+
 const app = express()
 const server = http.createServer(app)
 const wss = new WebSocketServer({ noServer: true })
 
-wss.on('connection', (ws) => {
-    logger.info(`New connection`)
-    ws.on('message', (message) => {
-        console.log(`ws1 received message => ${message}`);
-        ws.send(`ws1 echo: ${message}`);
+wss.on('connection', (ws: WebSocket, socket: http.IncomingMessage, request: http.IncomingMessage) => {
+
+    interface Session {
+        sessionId: string
+        authenticated: boolean
+        user?: User
+    }
+
+    var session: Session = {
+        sessionId: crypto.randomUUID(),
+        authenticated: false
+    }
+
+    logger.info(`New WebSocket connection ${session.sessionId.substring(0, 8)}`)
+
+    ws.on('message', (message: string) => {
+        const raw = JSON.parse(message)
+        switch (raw.type) {
+            case "auth_request": {
+                const user = userList.find(user => user.token === raw.data.token)
+                if (user) {
+                    session.authenticated = true
+                    session.user = user
+                    ws.send(JSON.stringify({ type: "auth_response", data: { success: true, user: session.user } }))
+                } else {
+                    ws.send(JSON.stringify({ type: "auth_response", data: { success: false, user: undefined } }))
+                    ws.close()
+                }
+                break
+            }
+            case "get_request": {
+                const target = raw.data.target
+                ws.send(JSON.stringify({ type: "get_response", uuid: raw.uuid, data: { success: true } }))
+                break
+            }
+            default: {
+                logger.warn(`Unknown message type ${raw.type}`)
+            }
+        }
     })
+
 })
 
 server.on('upgrade', (request, socket, head) => {
