@@ -73,8 +73,8 @@ wss.on('connection', (ws: WebSocket, socket: http.IncomingMessage, request: http
     logger.info(`New WebSocket connection ${session.sessionId.substring(0, 8)}`)
 
     ws.on('message', (message: string) => {
-        logger.trace(message)
         const raw = JSON.parse(message)
+        logger.trace("RECEIVED", raw)
         if (raw.type == "auth_request") {
             const user = userList.find(user => user.token === raw.data.token)
             if (user) {

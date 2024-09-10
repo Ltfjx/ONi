@@ -32,7 +32,7 @@
 
 .grid-l {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(630px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(650px, 1fr));
   gap: 0.8rem;
   justify-content: center;
   margin-bottom: 0.8rem;
@@ -44,6 +44,14 @@
   }
 }
 
+.grid-full {
+  display: grid;
+  grid-template-columns: 100%;
+  gap: 0.8rem;
+  justify-content: center;
+  margin-bottom: 0.8rem;
+}
+
 .card {
   display: flex;
   flex-direction: column;
@@ -52,7 +60,7 @@
 }
 
 mdui-card[variant="filled"] {
-  background-color: rgba(var(--mdui-color-surface-container-highest), 0.7);
+  background-color: rgba(var(--mdui-color-surface-container-highest), 0.75);
 }
 
 /**/

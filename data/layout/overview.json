@@ -1,11 +1,23 @@
 [
     {
+        "type": "grid-full",
+        "content": [
+            {
+                "type": "card",
+                "id": "welcome",
+                "config": {}
+            }
+        ]
+    },
+    {
         "type": "grid-m",
         "content": [
             {
                 "type": "card",
                 "id": "user-info",
-                "config": {}
+                "config": {
+                    "name": ""
+                }
             },
             {
                 "type": "card",

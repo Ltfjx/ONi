@@ -1,0 +1,40 @@
+{
+    "block": [
+        {
+            "id": "grid-s"
+        },
+        {
+            "id": "grid-m"
+        },
+        {
+            "id": "grid-l"
+        },
+        {
+            "id": "grid-full"
+        }
+    ],
+    "item": {
+        "card": [
+            {
+                "id": "indicator-bar",
+                "have_script": false
+            },
+            {
+                "id": "indicator-circular",
+                "have_script": false
+            },
+            {
+                "id": "server-status",
+                "have_script": false
+            },
+            {
+                "id": "user-info",
+                "have_script": true
+            },
+            {
+                "id": "welcome",
+                "have_script": false
+            }
+        ]
+    }
+}

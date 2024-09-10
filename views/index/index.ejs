@@ -48,6 +48,20 @@
       <img src="resources/texture_1.png" />
     </div>
 
+    <script>
+      !(function() {
+        const e = document.getElementById("main-content-area")
+        e.addEventListener('scroll', function() {
+          var scrollTop = e.scrollTop
+          var parallaxSpeed = 0.2
+
+          var bgTexture = document.getElementById('bg-texture')
+          bgTexture.style.top = -(scrollTop * parallaxSpeed)/10 + '%'
+        })
+
+      })()
+    </script>
+
   </div>
 
 
@@ -58,8 +72,8 @@
       left: 0;
       width: 120%;
       height: 120%;
-      z-index: -2;
-      opacity: 0.01;
+      z-index: -3;
+      opacity: 0.02;
       filter: invert();
       mix-blend-mode: lighten;
     }
