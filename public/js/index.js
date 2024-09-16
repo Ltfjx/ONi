@@ -14,12 +14,10 @@ var settings = {
 !(function () {
     let tfToken = document.getElementById("text-field-settings-token")
     let dialog = document.getElementById("settings-dialog")
-    let cbLocalhostMode = document.getElementById("checkbox-settings-localhost-mode")
 
     document.getElementById("buttonSettings").addEventListener("click", () => {
         dialog.open = true
         tfToken.value = token
-        cbLocalhostMode.checked = settings.localhostMode == "true"
     })
     document.getElementById("button-settings-discard").addEventListener("click", () => {
         dialog.open = false
@@ -27,7 +25,6 @@ var settings = {
     document.getElementById("button-settings-apply").addEventListener("click", () => {
         dialog.open = false
         localStorage.setItem("token", tfToken.value)
-        localStorage.setItem("localhostMode", cbLocalhostMode.checked)
         location.reload()
     })
 })()
@@ -52,18 +49,19 @@ ws.onopen = () => {
 
 ws.onmessage = (event) => {
     const raw = JSON.parse(event.data)
-    switch (raw.type) {
-        case "auth_response": {
-            if (raw.data.success == true) {
-                user = raw.data.user
-                init()
-            }
-            break
+    if (raw.type == "auth_response") {
+        if (raw.data.success == true) {
+            user = raw.data.user
+            init()
+        } else {
+            document.getElementById("dialog-login").open = true
         }
-        default: {
-            console.warn("未知数据类型：" + JSON.stringify(raw))
-            break
-        }
+    } else if (raw.type == "event_log") {
+        debug__addLog(raw.data)
+    }
+    else {
+        console.warn("未知数据类型：" + JSON.stringify(raw))
+
     }
     ws.onclose = () => {
         console.log("ws连接断开")
@@ -73,22 +71,31 @@ ws.onmessage = (event) => {
     }
 }
 
+
+
 function get(target) {
     const uuid = randomUUID()
     ws.send(JSON.stringify({ type: "get_request", uuid: uuid, data: { target: target } }))
+
     return new Promise((resolve, reject) => {
         const handler = (event) => {
             const raw = JSON.parse(event.data)
-            if (raw.type == "get_response" && raw.uuid == uuid && raw.success) {
-                resolve(raw.data)
-            } else {
-                reject(raw)
+
+            if (raw.type === "get_response" && raw.uuid === uuid) {
+                ws.removeEventListener("message", handler)
+
+                if (raw.success) {
+                    resolve(raw.data)
+                } else {
+                    reject(raw)
+                }
             }
-            ws.removeEventListener("message", handler)
         }
+
         ws.addEventListener("message", handler)
     })
 }
+
 
 async function init() {
     console.log("初始化")
@@ -123,5 +130,10 @@ async function init() {
 
 
         e.innerHTML = result
+    })()
+
+    !(async function () {
+        const raw = await get("logs/main")
+        debug__addLog(raw.lines + "---------------- 以上为历史日志 ----------------")
     })()
 }

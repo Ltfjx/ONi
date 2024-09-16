@@ -1,5 +1,24 @@
-<div id="debug-content" hidden>
-    <mdui-collapse id="log-list" accordion>
+<div id="debug-content" class="panel-content" hidden>
+  <div class="grid-full">
+    <mdui-card variant="filled" class="card">
+      <code id="debug-log" class="language-css" style="white-space: pre-wrap;font-family: 'Consolas', monospace;"></code>
+    </mdui-card>
+    <script>
+      var debug__log = ""
 
-    </mdui-collapse>
+      function debug__addLog(text) {
+        const e = document.getElementById('debug-log')
+        debug__log += text + "\n"
+        e.textContent = debug__log
+        debug__highlightLog()
+      }
+
+      function debug__highlightLog() {
+        const e = document.getElementById('debug-log')
+        e.removeAttribute("data-highlighted")
+        hljs.highlightElement(e)
+      }
+    </script>
+
+  </div>
 </div>

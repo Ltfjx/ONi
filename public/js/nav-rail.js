@@ -14,7 +14,13 @@
             document.getElementById(`${item}-content`).removeAttribute("hidden")
             toggleLeftNavi(false)
             document.getElementById("navi-label").innerText = railItemsDisplay[railItems.indexOf(item)]
-            document.getElementById("main-content-area").scrollTo({ top: 0 })
+
+            if (item == "debug") {
+                // 滚动到底部
+                document.getElementById("main-content-area").scrollTo({ top: document.getElementById("main-content-area").scrollHeight })
+            } else {
+                document.getElementById("main-content-area").scrollTo({ top: 0 })
+            }
         })
         e.innerHTML = railItemsDisplay[railItems.indexOf(item)]
     })
