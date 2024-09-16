@@ -5,3 +5,6 @@ log_level: TRACE
 
 ## Oni 端口 [ 1024 - 65535 ]
 port: 5600
+
+## MC 服务器地址
+mc_server_ip: gtnh.akyuu.cn

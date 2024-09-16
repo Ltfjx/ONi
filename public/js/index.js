@@ -44,12 +44,12 @@ let ws = new WebSocket("ws://" + location.host + "/ws/web")
 
 ws.onopen = () => {
     console.log("ws连接成功")
-    ws.send(JSON.stringify({ type: "auth_request", uuid: randomUUID(), data: { "token": token } }))
+    ws.send(JSON.stringify({ type: "auth/request", uuid: randomUUID(), data: { "token": token } }))
 }
 
 ws.onmessage = (event) => {
     const raw = JSON.parse(event.data)
-    if (raw.type == "auth_response") {
+    if (raw.type == "auth/response") {
         if (raw.data.success == true) {
             user = raw.data.user
             init()
@@ -71,69 +71,6 @@ ws.onmessage = (event) => {
     }
 }
 
-
-
-function get(target) {
-    const uuid = randomUUID()
-    ws.send(JSON.stringify({ type: "get_request", uuid: uuid, data: { target: target } }))
-
-    return new Promise((resolve, reject) => {
-        const handler = (event) => {
-            const raw = JSON.parse(event.data)
-
-            if (raw.type === "get_response" && raw.uuid === uuid) {
-                ws.removeEventListener("message", handler)
-
-                if (raw.success) {
-                    resolve(raw.data)
-                } else {
-                    reject(raw)
-                }
-            }
-        }
-
-        ws.addEventListener("message", handler)
-    })
-}
-
-
 async function init() {
     console.log("初始化")
-    !(async function () {
-        // 构建 Overview 页面
-        const layout = await get("layout/overview")
-        const componentList = await fetch("ejs/components.json").then(r => r.json())
-        const e = document.getElementById("overview-content")
-        console.log(layout)
-        var result = ""
-        var scriptList = new Set()
-        for (let block of layout) {
-            let inner = ""
-            for (let item of block.content) {
-                const template = await fetch(`ejs/${item.type}/${item.id}.ejs`).then(r => r.text())
-                if (componentList.item[item.type].filter(c => c.id == item.id)[0].have_script) {
-                    scriptList.add(`ejs/${item.type}/${item.id}.js`)
-                }
-                inner += ejs.render(template, item.config)
-            }
-
-            const blockTemplate = await fetch(`ejs/${block.type}.ejs`).then(r => r.text())
-            result += ejs.render(blockTemplate, { inner: inner })
-        }
-
-
-        scriptList.forEach(async (url) => {
-            console.log(url)
-            const script = await fetch(url).then(r => r.text())
-            eval(script)
-        })
-
-
-        e.innerHTML = result
-    })()
-
-    !(async function () {
-        const raw = await get("logs/main")
-        debug__addLog(raw.lines + "---------------- 以上为历史日志 ----------------")
-    })()
 }

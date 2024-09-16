@@ -7,17 +7,36 @@ import { WebSocket, WebSocketServer } from "ws"
 import http from "http"
 import crypto from "crypto"
 
+import global from "./global"
+import { User, Bot, Config } from "./interface"
+
 const wssWeb = new WebSocketServer({ noServer: true })
 const wssOc = new WebSocketServer({ noServer: true })
 
+interface SessionWeb extends WebSocket {
+    sessionId: string
+    authenticated: boolean
+    user?: User
+}
+
+interface SessionOc extends WebSocket {
+    sessionId: string
+    authenticated: boolean
+    bot?: Bot
+}
+
 function wsSendLog(layout: any) {
     return (loggingEvent: any) => {
-        wssWeb.clients.forEach(client => {
-            client.send(JSON.stringify({
-                type: "event_log",
-                data: layout(loggingEvent)
-            }))
+
+        wssWeb.clients.forEach(ws => {
+            if ((ws as SessionWeb).authenticated) {
+                ws.send(JSON.stringify({
+                    type: "event/log",
+                    data: layout(loggingEvent)
+                }))
+            }
         })
+
     }
 }
 
@@ -42,10 +61,7 @@ log4js.configure({
 const logger = log4js.getLogger("main")
 logger.info("Starting Oni...")
 
-interface Config {
-    log_level: string
-    port: number
-}
+
 
 var config: Config
 
@@ -67,44 +83,22 @@ logger.info("Config file loaded.")
 logger.trace("config", config)
 
 
-interface User {
-    uuid: string
-    name: string
-    token: string
-}
-
-var userList: User[] = JSON.parse(fs.readFileSync('./data/user/user.json', 'utf8'))
-logger.trace("userList", userList)
-
-
-interface Bot {
-    uuid: string
-    name: string
-    token: string
-}
-
-var botList: Bot[] = JSON.parse(fs.readFileSync('./data/bot/bot.json', 'utf8'))
-logger.trace("botList", botList)
+global.init(config)
 
 
 const app = express()
 const server = http.createServer(app)
 
 
-wssWeb.on('connection', (ws: WebSocket, socket: http.IncomingMessage, request: http.IncomingMessage) => {
 
-    interface SessionWeb {
-        sessionId: string
-        authenticated: boolean
-        user?: User
-    }
 
-    var session: SessionWeb = {
-        sessionId: crypto.randomUUID(),
-        authenticated: false
-    }
 
-    logger.info(`New WEB WebSocket connection ${session.sessionId.substring(0, 8)}`)
+wssWeb.on('connection', (ws: SessionWeb, socket: http.IncomingMessage, request: http.IncomingMessage) => {
+
+    ws.sessionId = crypto.randomUUID()
+    ws.authenticated = false
+
+    logger.info(`New WEB WebSocket connection ${ws.sessionId.substring(0, 8)}`)
 
     ws.on('message', (message: string) => {
 
@@ -119,29 +113,28 @@ wssWeb.on('connection', (ws: WebSocket, socket: http.IncomingMessage, request: h
 
         logger.trace("WEB RECEIVED", json)
 
-        // 判断消息类型
-        if (json.type == "auth_request") {
-            const user = userList.find(user => user.token === json.data.token)
+
+        if (json.type == "auth/request") {
+            // 登录请求
+            const user = global.userList.find(user => user.token === json.data.token)
             if (user) {
-                session.authenticated = true
-                session.user = user
-                ws.send(JSON.stringify({ type: "auth_response", uuid: json.uuid, success: true, data: { success: true, user: session.user } }))
+                ws.authenticated = true
+                ws.user = user
+                // 返回用户信息
+                ws.send(JSON.stringify({ type: "auth/response", success: true, data: { success: true, user: ws.user } }))
+
+                // 发送历史日志
+                const logFile = fs.readFileSync('./logs/main.log', 'utf8')
+                const _ = logFile.split('\n').slice(-100).join('\n')
+                ws.send(JSON.stringify({ type: "event/log", success: true, data: _ }))
+
+                // 发送 overview 布局文件
+                ws.send(JSON.stringify({ type: "layout/overview", success: true, data: JSON.parse(fs.readFileSync('./data/layout/overview.json', 'utf8')) }))
+
             } else {
                 logger.warn(`Invalid token ${json.data.token} for user ${json.uuid}`)
-                ws.send(JSON.stringify({ type: "auth_response", uuid: json.uuid, success: false, data: { user: undefined } }))
+                ws.send(JSON.stringify({ type: "auth/response", success: false, data: { user: undefined } }))
                 ws.close()
-            }
-        } else if (json.type == "get_request") {
-            const target = json.data.target
-            if (target == "layout/overview") {
-                ws.send(JSON.stringify({ type: "get_response", uuid: json.uuid, success: true, data: JSON.parse(fs.readFileSync('./data/layout/overview.json', 'utf8')) }))
-            } if (target == "logs/main") {
-                const logFile = fs.readFileSync('./logs/main.log', 'utf8')
-                // 取结尾100行
-                const _ = logFile.split('\n').slice(-100).join('\n')
-                ws.send(JSON.stringify({ type: "get_response", uuid: json.uuid, success: true, data: { lines: _ } }))
-            } else {
-                ws.send(JSON.stringify({ type: "get_response", uuid: json.uuid, success: false, data: {} }))
             }
         } else {
             logger.warn(`Unknown message type ${json.type}`)
@@ -151,20 +144,12 @@ wssWeb.on('connection', (ws: WebSocket, socket: http.IncomingMessage, request: h
 
 })
 
-wssOc.on('connection', (ws: WebSocket, socket: http.IncomingMessage, request: http.IncomingMessage) => {
+wssOc.on('connection', (ws: SessionOc, socket: http.IncomingMessage, request: http.IncomingMessage) => {
 
-    interface SessionOc {
-        sessionId: string
-        authenticated: boolean
-        bot?: Bot
-    }
+    ws.sessionId = crypto.randomUUID()
+    ws.authenticated = false
 
-    var session: SessionOc = {
-        sessionId: crypto.randomUUID(),
-        authenticated: false
-    }
-
-    logger.info(`New OC WebSocket connection ${session.sessionId.substring(0, 8)}`)
+    logger.info(`New OC WebSocket connection ${ws.sessionId.substring(0, 8)}`)
 
     ws.on('message', (message: string) => {
 
@@ -188,6 +173,10 @@ server.on('upgrade', (request, socket, head) => {
         wssWeb.handleUpgrade(request, socket, head, (ws) => {
             wssWeb.emit('connection', ws, request)
         })
+    } else if (request.url === '/ws/oc') {
+        wssOc.handleUpgrade(request, socket, head, (ws) => {
+            wssOc.emit('connection', ws, request)
+        })
     } else {
         socket.destroy()
     }
@@ -210,3 +199,31 @@ app.use(express.static('public'))
 server.listen(config.port, () => {
     logger.info(`Server started on port ${config.port}.`)
 })
+
+
+// 定时更新 MC 服务器状态
+setInterval(mcServerStatusUpdate, 60000)
+mcServerStatusUpdate()
+
+async function mcServerStatusUpdate() {
+    try {
+        const mc = await import('minecraftstatuspinger').then(mc => mc.default)
+        const result = await mc.lookup({ host: global.mcServerStatus.ip })
+        const data = result.status
+
+        if (data != null) {
+            global.mcServerStatus.online = true
+            global.mcServerStatus.players.max = data.players.max
+            global.mcServerStatus.players.online = data.players.online
+            global.mcServerStatus.players.list = data.players.sample
+            global.mcServerStatus.motd = data.description
+        } else {
+            global.mcServerStatus.online = false
+        }
+
+        logger.trace("mcServerStatus", global.mcServerStatus)
+    } catch (error) {
+        global.mcServerStatus.online = false
+        logger.error("mcServerStatus", error)
+    }
+}

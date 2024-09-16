@@ -4,14 +4,14 @@
     let railItemsDisplay = ["总览", "事件", "统计", "AE", "BOT", "调试"]
     function hideAll() {
         railItems.forEach(item => {
-            document.getElementById(`${item}-content`).setAttribute("hidden", "true")
+            document.getElementById(`${item}__content`).setAttribute("hidden", "true")
         })
     }
     railItems.forEach(item => {
         const e = document.getElementById(`rail-${item}`)
         e.addEventListener("click", () => {
             hideAll()
-            document.getElementById(`${item}-content`).removeAttribute("hidden")
+            document.getElementById(`${item}__content`).removeAttribute("hidden")
             toggleLeftNavi(false)
             document.getElementById("navi-label").innerText = railItemsDisplay[railItems.indexOf(item)]
 
