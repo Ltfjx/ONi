@@ -34,6 +34,26 @@
             {
                 "id": "welcome",
                 "have_script": false
+            },
+            {
+                "id": "control-redstone-analog",
+                "have_script": false
+            },
+            {
+                "id": "control-redstone-digital",
+                "have_script": false
+            },
+            {
+                "id": "event-info",
+                "have_script": false
+            },
+            {
+                "id": "event-warning",
+                "have_script": false
+            },
+            {
+                "id": "event-critical",
+                "have_script": false
             }
         ]
     }

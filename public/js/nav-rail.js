@@ -1,12 +1,24 @@
 // 导轨
 !(function () {
-    let railItems = ["overview", "events", "stats", "ae", "bot", "debug"]
-    let railItemsDisplay = ["总览", "事件", "统计", "AE", "BOT", "调试"]
+    const railItems = ["overview", "events", "control", "ae", "bot", "stats", "debug"]
+    const railItemsDisplay = ["总览", "事件", "控制", "AE", "BOT", "统计", "调试"]
+    const railItemsIcon = ["home--outlined", "crisis_alert", "tune--outlined", "grid_on--outlined", "adb--outlined", "insert_chart--outlined", "terminal--outlined"]
+
+    const rail = document.getElementById("navi-rail")
+    railItems.forEach((item, i) => {
+        const node = document.createElement("mdui-navigation-rail-item")
+        node.id = `rail-${item}`
+        node.icon = `${railItemsIcon[i]}`
+        node.innerHTML = railItemsDisplay[i]
+        rail.appendChild(node)
+    })
+
     function hideAll() {
         railItems.forEach(item => {
             document.getElementById(`${item}__content`).setAttribute("hidden", "true")
         })
     }
+
     railItems.forEach(item => {
         const e = document.getElementById(`rail-${item}`)
         e.addEventListener("click", () => {
@@ -22,7 +34,6 @@
                 document.getElementById("main-content-area").scrollTo({ top: 0 })
             }
         })
-        e.innerHTML = railItemsDisplay[railItems.indexOf(item)]
     })
     document.getElementById(`rail-${railItems[0]}`).click()
 })()

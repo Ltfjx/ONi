@@ -4,10 +4,9 @@
 <head>
   <meta charset="UTF-8">
 
-  <script src="https://cdn.staticfile.net/mdui/2.1.0/mdui.global.js"></script>
-  <link rel="stylesheet" href="https://cdn.staticfile.net/mdui/2.1.0/mdui.css">
-  <script src="https://cdn.staticfile.net/Chart.js/4.4.1/chart.umd.min.js"></script>
-  <script src="https://cdn.staticfile.net/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="lib/mdui.global.js"></script>
+  <link rel="stylesheet" href="lib/mdui.css">
+  <script src="lib/chart.umd.min.js"></script>
   <script src="lib/ejs.min.js"></script>
 
   <script src="lib/highlight/highlight.min.js"></script>
@@ -40,12 +39,15 @@
     <%- include("topbar.ejs") %>
 
     <div id="main-content-area" style="height: calc(100dvh - 7rem);overflow: auto;">
+
       <%- include("content/overview.ejs") %>
       <%- include("content/events.ejs") %>
-      <%- include("content/stats.ejs") %>
+      <%- include("content/control.ejs") %>
       <%- include("content/ae.ejs") %>
       <%- include("content/bot.ejs") %>
+      <%- include("content/stats.ejs") %>
       <%- include("content/debug.ejs") %>
+
       <script>
         !(function() {
           const e = document.getElementById("main-content-area")
@@ -122,9 +124,12 @@
   <script src="js/style.js"></script>
   <script src="js/top-bar.js"></script>
   <script src="js/nav-rail.js"></script>
-  <script src="js/layout.js"></script>
-  
-  <script src="js/debug.js"></script>
+
+
+  <script src="js/content/overview.js"></script>
+  <script src="js/content/events.js"></script>
+  <script src="js/content/control.js"></script>
+  <script src="js/content/debug.js"></script>
 
 
   <script>

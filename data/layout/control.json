@@ -1,0 +1,21 @@
+[
+    {
+        "type": "grid-m",
+        "content": [
+            {
+                "type": "card",
+                "id": "control-redstone-digital",
+                "config": {
+                    "target": ""
+                }
+            },
+            {
+                "type": "card",
+                "id": "control-redstone-analog",
+                "config": {
+                    "target": ""
+                }
+            }
+        ]
+    }
+]

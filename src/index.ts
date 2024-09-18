@@ -131,8 +131,13 @@ wssWeb.on('connection', (ws: SessionWeb, socket: http.IncomingMessage, request: 
                 // 发送 overview 布局文件
                 ws.send(JSON.stringify({ type: "layout/overview", success: true, data: JSON.parse(fs.readFileSync('./data/layout/overview.json', 'utf8')) }))
 
+                // 发送 control 布局文件
+                ws.send(JSON.stringify({ type: "layout/control", success: true, data: JSON.parse(fs.readFileSync('./data/layout/control.json', 'utf8')) }))
+
+                // 发送 events 布局文件
+                ws.send(JSON.stringify({ type: "layout/events", success: true, data: JSON.parse(fs.readFileSync('./data/layout/events.json', 'utf8')) }))
             } else {
-                logger.warn(`Invalid token ${json.data.token} for user ${json.uuid}`)
+                logger.warn(`Invalid token ${json.data.token} for user ${ws.sessionId.substring(0, 8)}`)
                 ws.send(JSON.stringify({ type: "auth/response", success: false, data: { user: undefined } }))
                 ws.close()
             }
@@ -143,6 +148,7 @@ wssWeb.on('connection', (ws: SessionWeb, socket: http.IncomingMessage, request: 
     })
 
 })
+
 
 wssOc.on('connection', (ws: SessionOc, socket: http.IncomingMessage, request: http.IncomingMessage) => {
 
@@ -164,6 +170,23 @@ wssOc.on('connection', (ws: SessionOc, socket: http.IncomingMessage, request: ht
         }
 
         logger.trace("OC RECEIVED", json)
+
+        if (json.type == "auth/request") {
+            // 登录请求
+            const bot = global.botList.find(bot => bot.token === json.data.token)
+            if (bot) {
+                ws.authenticated = true
+                ws.bot = bot
+                // 返回用户信息
+                ws.send(JSON.stringify({ type: "auth/response", success: true, data: { success: true, bot: ws.bot } }))
+            } else {
+                logger.warn(`Invalid token ${json.data.token} for bot ${ws.sessionId.substring(0, 8)}`)
+                ws.send(JSON.stringify({ type: "auth/response", success: false, data: { bot: undefined } }))
+                ws.close()
+            }
+        } else {
+            logger.warn(`Unknown message type ${json.type}`)
+        }
 
     })
 })
