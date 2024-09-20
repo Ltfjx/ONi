@@ -14,8 +14,8 @@ function debug__highlightLog() {
 }
 
 ws.addEventListener('message', async (event) => {
-    const raw = JSON.parse(event.data)
-    if (raw.type == "event/log") {
-        debug__addLog(raw.data)
+    const json = JSON.parse(event.data)
+    if (json.type == "event/log") {
+        debug__addLog(json.data)
     }
 })

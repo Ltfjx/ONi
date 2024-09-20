@@ -17,11 +17,11 @@
         "card": [
             {
                 "id": "indicator-bar",
-                "have_script": false
+                "have_script": true
             },
             {
                 "id": "indicator-circular",
-                "have_script": false
+                "have_script": true
             },
             {
                 "id": "server-status",

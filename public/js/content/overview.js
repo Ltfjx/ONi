@@ -1,6 +1,6 @@
 ws.addEventListener('message', function (event) {
-    const raw = JSON.parse(event.data)
-    if (raw.type == "layout/overview") {
-        renderLayout(raw.data, document.getElementById("overview__content"))
+    const json = JSON.parse(event.data)
+    if (json.type == "layout/overview") {
+        renderLayout(json.data, document.getElementById("overview__content"))
     }
 })

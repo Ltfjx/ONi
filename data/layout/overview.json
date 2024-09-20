@@ -35,9 +35,9 @@
                 "type": "card",
                 "id": "indicator-circular",
                 "config": {
-                    "target": "battery",
+                    "target": "b6cdf1a8-39fd-49f2-b36c-5c464631097d",
                     "unit": "K",
-                    "bottom": "avg"
+                    "bottom": "avgIO"
                 }
             },
             {

@@ -48,10 +48,10 @@ ws.onopen = () => {
 }
 
 ws.onmessage = (event) => {
-    const raw = JSON.parse(event.data)
-    if (raw.type == "auth/response") {
-        if (raw.data.success == true) {
-            user = raw.data.user
+    const json = JSON.parse(event.data)
+    if (json.type == "auth/response") {
+        if (json.data.success == true) {
+            user = json.data.user
             console.log("用户认证成功：" + JSON.stringify(user))
         } else {
             document.getElementById("dialog-login").open = true

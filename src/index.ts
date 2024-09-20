@@ -27,16 +27,7 @@ interface SessionOc extends WebSocket {
 
 function wsSendLog(layout: any) {
     return (loggingEvent: any) => {
-
-        wssWeb.clients.forEach(ws => {
-            if ((ws as SessionWeb).authenticated) {
-                ws.send(JSON.stringify({
-                    type: "event/log",
-                    data: layout(loggingEvent)
-                }))
-            }
-        })
-
+        wsWebBroadcast("event/log", layout(loggingEvent))
     }
 }
 
@@ -136,6 +127,9 @@ wssWeb.on('connection', (ws: SessionWeb, socket: http.IncomingMessage, request: 
 
                 // 发送 events 布局文件
                 ws.send(JSON.stringify({ type: "layout/events", success: true, data: JSON.parse(fs.readFileSync('./data/layout/events.json', 'utf8')) }))
+
+                // 发送 global 数据
+                ws.send(JSON.stringify({ type: "global/commonData", success: true, data: global.commonData }))
             } else {
                 logger.warn(`Invalid token ${json.data.token} for user ${ws.sessionId.substring(0, 8)}`)
                 ws.send(JSON.stringify({ type: "auth/response", success: false, data: { user: undefined } }))
@@ -169,7 +163,11 @@ wssOc.on('connection', (ws: SessionOc, socket: http.IncomingMessage, request: ht
             return
         }
 
-        logger.trace("OC RECEIVED", json)
+        if (ws.authenticated) {
+            logger.trace("OC RECEIVED", json)
+        } else {
+            logger.warn("OC RECEIVED UNAUTHENTICATED", json)
+        }
 
         if (json.type == "auth/request") {
             // 登录请求
@@ -184,8 +182,23 @@ wssOc.on('connection', (ws: SessionOc, socket: http.IncomingMessage, request: ht
                 ws.send(JSON.stringify({ type: "auth/response", success: false, data: { bot: undefined } }))
                 ws.close()
             }
+        } else if (!ws.authenticated) {
+            // 如果未登录
+            ws.send(JSON.stringify({ "type": "error", "data": "Not authenticated" }))
         } else {
-            logger.warn(`Unknown message type ${json.type}`)
+            // 如果已登录，处理数据
+            if (json.type == "data/common") {
+                let target = global.commonData.find(data => data.uuid === json.data.uuid)
+                if (target) {
+                    Object.assign(target, json.data)
+                    wsWebBroadcast("data/common", target)
+                    logger.trace("commonData", target)
+                } else {
+                    ws.send(JSON.stringify({ "type": "error", "data": "Data not found" }))
+                }
+            } else {
+                logger.warn(`Unknown message type ${json.type}`)
+            }
         }
 
     })
@@ -249,4 +262,12 @@ async function mcServerStatusUpdate() {
         global.mcServerStatus.online = false
         logger.error("mcServerStatus", error)
     }
+}
+
+function wsWebBroadcast(type: string, data: any) {
+    wssWeb.clients.forEach(ws => {
+        if ((ws as SessionWeb).authenticated) {
+            ws.send(JSON.stringify({ type: type, data: data }))
+        }
+    })
 }
