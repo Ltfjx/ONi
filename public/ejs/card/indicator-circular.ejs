@@ -1,7 +1,13 @@
 <mdui-card variant="filled" class="card card-indicator-circular__card">
-  <div class="card-indicator-circular__title" style="font-size: larger;font-weight: bold;">...</div>
-  <div class="card-indicator-circular__value">0/1 EU</div>
-  <div></div>
-  <div class="card-indicator-circular__bottom">avg: 0 EU/t</div>
-  <data target="<%- target %>" bottom="<%= bottom %>"></data>
+  <div class="card-indicator-circular__title" style="font-size: larger;font-weight: bold;margin-bottom: -0.5rem;">...</div>
+  <div class="card-indicator-circular__value" style="opacity: 0.5;"></div>
+  <div class="card-indicator-circular__indicator"></div>
+  <div class="card-indicator-circular__bottom" style="opacity: 0.5;"></div>
+  <data hidden target="<%- target %>" bottom="<%= bottom %>"></data>
 </mdui-card>
+
+<style>
+  .card-indicator-circular__card {
+    text-align: center;
+  }
+</style>

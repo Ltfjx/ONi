@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="lib/mdui.css">
   <script src="lib/chart.umd.min.js"></script>
   <script src="lib/ejs.min.js"></script>
+  <script src="lib/progressbar.min.js"></script>
 
   <script src="lib/highlight/highlight.min.js"></script>
   <link rel="stylesheet" href="lib/highlight/styles/atom-one-dark.css" />
@@ -65,6 +66,7 @@
 
     <div id="bg-texture">
       <img src="resources/texture_1.png" />
+      <img hidden src="resources/texture_higan.jpg" />
     </div>
 
     <%- include("login.ejs") %>
@@ -81,7 +83,6 @@
       height: 120%;
       z-index: -3;
       opacity: 0.02;
-      filter: invert();
       mix-blend-mode: lighten;
     }
 
@@ -119,7 +120,7 @@
     <%- include("settings.ejs") %>
   </mdui-dialog>
 
-  
+
   <script src="js/index.js"></script>
   <script src="js/global.js"></script>
   <script src="js/style.js"></script>

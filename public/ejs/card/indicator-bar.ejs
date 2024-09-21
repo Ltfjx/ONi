@@ -1,5 +1,9 @@
-<mdui-card variant="filled" class="card">
-  <div style="font-size: larger;margin-bottom: 1rem;"><b>YOT 储罐 - 苯</b></div>
-  <mdui-linear-progress value="0" max="100" style="height: 1rem;"></mdui-linear-progress>
-  <div style="opacity: 0.4">0/1 KL</div>
+<mdui-card variant="filled" class="card card-indicator-bar__card">
+  <div style="display: flex;align-items: baseline;">
+    <div class="card-indicator-bar__title" style="font-size: larger;font-weight: bold;">...</div>
+    <div class="card-indicator-bar__value" style="opacity: 0.5;margin-left: auto;"></div>
+  </div>
+  <mdui-linear-progress class="card-indicator-bar__indicator" value="0" max="100" style="height: 1rem;"></mdui-linear-progress>
+  <div class="card-indicator-bar__percent" style="opacity: 0.5;"></div>
+  <data hidden target="<%- target %>"></data>
 </mdui-card>

@@ -59,6 +59,15 @@ ws.onmessage = (event) => {
     }
 
     ws.onclose = () => {
+        mdui.snackbar({
+            message: "WebSocket 连接已断开，请刷新页面。",
+            autoCloseDelay: 0,
+            closeable: true
+        })
+        // 向网页添加半透明遮罩层
+        document.getElementById("bg-texture").children[0].setAttribute("hidden", true)
+        document.getElementById("bg-texture").children[1].removeAttribute("hidden")
+        document.getElementById("bg-texture").style.opacity = "0.15"
         console.log("ws连接断开")
     }
 

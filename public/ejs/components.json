@@ -25,7 +25,7 @@
             },
             {
                 "id": "server-status",
-                "have_script": false
+                "have_script": true
             },
             {
                 "id": "user-info",

@@ -130,10 +130,15 @@ wssWeb.on('connection', (ws: SessionWeb, socket: http.IncomingMessage, request: 
 
                 // 发送 global 数据
                 ws.send(JSON.stringify({ type: "global/commonData", success: true, data: global.commonData }))
+
+                // 发送 mcServerStatus 数据
+                ws.send(JSON.stringify({ type: "global/mcServerStatus", success: true, data: global.mcServerStatus }))
+
+
             } else {
                 logger.warn(`Invalid token ${json.data.token} for user ${ws.sessionId.substring(0, 8)}`)
                 ws.send(JSON.stringify({ type: "auth/response", success: false, data: { user: undefined } }))
-                ws.close()
+
             }
         } else {
             logger.warn(`Unknown message type ${json.type}`)
@@ -180,7 +185,7 @@ wssOc.on('connection', (ws: SessionOc, socket: http.IncomingMessage, request: ht
             } else {
                 logger.warn(`Invalid token ${json.data.token} for bot ${ws.sessionId.substring(0, 8)}`)
                 ws.send(JSON.stringify({ type: "auth/response", success: false, data: { bot: undefined } }))
-                ws.close()
+
             }
         } else if (!ws.authenticated) {
             // 如果未登录
@@ -191,7 +196,7 @@ wssOc.on('connection', (ws: SessionOc, socket: http.IncomingMessage, request: ht
                 let target = global.commonData.find(data => data.uuid === json.data.uuid)
                 if (target) {
                     Object.assign(target, json.data)
-                    wsWebBroadcast("data/common", target)
+                    wsWebBroadcast("data/common", [target])
                     logger.trace("commonData", target)
                 } else {
                     ws.send(JSON.stringify({ "type": "error", "data": "Data not found" }))
@@ -262,6 +267,7 @@ async function mcServerStatusUpdate() {
         global.mcServerStatus.online = false
         logger.error("mcServerStatus", error)
     }
+    wsWebBroadcast("data/mcServerStatus", global.mcServerStatus)
 }
 
 function wsWebBroadcast(type: string, data: any) {
