@@ -46,5 +46,28 @@ ws.onopen = () => {
     // 开始发送数据
     sendData();
 
+    ws.send(JSON.stringify({
+        type: "data/event", data: {
+            uuid: "00000000-0000-000000000000",
+            name: "test0",
+            description: "test0000",
+            priority: 0,
+            status: 0,
+            timestamp: 0
+        }
+    }))
+    setInterval(() => {
+        ws.send(JSON.stringify({
+            type: "data/event", data: {
+                uuid: crypto.randomUUID(),
+                name: "test0",
+                description: "test0000",
+                priority: 0,
+                status: 0,
+                timestamp: 0
+            }
+        }))
+    }, 10000)
+
 
 }

@@ -1,0 +1,24 @@
+<%- priority==0 && status==0? '<mdui-card variant="filled" class="card-compact" style="background-color: rgba(50, 50, 127, 0.5);">' : '' %>
+<%- priority==1 && status==0? '<mdui-card variant="filled" class="card-compact" style="background-color: rgba(127, 127, 50, 0.5);">' : '' %>
+<%- priority==2 && status==0? '<mdui-card variant="filled" class="card-compact" style="background-color: rgba(127, 50, 50, 0.5);">' : '' %>
+<%- status==1? '<mdui-card variant="filled" class="card-compact">' : '' %>
+
+
+<div style="display: flex;align-items: center;gap: 1rem;margin-top: -0.25rem;">
+  <%- priority==0? '<mdui-icon name="info"></mdui-icon>' : '' %>
+  <%- priority==1? '<mdui-icon name="warning"></mdui-icon>' : '' %>
+  <%- priority==2? '<mdui-icon name="wifi_tethering_error"></mdui-icon>' : '' %>
+  <div style="font-size: larger; "><b><%= title %></b></div>
+  <mdui-button-icon
+  <%- status==1? "disabled" : ""  %>
+  icon='<%- status==1? "check_box" : "check_box_outline_blank" %>'
+  style="margin-left: auto;"
+  onclick="
+    this.loading=true;
+    ws.send(JSON.stringify({ type: 'data/event',  data: { uuid: '<%= uuid %>', status:1 } }))
+  "></mdui-button-icon>
+</div>
+
+<div style="opacity: 0.5;"><%= description %></div>
+
+</mdui-card>

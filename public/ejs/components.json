@@ -44,15 +44,7 @@
                 "have_script": false
             },
             {
-                "id": "event-info",
-                "have_script": false
-            },
-            {
-                "id": "event-warning",
-                "have_script": false
-            },
-            {
-                "id": "event-critical",
+                "id": "event",
                 "have_script": false
             }
         ]

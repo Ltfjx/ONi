@@ -112,33 +112,40 @@ wssWeb.on('connection', (ws: SessionWeb, socket: http.IncomingMessage, request: 
                 ws.authenticated = true
                 ws.user = user
                 // 返回用户信息
-                ws.send(JSON.stringify({ type: "auth/response", success: true, data: { success: true, user: ws.user } }))
+                ws.send(JSON.stringify({ type: "auth/response", data: { user: ws.user } }))
 
                 // 发送历史日志
                 const logFile = fs.readFileSync('./logs/main.log', 'utf8')
                 const _ = logFile.split('\n').slice(-100).join('\n')
-                ws.send(JSON.stringify({ type: "event/log", success: true, data: _ }))
+                ws.send(JSON.stringify({ type: "event/log", data: _ }))
 
                 // 发送 overview 布局文件
-                ws.send(JSON.stringify({ type: "layout/overview", success: true, data: JSON.parse(fs.readFileSync('./data/layout/overview.json', 'utf8')) }))
+                ws.send(JSON.stringify({ type: "layout/overview", data: JSON.parse(fs.readFileSync('./data/layout/overview.json', 'utf8')) }))
 
                 // 发送 control 布局文件
-                ws.send(JSON.stringify({ type: "layout/control", success: true, data: JSON.parse(fs.readFileSync('./data/layout/control.json', 'utf8')) }))
-
-                // 发送 events 布局文件
-                ws.send(JSON.stringify({ type: "layout/events", success: true, data: JSON.parse(fs.readFileSync('./data/layout/events.json', 'utf8')) }))
+                ws.send(JSON.stringify({ type: "layout/control", data: JSON.parse(fs.readFileSync('./data/layout/control.json', 'utf8')) }))
 
                 // 发送 global 数据
-                ws.send(JSON.stringify({ type: "global/commonData", success: true, data: global.commonData }))
+                ws.send(JSON.stringify({ type: "global/commonData", data: global.commonData }))
 
                 // 发送 mcServerStatus 数据
-                ws.send(JSON.stringify({ type: "global/mcServerStatus", success: true, data: global.mcServerStatus }))
+                ws.send(JSON.stringify({ type: "global/mcServerStatus", data: global.mcServerStatus }))
 
+                // 发送 events 数据
+                ws.send(JSON.stringify({ type: "layout/events", data: global.getEventLayout() }))
 
             } else {
                 logger.warn(`Invalid token ${json.data.token} for user ${ws.sessionId.substring(0, 8)}`)
-                ws.send(JSON.stringify({ type: "auth/response", success: false, data: { user: undefined } }))
+                ws.send(JSON.stringify({ type: "auth/response", data: { user: undefined } }))
 
+            }
+        } else if (json.type == "data/event") {
+            // 事件数据
+            let target = global.eventList.find(event => event.uuid === json.data.uuid)
+            if (target) {
+                Object.assign(target, json.data)
+                wsWebBroadcast("layout/events", global.getEventLayout())
+                logger.trace("event", target)
             }
         } else {
             logger.warn(`Unknown message type ${json.type}`)
@@ -181,10 +188,10 @@ wssOc.on('connection', (ws: SessionOc, socket: http.IncomingMessage, request: ht
                 ws.authenticated = true
                 ws.bot = bot
                 // 返回用户信息
-                ws.send(JSON.stringify({ type: "auth/response", success: true, data: { success: true, bot: ws.bot } }))
+                ws.send(JSON.stringify({ type: "auth/response", data: { bot: ws.bot } }))
             } else {
                 logger.warn(`Invalid token ${json.data.token} for bot ${ws.sessionId.substring(0, 8)}`)
-                ws.send(JSON.stringify({ type: "auth/response", success: false, data: { bot: undefined } }))
+                ws.send(JSON.stringify({ type: "auth/response", data: { bot: undefined } }))
 
             }
         } else if (!ws.authenticated) {
@@ -201,6 +208,17 @@ wssOc.on('connection', (ws: SessionOc, socket: http.IncomingMessage, request: ht
                 } else {
                     ws.send(JSON.stringify({ "type": "error", "data": "Data not found" }))
                 }
+            } else if (json.type == "data/event") {
+                let target = global.eventList.find(event => event.uuid === json.data.uuid)
+                if (target) {
+                    Object.assign(target, json.data)
+                    logger.trace("event", target)
+                } else {
+                    global.eventList.push(json.data)
+                    logger.trace("event", json.data)
+                }
+                wsWebBroadcast("layout/events", global.getEventLayout())
+
             } else {
                 logger.warn(`Unknown message type ${json.type}`)
             }

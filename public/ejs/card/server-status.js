@@ -10,7 +10,7 @@ ws.addEventListener("message", async (event) => {
             element.querySelector(".card-server-status__status").innerHTML = online ? "运行正常" : "服务器离线"
             element.querySelector(".card-server-status__motd").innerHTML = motd
             element.querySelector(".card-server-status__online-players").innerHTML = `(${players.online}/${players.max})`
-            element.querySelector(".card-server-status__players-list").innerHTML = players.list ? players.list.join(", ") : "无"
+            element.querySelector(".card-server-status__players-list").innerHTML = players.list ? players.list.map(player => player.name).join(", ") : "无"
 
         })
     }
@@ -26,6 +26,6 @@ document.querySelectorAll(".card-server-status__card").forEach(element => {
     element.querySelector(".card-server-status__status").innerHTML = online ? "运行正常" : "服务器离线"
     element.querySelector(".card-server-status__motd").innerHTML = motd
     element.querySelector(".card-server-status__online-players").innerHTML = `(${players.online}/${players.max})`
-    element.querySelector(".card-server-status__players-list").innerHTML = players.list ? players.list.join(", ") : "无"
+    element.querySelector(".card-server-status__players-list").innerHTML = players.list ? players.list.map(player => player.name).join(", ") : "无"
 
 })

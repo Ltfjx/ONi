@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import log4js from 'log4js'
-import { User, Bot, CommonData, Config } from './interface'
+import { User, Bot, CommonData, Config, Event } from './interface'
 
 const logger = log4js.getLogger("global")
 
@@ -13,6 +13,34 @@ var global = {
 
     // 通用数据
     commonData: [] as CommonData[],
+
+    // 事件
+    eventList: [
+        // {
+        //     uuid: "00000000-0000-000000000000",
+        //     name: "test0",
+        //     description: "test0000",
+        //     priority: 0,
+        //     status: 0,
+        //     timestamp: 0
+        // },
+        // {
+        //     uuid: "00000000-0000-000000000001",
+        //     name: "test1",
+        //     description: "test0001",
+        //     priority: 1,
+        //     status: 0,
+        //     timestamp: 0
+        // },
+        // {
+        //     uuid: "00000000-0000-000000000002",
+        //     name: "test2",
+        //     description: "test0002",
+        //     priority: 2,
+        //     status: 0,
+        //     timestamp: 0
+        // }
+    ] as Event[],
 
     // MC 服务器状态
     mcServerStatus: {
@@ -37,6 +65,32 @@ var global = {
 
         this.mcServerStatus.ip = config.mc_server_ip
         logger.trace("mcServerStatus", this.mcServerStatus)
+    },
+
+    getEventLayout() {
+        let content: any = []
+
+        this.eventList.forEach(event => {
+            content.push({
+                type: "card",
+                id: "event",
+                config: {
+                    uuid: event.uuid,
+                    title: event.name,
+                    description: event.description,
+                    priority: event.priority,
+                    status: event.status,
+                    timestamp: event.timestamp
+                }
+            })
+        })
+
+        let _ = [{
+            type: "grid-m",
+            content: content
+        }]
+
+        return _
     }
 }
 
