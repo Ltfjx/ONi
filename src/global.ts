@@ -85,10 +85,23 @@ var global = {
             })
         })
 
-        let _ = [{
-            type: "grid-m",
-            content: content
-        }]
+        let _
+        if (content.length == 0) {
+            _ = [{
+                type: "grid-full",
+                content: [{
+                    type: "card",
+                    id: "no-event",
+                    config: {}
+                }]
+            }]
+        } else {
+            _ = [{
+                type: "grid-m",
+                content: content
+            }]
+        }
+
 
         return _
     }

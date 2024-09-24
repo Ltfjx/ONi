@@ -46,6 +46,10 @@
             {
                 "id": "event",
                 "have_script": false
+            },
+            {
+                "id": "no-event",
+                "have_script": false
             }
         ]
     }
