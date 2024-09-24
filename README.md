@@ -1,4 +1,4 @@
-# Oni
+# ONi
 A web panel designed for GTNH | Powered by OpenComputers
 
 ## WIP
