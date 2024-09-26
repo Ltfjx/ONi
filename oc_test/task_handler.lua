@@ -116,7 +116,8 @@ while true do
             event.timer(0, executeMap[v.task](ws, v.config))
         else
             -- math.huge为一个非常大的数，可以认为是无限循环
-            event.timer(v.interval, executeMap[v.task](ws, v.config), math.huge)
+            local timerHandle = event.timer(v.interval, executeMap[v.task](ws, v.config), math.huge)
+            table.insert(taskList, timerHandle)
         end
     end
 
