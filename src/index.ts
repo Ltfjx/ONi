@@ -131,8 +131,11 @@ wssWeb.on('connection', (ws: SessionWeb, socket: http.IncomingMessage, request: 
                 // 发送 mcServerStatus 数据
                 ws.send(JSON.stringify({ type: "global/mcServerStatus", data: global.mcServerStatus }))
 
-                // 发送 events 数据
+                // 发送 events 布局
                 ws.send(JSON.stringify({ type: "layout/events", data: global.getEventLayout() }))
+
+                // 发送 bot 布局
+                ws.send(JSON.stringify({ type: "layout/botList", data: global.getBotListLayout() }))
 
             } else {
                 logger.warn(`Invalid token ${json.data.token} for user ${ws.sessionId.substring(0, 8)}`)

@@ -76,8 +76,8 @@ ws.onmessage = (event) => {
     }
 }
 
-
-async function renderLayout(layout, element) {
+// 渲染布局
+async function renderLayout(layout, element, animation = true) {
     const componentList = await fetch("ejs/components.json").then(r => r.json())
     console.log(layout)
     var result = ""
@@ -102,5 +102,21 @@ async function renderLayout(layout, element) {
         console.log(url)
         const script = await fetch(url).then(r => r.text())
         eval(script)
+    })
+
+    if (animation) { generateLayoutAnimation(element) }
+}
+
+// 布局动画生成
+function generateLayoutAnimation(element) {
+    Array.from(element.children).forEach((block, indexBlock) => {
+        if (block.classList.contains("grid-full")) {
+            block.classList.add("animate__animated", "animate__fadeIn", "animate__faster")
+        } else {
+            Array.from(block.children).forEach((card, indexCard) => {
+                card.style.animationDelay = `${(indexCard) * 0.04}s`
+                card.classList.add("animate__animated", "animate__fadeInUp", "animate__faster")
+            })
+        }
     })
 }

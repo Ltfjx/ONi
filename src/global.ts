@@ -104,6 +104,36 @@ var global = {
 
 
         return _
+    },
+
+    getBotListLayout() {
+        let content: any = []
+
+        this.botList.forEach(bot => {
+            content.push({
+                type: "card",
+                id: "bot-overview",
+                config: {
+                    uuid: bot.uuid,
+                    name: bot.name,
+                }
+            })
+        })
+
+        content.push({
+            type: "card",
+            id: "create-bot",
+            config: {}
+        })
+
+
+        let _ = [{
+            type: "grid-m",
+            content: content
+        }]
+
+
+        return _
     }
 }
 
