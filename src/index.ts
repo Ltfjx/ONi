@@ -295,3 +295,11 @@ function wsWebBroadcast(type: string, data: any) {
         }
     })
 }
+
+function wsOcBroadcast(type: string, data: any) {
+    wssOc.clients.forEach(ws => {
+        if ((ws as SessionOc).authenticated) {
+            ws.send(JSON.stringify({ type: type, data: data }))
+        }
+    })
+}
