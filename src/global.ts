@@ -120,15 +120,40 @@ var global = {
             })
         })
 
-        content.push({
-            type: "card",
-            id: "create-bot",
-            config: {}
+        let _ = [{
+            type: "grid-m",
+            content: content
+        }]
+
+        _.push({
+            type: "raw",
+            content: [{
+                type: "card",
+                id: "create-bot",
+                config: {}
+            }]
         })
 
 
+        return _
+    },
+
+    getBotEditLayout() {
+        let content: any = []
+
+        this.botList.forEach(bot => {
+            content.push({
+                type: "tab",
+                id: "bot-edit",
+                config: {
+                    uuid: bot.uuid,
+                    name: bot.name,
+                }
+            })
+        })
+
         let _ = [{
-            type: "grid-m",
+            type: "raw",
             content: content
         }]
 

@@ -35,7 +35,7 @@
                 "type": "card",
                 "id": "indicator-circular",
                 "config": {
-                    "target": "b6cdf1a8-39fd-49f2-b36c-5c464631097d",
+                    "uuid": "b6cdf1a8-39fd-49f2-b36c-5c464631097d",
                     "unit": "K",
                     "bottom": "avgIO"
                 }
@@ -44,7 +44,7 @@
                 "type": "card",
                 "id": "indicator-circular",
                 "config": {
-                    "target": "oni-bot",
+                    "uuid": "oni-bot",
                     "unit": "",
                     "bottom": ""
                 }
@@ -53,7 +53,7 @@
                 "type": "card",
                 "id": "indicator-circular",
                 "config": {
-                    "target": "ae-load",
+                    "uuid": "ae-load",
                     "unit": "",
                     "bottom": ""
                 }
@@ -67,7 +67,7 @@
                 "type": "card",
                 "id": "indicator-bar",
                 "config": {
-                    "target": "b6cdf1a8-39fd-49f2-b36c-5c464631097d",
+                    "uuid": "b6cdf1a8-39fd-49f2-b36c-5c464631097d",
                     "unit": ""
                 }
             },
@@ -75,7 +75,7 @@
                 "type": "card",
                 "id": "indicator-bar",
                 "config": {
-                    "target": "b27f2cb4-9964-414c-9939-6c5ee58d4fb9",
+                    "uuid": "b27f2cb4-9964-414c-9939-6c5ee58d4fb9",
                     "unit": ""
                 }
             }

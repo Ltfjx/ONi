@@ -134,8 +134,11 @@ wssWeb.on('connection', (ws: SessionWeb, socket: http.IncomingMessage, request: 
                 // 发送 events 布局
                 ws.send(JSON.stringify({ type: "layout/events", data: global.getEventLayout() }))
 
-                // 发送 bot 布局
+                // 发送 bot list 布局
                 ws.send(JSON.stringify({ type: "layout/botList", data: global.getBotListLayout() }))
+
+                // 发送 bot 编辑布局
+                ws.send(JSON.stringify({ type: "layout/botEdit", data: global.getBotEditLayout() }))
 
             } else {
                 logger.warn(`Invalid token ${json.data.token} for user ${ws.sessionId.substring(0, 8)}`)

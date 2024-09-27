@@ -1,0 +1,92 @@
+<div class="bot__edit">
+  <div style="display: flex;align-items: center;margin-bottom: 0.5rem;gap:0.5rem;">
+    <mdui-button-icon icon="arrow_back" class="bot__edit-back"></mdui-button-icon>
+    <div style="font-weight: bold;font-size:large">编辑 - <%= name %></div>
+  </div>
+
+  <div class="grid-full">
+    <mdui-card class="card" variant="filled">
+      <div style="display: flex;align-items: center;gap: 0.5rem;">
+        <mdui-icon name="smart_toy--outlined" style="font-size: 2rem;"></mdui-icon>
+
+        <div>
+          <div style="font-size: larger;"><b><%= name %></b></div>
+        </div>
+
+        <mdui-divider vertical style="margin-left: 0.5rem;margin-right: 0.5rem;"></mdui-divider>
+
+        <div>
+          <div style="opacity: 1;">在线 - WebSocket</div>
+          <div style="opacity: 0.25;font-size: smaller;"><%= uuid %></div>
+        </div>
+
+      </div>
+
+      <div style="display: flex;flex-direction: column;gap: 0.25rem;margin-top: 0.25rem;">
+        <div style="display: flex;opacity: 0.75;gap: 0.5rem;">
+          <mdui-icon name="schedule"></mdui-icon>
+          <div>创建于 2021-08-15 12:00:00</div>
+        </div>
+
+        <div style="display: flex;opacity: 0.75;gap: 0.5rem;">
+          <mdui-icon name="commit"></mdui-icon>
+          <div>Oni Lib v1</div>
+        </div>
+      </div>
+
+    </mdui-card>
+  </div>
+
+  <div class="grid-l">
+    <mdui-card class="card" variant="filled">
+      <div class="card-title">
+        任务列表
+      </div>
+      <mdui-list style="margin-left: -0.5rem;margin-right: -0.5rem;">
+        <mdui-list-item>
+          <div>流体信息上传</div>
+          <div style="opacity: 0.25;font-size: smaller;">53353630-1da8-4b95-9359-ecdfdcd93acc</div>
+        </mdui-list-item>
+        <mdui-list-item>
+          <div>AE 信息上传</div>
+          <div style="opacity: 0.25;font-size: smaller;">52732958-29eb-462c-9456-56e223235cb6</div>
+        </mdui-list-item>
+      </mdui-list>
+      <mdui-chip style="margin-right: auto;">
+        编辑
+        <mdui-icon slot="icon" name="edit"></mdui-icon>
+      </mdui-chip>
+    </mdui-card>
+
+
+    <mdui-card class="card" variant="filled">
+      <div class="card-title">
+        操作
+      </div>
+      <div style="display: flex;gap: 0.5rem;flex-wrap: wrap;margin-top: 0.5rem;">
+
+        <mdui-chip>
+          重启 <%= name %>
+          <mdui-icon slot="icon" name="restart_alt"></mdui-icon>
+        </mdui-chip>
+
+        <mdui-chip>
+          更新 Oni Lib
+          <mdui-icon slot="icon" name="update"></mdui-icon>
+        </mdui-chip>
+      </div>
+
+
+      <mdui-divider style="margin-top: 0.5rem;margin-bottom: 0.5rem;"></mdui-divider>
+
+      <mdui-chip style="background-color: rgb(var(--mdui-color-error-container));margin-right: auto;">
+        删除 <%= name %>
+        <mdui-icon slot="icon" name="delete"></mdui-icon>
+      </mdui-chip>
+
+    </mdui-card>
+
+  </div>
+
+  <data hidden uuid="<%= uuid %>"></data>
+</div>

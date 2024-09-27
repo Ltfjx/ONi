@@ -3,14 +3,14 @@
     <mdui-icon name="smart_toy--outlined" style="font-size: 2rem;"></mdui-icon>
 
     <div>
-      <div style="font-size: larger;"><b>Kasen</b></div>
+      <div style="font-size: larger;"><b><%= name %></b></div>
     </div>
 
     <mdui-divider vertical style="margin-left: 0.5rem;margin-right: 0.5rem;"></mdui-divider>
 
     <div>
       <div style="opacity: 1;">在线 - WebSocket</div>
-      <div style="opacity: 0.25;font-size: smaller;">308f3581-1e64-4d10-953a-39d1103c9ddb</div>
+      <div style="opacity: 0.25;font-size: smaller;"><%= uuid %></div>
     </div>
 
   </div>
@@ -27,9 +27,10 @@
     </div>
   </div>
 
-  <mdui-chip style="margin-right: auto;">
+  <mdui-chip style="margin-right: auto;" class="bot__button-edit">
     编辑
     <mdui-icon slot="icon" name="edit"></mdui-icon>
   </mdui-chip>
 
+  <data hidden uuid="<%= uuid %>"></data>
 </mdui-card>

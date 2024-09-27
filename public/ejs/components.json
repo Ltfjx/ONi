@@ -53,11 +53,17 @@
             },
             {
                 "id": "bot-overview",
-                "have_script": false
+                "have_script": true
             },
             {
                 "id": "create-bot",
                 "have_script": false
+            }
+        ],
+        "tab": [
+            {
+                "id": "bot-edit",
+                "have_script": true
             }
         ]
     }
