@@ -4,7 +4,7 @@ ws.addEventListener("message", async (event) => {
     if (json.type == "data/common") {
         document.querySelectorAll(".card-indicator-bar__card").forEach(element => {
 
-            uuid = element.querySelector("data").getAttribute("target")
+            let uuid = element.querySelector("data").getAttribute("uuid")
 
             const target = json.data.find(item => item.uuid == uuid)
 
@@ -27,7 +27,7 @@ ws.addEventListener("message", async (event) => {
 // 初始化卡片
 document.querySelectorAll(".card-indicator-bar__card").forEach(element => {
 
-    uuid = element.querySelector("data").getAttribute("target")
+    let uuid = element.querySelector("data").getAttribute("uuid")
 
     let target = globalCommonData.find(item => item.uuid == uuid)
     if (target) {

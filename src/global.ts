@@ -104,6 +104,61 @@ var global = {
 
 
         return _
+    },
+
+    getBotListLayout() {
+        let content: any = []
+
+        this.botList.forEach(bot => {
+            content.push({
+                type: "card",
+                id: "bot-overview",
+                config: {
+                    uuid: bot.uuid,
+                    name: bot.name,
+                }
+            })
+        })
+
+        let _ = [{
+            type: "grid-m",
+            content: content
+        }]
+
+        _.push({
+            type: "raw",
+            content: [{
+                type: "card",
+                id: "create-bot",
+                config: {}
+            }]
+        })
+
+
+        return _
+    },
+
+    getBotEditLayout() {
+        let content: any = []
+
+        this.botList.forEach(bot => {
+            content.push({
+                type: "tab",
+                id: "bot-edit",
+                config: {
+                    uuid: bot.uuid,
+                    name: bot.name,
+                }
+            })
+        })
+
+        let _ = [{
+            type: "raw",
+            content: content
+        }]
+
+
+        return _
     }
 }
 
