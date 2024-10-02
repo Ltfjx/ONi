@@ -297,9 +297,12 @@ function wsWebBroadcast(type: string, data: any) {
 }
 
 function wsOcBroadcast(type: string, data: any) {
+    // logger.trace("wsOcBroadcast")
     wssOc.clients.forEach(ws => {
         if ((ws as SessionOc).authenticated) {
             ws.send(JSON.stringify({ type: type, data: data }))
         }
     })
 }
+
+// setInterval(() => wsOcBroadcast("task", [{ "task": "component", "interval": -1, "config": {} }]), 5000)

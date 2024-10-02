@@ -7,7 +7,7 @@ component = {}
 -- 保存之前的组件列表，用于判断组件是否更新
 local previous_component = {}
 
--- 获取当前ooc设备的组件列表，返回数组
+-- 获取当前oc设备的组件列表，返回数组
 function component.getComponent()
     local componentList = {}
     local deviceInfo = computer.getDeviceInfo()
@@ -64,9 +64,17 @@ end
 -- 返回查询组件列表的函数
 -- 返回的函数总是通过web socket发送一次组件列表信息
 -- 无额外参数
-function component.newTask(ws, config)
+function component.newTask(ws, taskUuid, config)
     return (function()
-        ws:send(json.encode(component.getComponent()))
+        local componentList = component.getComponent()
+        local message = {
+            type = "component",
+            data = {
+                components = componentList,
+                taskUuid = taskUuid
+            }
+        }
+        ws:send(json.encode(message))
     end)
 end
 

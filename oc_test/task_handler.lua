@@ -2,6 +2,9 @@ local webSocket = require("ws")
 local event = require("event")
 local json = require("dkjson")
 
+local component = require("oni/component")
+local redstone = require("oni/redstone")
+
 local address = "localhost"
 local port = 5600
 local path = "/ws/oc"
@@ -17,6 +20,7 @@ local ws = webSocket.new({
 -- 等待从服务器发送的web socket消息，会阻塞线程
 function await_message()
     while true do
+        os.sleep(0.5)
         local messageType, message, err = ws:readMessage()
         if err then return print('Websocket Error: ' .. err) end
         if messageType == webSocket.MESSAGE_TYPES.TEXT then
@@ -74,7 +78,8 @@ event.timer(5, updateComponent, math.huge)
 -- 第一个参数固定为web socket对象，用于返回信息或报错
 -- 第二个参数为该任务所需的参数(table)
 local executeMap = {
-    component = component.newTask
+    component = component.newTask,
+    redstone = redstone.newTask
 }
 
 -- 事件timer对象，用于终止定时任务
@@ -91,6 +96,7 @@ end
 print("start listening tasks")
 
 while true do
+    os.sleep(1)
     local message = await_message()
 
     local tasks = json.decode(message)
@@ -113,10 +119,10 @@ while true do
 
     for k, v in pairs(list) do
         if v.interval < 0 then
-            event.timer(0, executeMap[v.task](ws, v.config))
+            event.timer(0, executeMap[v.task](ws, v.taskUuid, v.config))
         else
             -- math.huge为一个非常大的数，可以认为是无限循环
-            local timerHandle = event.timer(v.interval, executeMap[v.task](ws, v.config), math.huge)
+            local timerHandle = event.timer(v.interval, executeMap[v.task](ws, v.taskUuid, v.config), math.huge)
             table.insert(taskList, timerHandle)
         end
     end
