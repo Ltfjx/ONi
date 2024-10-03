@@ -58,11 +58,27 @@
             {
                 "id": "create-bot",
                 "have_script": false
+            },
+            {
+                "id": "ae-overview",
+                "have_script": true
+            },
+            {
+                "id": "create-ae",
+                "have_script": false
             }
         ],
         "tab": [
             {
                 "id": "bot-edit",
+                "have_script": true
+            },
+            {
+                "id": "ae-view",
+                "have_script": true
+            },
+            {
+                "id": "ae-edit",
                 "have_script": true
             }
         ]

@@ -1,15 +1,15 @@
 <mdui-card class="card" variant="filled">
   <div style="display: flex;align-items: center;gap: 0.5rem;">
-    <mdui-icon name="smart_toy--outlined" style="font-size: 2rem;"></mdui-icon>
+    <mdui-icon name="grid_on--outlined" style="font-size: 2rem;"></mdui-icon>
 
     <div>
-      <div style="font-size: larger;"><b><%= name %></b></div>
+      <div style="font-size: larger;white-space: nowrap;"><b><%= name %></b></div>
     </div>
 
     <mdui-divider vertical style="margin-left: 0.5rem;margin-right: 0.5rem;"></mdui-divider>
 
     <div>
-      <div style="opacity: 1;">在线 - WebSocket</div>
+      <div style="opacity: 1;">数据更新 - 刚刚</div>
       <div style="opacity: 0.25;font-size: smaller;"><%= uuid %></div>
     </div>
 
@@ -22,12 +22,17 @@
     </div>
 
     <div style="display: flex;opacity: 0.75;gap: 0.5rem;">
-      <mdui-icon name="commit"></mdui-icon>
-      <div>Oni Lib v1</div>
+      <mdui-icon name="memory"></mdui-icon>
+      <div>16/16 核心空闲</div>
     </div>
   </div>
 
   <div style="display: flex;align-items: center;gap: 0.5rem;margin-top: 0.5rem;">
+    <mdui-chip class="bot__button-edit">
+      查看
+      <mdui-icon slot="icon" name="pageview"></mdui-icon>
+    </mdui-chip>
+
     <mdui-chip style="margin-right: auto;" class="bot__button-edit">
       编辑
       <mdui-icon slot="icon" name="edit"></mdui-icon>

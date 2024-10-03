@@ -140,6 +140,15 @@ wssWeb.on('connection', (ws: SessionWeb, socket: http.IncomingMessage, request: 
                 // 发送 bot 编辑布局
                 ws.send(JSON.stringify({ type: "layout/botEdit", data: global.getBotEditLayout() }))
 
+                // 发送 ae list 布局
+                ws.send(JSON.stringify({ type: "layout/aeList", data: global.getAeListLayout() }))
+
+                // 发送 ae 查看布局
+                ws.send(JSON.stringify({ type: "layout/aeView", data: global.getAeViewLayout() }))
+
+                // 发送 ae 编辑布局
+                ws.send(JSON.stringify({ type: "layout/aeEdit", data: global.getAeEditLayout() }))
+
             } else {
                 logger.warn(`Invalid token ${json.data.token} for user ${ws.sessionId.substring(0, 8)}`)
                 ws.send(JSON.stringify({ type: "auth/response", data: { user: undefined } }))

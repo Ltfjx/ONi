@@ -10,6 +10,11 @@ export interface Bot {
     token: string
 }
 
+export interface Ae {
+    uuid: string
+    name: string
+}
+
 export interface Config {
     log_level: string
     port: number
