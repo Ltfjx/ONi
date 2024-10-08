@@ -1,1 +1,188 @@
-view
+<div class="ae__view">
+  <div style="display: flex;align-items: center;margin-bottom: 0.5rem;gap:0.5rem;">
+    <mdui-button-icon icon="arrow_back" class="ae__view-back"></mdui-button-icon>
+    <div style="font-weight: bold;font-size:large">查看 - <%= name %></div>
+  </div>
+
+  <div class="grid-full">
+    <mdui-card class="card" variant="filled">
+      <div style="display: flex;align-items: center;gap: 0.5rem;">
+
+        <mdui-icon name="grid_on--outlined" style="font-size: 2rem;"></mdui-icon>
+
+        <div>
+          <div style="font-size: larger;white-space: nowrap;"><b><%= name %></b></div>
+        </div>
+
+        <mdui-divider vertical style="margin-left: 0.5rem;margin-right: 0.5rem;"></mdui-divider>
+
+        <div>
+          <div style="opacity: 1;">数据更新 - 刚刚</div>
+          <div style="opacity: 0.25;font-size: smaller;"><%= uuid %></div>
+        </div>
+
+      </div>
+
+      <div style="display: flex;flex-direction: column;gap: 0.25rem;margin-top: 0.25rem;">
+        <div style="display: flex;opacity: 0.75;gap: 0.5rem;">
+          <mdui-icon name="schedule"></mdui-icon>
+          <div>创建于 2021-08-15 12:00:00</div>
+        </div>
+
+        <div style="display: flex;opacity: 0.75;gap: 0.5rem;">
+          <mdui-icon name="memory"></mdui-icon>
+          <div>16/16 核心空闲</div>
+        </div>
+      </div>
+
+
+    </mdui-card>
+  </div>
+
+  <div class="grid-l">
+    <mdui-card class="card" variant="filled">
+      <div class="card-title">
+        CPU 列表
+      </div>
+      <mdui-list style="margin-left: -0.5rem;margin-right: -0.5rem;margin-bottom: -0.5rem;">
+        <mdui-list-item>
+          <div style="display: flex;align-items: center;margin-top: 0.25rem;">
+            <mdui-icon name="settings_suggest"></mdui-icon>
+            &nbsp;&nbsp;
+            <div>
+              <div>CPU 15 <span style="opacity: 0.7">- "ARROW RAIN"</span></div>
+              <div style="font-weight: normal;font-size: .8rem;opacity: 0.5">合成中 · 59 分钟</div>
+            </div>
+          </div>
+          <div style="margin-top: .5rem;margin-bottom: .5rem;"><b>Electric Motor (UHV)</b> - 278 / 400</div>
+
+          <div style="display: flex;align-items: center;margin-bottom: 0.25rem;">
+            <div style="opacity: 0.5;">69%&nbsp;&nbsp;</div>
+            <mdui-linear-progress value="69" max="100"></mdui-linear-progress>
+          </div>
+        </mdui-list-item>
+
+        <mdui-list-item>
+          <div style="display: flex;align-items: center;margin-top: 0.25rem;">
+            <mdui-icon name="settings_suggest"></mdui-icon>
+            &nbsp;&nbsp;
+            <div>
+              <div>CPU 15 <span style="opacity: 0.7">- "ARROW RAIN"</span></div>
+              <div style="font-weight: normal;font-size: .8rem;opacity: 0.5">合成中 · 59 分钟</div>
+            </div>
+          </div>
+          <div style="margin-top: .5rem;margin-bottom: .5rem;"><b>Electric Motor (UHV)</b> - 278 / 400</div>
+
+          <div style="display: flex;align-items: center;margin-bottom: 0.25rem;">
+            <div style="opacity: 0.5;">69%&nbsp;&nbsp;</div>
+            <mdui-linear-progress value="69" max="100"></mdui-linear-progress>
+          </div>
+        </mdui-list-item>
+        <mdui-list-item style="display: flex;margin-top: 0.5rem;" icon="keyboard_arrow_down" rounded>展开 CPU 列表
+        </mdui-list-item>
+      </mdui-list>
+    </mdui-card>
+
+
+    <mdui-card class="card" variant="filled">
+      <div class="card-title">
+        库存
+      </div>
+
+      <div style="display: flex;margin-top: 0.5rem;gap: 0.25rem;">
+        <mdui-chip selected elevated icon="category">物品</mdui-chip>
+        <mdui-chip elevated icon="water_drop">流体</mdui-chip>
+        <mdui-chip elevated icon="settings_suggest" onclick="document.getElementById('ae__view-order-dialog').open=true">可合成</mdui-chip>
+      </div>
+
+      <mdui-text-field style="margin-top: 0.25rem;" label="检索库存..."></mdui-text-field>
+
+      <mdui-card style="display: grid;padding: 0.5rem;margin-top: 0.25rem;grid-template-columns: repeat(auto-fill, minmax(3rem, 1fr));">
+        <div style="position: relative;">
+          <img src="./resources/itempanel/png/1_0.png" style="height: 3rem;"></img>
+          <div style="position: absolute;bottom: 0;right: 6px;text-align: right;">10k</div>
+        </div>
+        <div style="position: relative;">
+          <img src="./resources/itempanel/png/2_0.png" style="height: 3rem;"></img>
+          <div style="position: absolute;bottom: 0;right: 6px;text-align: right;">114G</div>
+        </div>
+        <div style="position: relative;">
+          <img src="./resources/itempanel/png/10621_88.png" style="height: 3rem;"></img>
+          <div style="position: absolute;bottom: 0;right: 6px;text-align: right;">1023</div>
+        </div>
+        <div style="position: relative;">
+          <img src="./resources/itempanel/png/10593_3.png" style="height: 3rem;"></img>
+          <div style="position: absolute;bottom: 0;right: 6px;text-align: right;">114K</div>
+        </div>
+        <div style="position: relative;">
+          <img src="./resources/itempanel/png/9777_3.png" style="height: 3rem;"></img>
+          <div style="position: absolute;bottom: 0;right: 6px;text-align: right;">10k</div>
+        </div>
+        <div style="position: relative;">
+          <img src="./resources/itempanel/png/9580_0.png" style="height: 3rem;"></img>
+          <div style="position: absolute;bottom: 0;right: 6px;text-align: right;">198</div>
+        </div>
+        <div style="position: relative;">
+          <img src="./resources/itempanel/png/9239_0.png" style="height: 3rem;"></img>
+          <div style="position: absolute;bottom: 0;right: 6px;text-align: right;">453</div>
+        </div>
+        <div style="position: relative;">
+          <img src="./resources/itempanel/png/8207_0.png" style="height: 3rem;"></img>
+          <div style="position: absolute;bottom: 0;right: 6px;text-align: right;">111</div>
+        </div>
+      </mdui-card>
+    </mdui-card>
+
+  </div>
+
+  <data hidden uuid="<%= uuid %>"></data>
+
+
+
+</div>
+
+<mdui-dialog id="ae__view-order-dialog" style="padding: 0 !important;">
+  <div class="card-title">
+    主网 - 请求订单
+  </div>
+
+  <mdui-card style="display: flex;align-items: center;gap: 0.5rem;margin-top: 1rem;padding: 1rem;">
+    <img src="./resources/itempanel/png/8207_0.png" style="height: 3rem;"></img>
+    <div>海珀珍</div>
+    <div style="margin-left: auto;opacity: 0.5;">库存数量：111</div>
+  </mdui-card>
+
+  <div style="display: flex;align-items: center;gap: 0.25rem;margin-top: 1rem;">
+    <div style="display: flex;align-items: center;flex-direction: column;">
+      <mdui-button-icon icon="remove"></mdui-button-icon>
+      <div style="font-size: x-small;margin-top: -0.8rem;opacity: 0.5;">-100</div>
+    </div>
+    <div style="display: flex;align-items: center;flex-direction: column;">
+      <mdui-button-icon icon="remove"></mdui-button-icon>
+      <div style="font-size: x-small;margin-top: -0.8rem;opacity: 0.5;">-10</div>
+    </div>
+    <div style="display: flex;align-items: center;flex-direction: column;">
+      <mdui-button-icon icon="remove"></mdui-button-icon>
+      <div style="font-size: x-small;margin-top: -0.8rem;opacity: 0.5;">-1</div>
+    </div>
+    <mdui-text-field style="margin-top: 0.25rem;" label="数量" value="1"></mdui-text-field>
+    <div style="display: flex;align-items: center;flex-direction: column;">
+      <mdui-button-icon icon="add"></mdui-button-icon>
+      <div style="font-size: x-small;margin-top: -0.8rem;opacity: 0.5;">+1</div>
+    </div>
+    <div style="display: flex;align-items: center;flex-direction: column;">
+      <mdui-button-icon icon="add"></mdui-button-icon>
+      <div style="font-size: x-small;margin-top: -0.8rem;opacity: 0.5;">+10</div>
+    </div>
+    <div style="display: flex;align-items: center;flex-direction: column;">
+      <mdui-button-icon icon="add"></mdui-button-icon>
+      <div style="font-size: x-small;margin-top: -0.8rem;opacity: 0.5;">+100</div>
+    </div>
+  </div>
+
+  <div style="display: flex;gap: 0.5rem;margin-top: 1rem;">
+    <mdui-button full-width variant="outlined" style="flex: 1" onclick="document.getElementById('ae__view-order-dialog').open=false">取消</mdui-button>
+    <mdui-button full-width style="flex: 4">下一步</mdui-button>
+  </div>
+
+</mdui-dialog>

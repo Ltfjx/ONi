@@ -83,3 +83,8 @@ mdui-card[variant="filled"] {
   display: flex;
   align-items: center;
 }
+
+/* 样式覆盖 */
+.animate__animated.animate__faster{
+  animation-duration: 0.4s;
+}

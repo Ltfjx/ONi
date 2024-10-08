@@ -114,7 +114,7 @@ function generateLayoutAnimation(element) {
             block.classList.add("animate__animated", "animate__fadeIn", "animate__faster")
         } else {
             Array.from(block.children).forEach((card, indexCard) => {
-                card.style.animationDelay = `${(indexCard) * 0.04}s`
+                card.style.animationDelay = `${(indexCard) * 0.03}s`
                 card.classList.add("animate__animated", "animate__fadeInUp", "animate__faster")
             })
         }
