@@ -30,28 +30,8 @@ end
 
 -- for less code, we ignore the color parameter
 function redstone.setOutput(ws, uuid, taskUuid, side, color, strength)
-    redstone.updateComponent()
     if strength == nil then
         strength = 255
-    end
-
-    if redstoneComponents[uuid] == nil then
-        oc_error.raise(ws,
-            "redstone I/O with uuid = " .. uuid .. " dosen't exist",
-            file,
-            "setOutput",
-            taskUuid
-        )
-        return
-    end
-
-    if strength > 255 or strength < 0 then
-        oc_error.raise(
-            "redstone strength: " .. tostring(strength) .. " out of bound (0 ~ 255)",
-            file,
-            "setOutput",
-            taskUuid
-        )
     end
 
     if side ~= nil then
@@ -64,28 +44,8 @@ function redstone.setOutput(ws, uuid, taskUuid, side, color, strength)
 end
 
 function redstone.setBundledOutput(ws, uuid, taskUuid, side, color, strength)
-    redstone.updateComponent()
     if strength == nil then
         strength = 255
-    end
-
-    if redstoneComponents[uuid] == nil then
-        oc_error.raise(ws,
-            "redstone I/O with uuid = " .. uuid .. " dosen't exist",
-            file,
-            "setBundledOutput",
-            taskUuid
-        )
-        return
-    end
-
-    if strength > 255 or strength < 0 then
-        oc_error.raise(
-            "redstone strength: " .. tostring(strength) .. " out of bound (0 ~ 255)",
-            file,
-            "setBundledOutput",
-            taskUuid
-        )
     end
 
     local sideMin, sideMax, colorMin, colorMax
@@ -114,18 +74,6 @@ function redstone.setBundledOutput(ws, uuid, taskUuid, side, color, strength)
 end
 
 function redstone.getInput(ws, uuid, taskUuid, side)
-    redstone.updateComponent()
-
-    if redstoneComponents[uuid] == nil then
-        oc_error.raise(ws,
-            "redstone I/O with uuid = " .. uuid .. " dosen't exist",
-            file,
-            "getInput",
-            taskUuid
-        )
-        return
-    end
-
     local message = {
         type = "data/redstone",
         data = {
@@ -154,18 +102,6 @@ function redstone.getInput(ws, uuid, taskUuid, side)
 end
 
 function redstone.getBundledInput(ws, uuid, taskUuid, side, color)
-    redstone.updateComponent()
-
-    if redstoneComponents[uuid] == nil then
-        oc_error.raise(ws,
-            "redstone I/O with uuid = " .. uuid .. " dosen't exist",
-            file,
-            "getBundledInput",
-            taskUuid
-        )
-        return
-    end
-
     local message = {
         type = "data/redstone",
         data = {
@@ -212,18 +148,6 @@ function redstone.getBundledInput(ws, uuid, taskUuid, side, color)
 end
 
 function redstone.getOutput(ws, uuid, taskUuid, side)
-    redstone.updateComponent()
-
-    if redstoneComponents[uuid] == nil then
-        oc_error.raise(ws,
-            "redstone I/O with uuid = " .. uuid .. " dosen't exist",
-            file,
-            "getOutput",
-            taskUuid
-        )
-        return
-    end
-
     local message = {
         type = "data/redstone",
         data = {
@@ -252,18 +176,6 @@ function redstone.getOutput(ws, uuid, taskUuid, side)
 end
 
 function redstone.getBundledOutput(ws, uuid, taskUuid, side, color)
-    redstone.updateComponent()
-
-    if redstoneComponents[uuid] == nil then
-        oc_error.raise(ws,
-            "redstone I/O with uuid = " .. uuid .. " dosen't exist",
-            file,
-            "getBundledOutput",
-            taskUuid
-        )
-        return
-    end
-
     local message = {
         type = "data/redstone",
         data = {
@@ -328,6 +240,30 @@ end
 -- TODO: wireless
 function redstone.newTask(ws, taskUuid, config)
     return (function()
+        redstone.updateComponent()
+
+        if redstoneComponents[config.uuid] == nil then
+            oc_error.raise(ws,
+                "redstone I/O with uuid = " .. config.uuid .. " dosen't exist",
+                file,
+                "setOutput",
+                taskUuid
+            )
+            return
+        end
+
+        if config.strength ~= nil and (config.strength < 0 or config.strength > 255) then
+            oc_error.raise(
+                "redstone strength: " .. tostring(config.strength) .. " out of bound (0 ~ 255)",
+                file,
+                "newTask",
+                taskUuid
+            )
+        end
+
+        if config.side ~= nil then
+            config.side = sides[config.side]
+        end
         redstone[config.mode](ws, config.uuid, taskUuid, config.side, config.color, config.strength)
     end)
 end
