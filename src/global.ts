@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import { loggerGlobal as logger } from './logger'
-import { User, Bot, Ae, CommonData, Config, Event, McServerStatus } from './interface'
+import { User, Bot, Ae, CommonData, Config, Event, McServerStatus, RedstoneControl } from './interface'
 import { wsOcBroadcast, wsWebBroadcast } from './websocket'
 
 var Global = {
@@ -158,6 +158,49 @@ var Global = {
     },
 
 
+    // 红石控制组件
+    redstoneControl: [] as RedstoneControl[],
+
+    getRedstoneControlLayout() {
+        let content: any = []
+
+        this.redstoneControl.forEach(rc => {
+            if (rc.type == "digital") {
+                content.push({
+                    type: "card",
+                    id: "control-redstone-digital",
+                    config: {
+                        uuid: rc.uuid,
+                        botUuid: rc.botUuid,
+                        name: rc.name,
+                        description: rc.description,
+                        value: rc.value,
+                        side: rc.side
+                    }
+                })
+            } else if (rc.type == "analog") {
+                content.push({
+                    type: "card",
+                    id: "control-redstone-analog",
+                    config: {
+                        uuid: rc.uuid,
+                        botUuid: rc.botUuid,
+                        name: rc.name,
+                        description: rc.description,
+                        value: rc.value,
+                        side: rc.side
+                    }
+                })
+            }
+        })
+
+        let _ = [{
+            type: "grid-m",
+            content: content
+        }]
+
+        return _
+    },
 
     // 事件
     eventList: [
@@ -265,6 +308,7 @@ var Global = {
         this.botList = JSON.parse(fs.readFileSync('./data/bot/bot.json', 'utf8'))
         this.aeList = JSON.parse(fs.readFileSync('./data/ae/ae.json', 'utf8'))
         this.commonData = JSON.parse(fs.readFileSync('./data/variable/common_data.json', 'utf8'))
+        this.redstoneControl = JSON.parse(fs.readFileSync('./data/variable/redstone_control.json', 'utf8'))
         logger.trace("userList", this.userList)
         logger.trace("botList", this.botList)
         logger.trace("aeList", this.aeList)

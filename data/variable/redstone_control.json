@@ -1,0 +1,11 @@
+[
+    {
+        "uuid": "c04bf028-aa88-45d1-9548-d489f28d9a65",
+        "botUuid": "308f3581-1e64-4d10-953a-39d1103c9ddb",
+        "name": "Redstone Control",
+        "description": "测试喵",
+        "type": "digital",
+        "value": 0,
+        "side": "north"
+    }
+]

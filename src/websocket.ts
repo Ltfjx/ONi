@@ -62,7 +62,7 @@ var Websocket = {
                         ws.send(JSON.stringify({ type: "layout/overview", data: JSON.parse(fs.readFileSync('./data/layout/overview.json', 'utf8')) }))
 
                         // 发送 control 布局文件
-                        ws.send(JSON.stringify({ type: "layout/control", data: JSON.parse(fs.readFileSync('./data/layout/control.json', 'utf8')) }))
+                        ws.send(JSON.stringify({ type: "layout/control", data: Global.getRedstoneControlLayout() }))
 
                         // 发送 global 数据
                         ws.send(JSON.stringify({ type: "global/commonData", data: Global.commonData }))
@@ -104,6 +104,21 @@ var Websocket = {
                         } else {
                             logger.warn(`Trying to update event ${json.data.uuid} but not found`)
                         }
+                    }
+                } else if (json.type == "oc/task") {
+                    // 转发任务到 oc
+                    let ok = false
+                    wssOc.clients.forEach(ws => {
+                        if ((ws as SessionOc).authenticated && (ws as SessionOc).bot?.uuid == json.target) {
+                            ws.send(JSON.stringify({
+                                type: "task",
+                                data: json.data
+                            }))
+                            ok = true
+                        }
+                    })
+                    if (!ok) {
+                        logger.warn(`Trying to send task to oc but bot ${json.target} not found or offline`)
                     }
                 } else {
                     logger.warn(`Unknown message type ${json.type}`)
@@ -173,8 +188,8 @@ var Websocket = {
                         } else {
                             Global.addEvent(json.data)
                         }
-
-
+                    } else if (json.type == "component") {
+                        console.log(json.data)
                     } else {
                         logger.warn(`Unknown message type ${json.type}`)
                     }

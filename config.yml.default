@@ -8,3 +8,6 @@ port: 5600
 
 ## MC 服务器地址
 mc_server_ip: 127.0.0.1:25565
+
+## MC 服务器状态更新间隔 [ 秒 ]
+mc_server_status_update_interval: 10

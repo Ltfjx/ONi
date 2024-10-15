@@ -5,7 +5,7 @@ import { loggerTask as logger } from "../logger"
 var mcServerStatus = {
     init(config: Config) {
         // 定时更新 MC 服务器状态
-        setInterval(mcServerStatusUpdate, 60000)
+        setInterval(mcServerStatusUpdate, config.mc_server_status_update_interval * 1000)
         mcServerStatusUpdate()
 
         async function mcServerStatusUpdate() {

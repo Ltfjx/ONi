@@ -19,6 +19,7 @@ export interface Config {
     log_level: string
     port: number
     mc_server_ip: string
+    mc_server_status_update_interval: number
 }
 
 export interface CommonData {
@@ -31,6 +32,17 @@ export interface CommonData {
 
     value?: number
     avgIO?: number
+}
+
+export interface RedstoneControl {
+    uuid: string
+    botUuid: string
+    name: string
+    description?: string
+
+    type: "digital" | "analog"
+    value: number
+    side: "up" | "down" | "north" | "south" | "west" | "east"
 }
 
 export interface Event {
