@@ -1,4 +1,5 @@
 local component = require("oni/component")
+local ocComponent = require("component")
 local oc_error = require("oni/oc_error")
 local sides = require("sides")
 local json = require("dkjson")
@@ -12,9 +13,9 @@ local redstoneComponents = {}
 function redstone.isRedstoneEnabled()
     local enabled = false
 
-    for address, name in component.list("redstone", false) do
+    for address, name in ocComponent.list("redstone", false) do
         enabled = true
-        table.insert(redstoneComponents, component.proxy(address))
+        redstoneComponents[address] = ocComponent.proxy(address)
     end
 
     return enabled
@@ -22,8 +23,8 @@ end
 
 function redstone.updateComponent()
     redstoneComponents = {}
-    for address, name in component.list("redstone", false) do
-        table.insert(redstoneComponents, component.proxy(address))
+    for address, name in ocComponent.list("redstone", false) do
+        redstoneComponents[address] = ocComponent.proxy(address)
     end
 end
 
@@ -308,14 +309,14 @@ function redstone.getBundledOutput(ws, uuid, taskUuid, side, color)
     ws:send(json.encode(message))
 end
 
--- 返回与config内容对应的处理任务的函数
+-- 返回与 config 内容对应的处理任务的函数
 -- config 中 mode 参数可以为："setOutput", "getOutput", "getInput", 以及它们的Bundled版本
 -- side 参数可以为："up", "down", "north", "south", "east", "west"
 -- 当 side 参数缺省时，会获取/设置所有面的红石信号
 -- 只有调用 Bundled 版本的函数时 color 参数才有效
 -- color 参数可以为 16 种颜色，具体颜色请参考游戏或 OC 文档（使用0 ~ 15指定颜色）
 -- 当 color 参数缺省时，会获取/设置所有颜色的红石信号
--- 只有使用 "setOutput" 以及 "setBundledOutput" 时 strenth 参数才有效
+-- 只有使用 "setOutput" 以及 "setBundledOutput" 时 strength 参数才有效
 -- 使用 "setOutput" 和 "setBundledOutput" 时，strength 参数取值范围为 0 ~ 255
 -- 若缺省 strength 参数，则默认值为 255
 -- 任务执行结果：
