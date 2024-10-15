@@ -37,11 +37,11 @@
             },
             {
                 "id": "control-redstone-analog",
-                "have_script": false
+                "have_script": true
             },
             {
                 "id": "control-redstone-digital",
-                "have_script": false
+                "have_script": true
             },
             {
                 "id": "event",
