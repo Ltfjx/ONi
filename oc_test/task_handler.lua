@@ -20,13 +20,13 @@ local ws = webSocket.new({
 -- 等待从服务器发送的web socket消息，会阻塞线程
 function await_message()
     while true do
-        os.sleep(0.5)
         local messageType, message, err = ws:readMessage()
         if err then return print('Websocket Error: ' .. err) end
         if messageType == webSocket.MESSAGE_TYPES.TEXT then
             print('Message Received: ' .. message)
             return message
         end
+        os.sleep(0.2)
     end
 end
 
@@ -96,7 +96,7 @@ end
 print("start listening tasks")
 
 while true do
-    os.sleep(1)
+    os.sleep(0.2)
     local message = await_message()
 
     local tasks = json.decode(message)

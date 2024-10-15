@@ -222,7 +222,7 @@ function redstone.getBundledOutput(ws, uuid, taskUuid, side, color)
 end
 
 -- 返回与 config 内容对应的处理任务的函数
--- config 中 mode 参数可以为："setOutput", "getOutput", "getInput", 以及它们的Bundled版本
+-- config 中 mode 参数可以为："getComponent", "setOutput", "getOutput", "getInput", 以及与 IO 相关函数的Bundled版本
 -- side 参数可以为："up", "down", "north", "south", "east", "west"
 -- 当 side 参数缺省时，会获取/设置所有面的红石信号
 -- 只有调用 Bundled 版本的函数时 color 参数才有效
@@ -232,6 +232,7 @@ end
 -- 使用 "setOutput" 和 "setBundledOutput" 时，strength 参数取值范围为 0 ~ 255
 -- 若缺省 strength 参数，则默认值为 255
 -- 任务执行结果：
+-- mode 为 getComponent 时返回信息包含数组 components, 即当前 OC 中所有红石 IO 端口的 uuid
 -- 以 set 开头的函数除非报错，否则不会返回任何信息
 -- 以 get 开头的函数返回信息包含布尔值 "allSides" 和 "allColor"， 表示是否缺省了对应参数（非 Bundled 版本 "allColor" 总是为 false）
 -- 数据包含在 "data" 中
@@ -239,6 +240,26 @@ end
 -- 当 Bundled 版本缺省 color 时，返回值中的数值会被更换为包含 16 个元素的数组
 -- TODO: wireless
 function redstone.newTask(ws, taskUuid, config)
+    if config.mode == "getComponent" then
+        return (function()
+            updateComponent()
+
+            local message = {
+                type = "data/redstone",
+                data = {
+                    taskUuid = taskUuid,
+                    components = {}
+                }
+            }
+
+            for k, v in pairs(redstoneComponents) do
+                message.data.components[#message.data.components + 1] = k
+            end
+
+            ws:send(json.encode(message))
+        end)
+    end
+
     return (function()
         redstone.updateComponent()
 
@@ -246,7 +267,7 @@ function redstone.newTask(ws, taskUuid, config)
             oc_error.raise(ws,
                 "redstone I/O with uuid = " .. config.uuid .. " dosen't exist",
                 file,
-                "setOutput",
+                "newTask",
                 taskUuid
             )
             return
