@@ -11,11 +11,11 @@ var mcServerStatus = {
         async function mcServerStatusUpdate() {
             try {
                 const mc = await import('minecraftstatuspinger').then(mc => mc.default)
-                const result = await mc.lookup({ host: config.mc_server_ip })
+                const result = await mc.lookup({ host: Global.mcServerStatus.status.ip })
                 const data = result.status
 
                 var status: McServerStatus = {
-                    ip: config.mc_server_ip,
+                    ip: Global.mcServerStatus.status.ip,
                     online: data == null ? false : true,
                     motd: data == null ? "" : data.description,
                     players: data == null ? {
@@ -25,13 +25,13 @@ var mcServerStatus = {
                     }
                 }
 
-                Global.setMcServerStatus(status)
+                Global.mcServerStatus.set(status)
                 logger.trace("mcServerStatus", Global.mcServerStatus)
 
             } catch (error) {
 
                 var status: McServerStatus = {
-                    ip: config.mc_server_ip,
+                    ip: Global.mcServerStatus.status.ip,
                     online: false,
                     motd: "",
                     players: {
@@ -39,7 +39,7 @@ var mcServerStatus = {
                     }
                 }
 
-                Global.setMcServerStatus(status)
+                Global.mcServerStatus.set(status)
                 logger.error("mcServerStatus", error)
 
             }

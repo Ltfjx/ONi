@@ -7,5 +7,14 @@
         "type": "digital",
         "value": 0,
         "side": "north"
+    },
+    {
+        "uuid": "36121cc2-d256-4bb8-b153-a13186322b18",
+        "botUuid": "308f3581-1e64-4d10-953a-39d1103c9ddb",
+        "name": "Analog Redstone Control",
+        "description": "我也是测试喵",
+        "type": "analog",
+        "value": 0,
+        "side": "north"
     }
 ]

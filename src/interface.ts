@@ -8,6 +8,12 @@ export interface Bot {
     uuid: string
     name: string
     token: string
+
+    components: [{
+        description: string
+        class: string
+        uuid: string
+    }]
 }
 
 export interface Ae {
@@ -15,14 +21,7 @@ export interface Ae {
     name: string
 }
 
-export interface Config {
-    log_level: string
-    port: number
-    mc_server_ip: string
-    mc_server_status_update_interval: number
-}
-
-export interface CommonData {
+export interface Data {
     uuid: string
     name: string
     description?: string
@@ -34,7 +33,7 @@ export interface CommonData {
     avgIO?: number
 }
 
-export interface RedstoneControl {
+export interface Redstone {
     uuid: string
     botUuid: string
     name: string
@@ -66,4 +65,11 @@ export interface McServerStatus {
         online: number
         list: string[]
     }
+}
+
+export interface Config {
+    log_level: string
+    port: number
+    mc_server_ip: string
+    mc_server_status_update_interval: number
 }

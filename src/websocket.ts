@@ -1,7 +1,7 @@
 import { WebSocket, WebSocketServer } from "ws"
 import http from "http"
 import fs from "fs"
-import { User, Bot, CommonData } from "./interface"
+import { User, Bot, Data } from "./interface"
 import { loggerWebsocket as logger } from "./logger"
 import Global from "./global"
 import { Config } from "log4js"
@@ -46,7 +46,7 @@ var Websocket = {
 
                 if (json.type == "auth/request") {
                     // 登录请求
-                    const user = Global.userList.find(user => user.token === json.data.token)
+                    const user = Global.user.list.find(user => user.token === json.data.token)
                     if (user) {
                         ws.authenticated = true
                         ws.user = user
@@ -62,31 +62,34 @@ var Websocket = {
                         ws.send(JSON.stringify({ type: "layout/overview", data: JSON.parse(fs.readFileSync('./data/layout/overview.json', 'utf8')) }))
 
                         // 发送 control 布局文件
-                        ws.send(JSON.stringify({ type: "layout/control", data: Global.getRedstoneControlLayout() }))
+                        ws.send(JSON.stringify({ type: "layout/control", data: Global.redstone.getLayout() }))
 
-                        // 发送 global 数据
-                        ws.send(JSON.stringify({ type: "global/commonData", data: Global.commonData }))
+                        // 发送 data 数据
+                        ws.send(JSON.stringify({ type: "global/data", data: Global.data.list }))
 
                         // 发送 mcServerStatus 数据
-                        ws.send(JSON.stringify({ type: "global/mcServerStatus", data: Global.mcServerStatus }))
+                        ws.send(JSON.stringify({ type: "global/mcServerStatus", data: Global.mcServerStatus.status }))
 
                         // 发送 events 布局
-                        ws.send(JSON.stringify({ type: "layout/events", data: Global.getEventLayout() }))
+                        ws.send(JSON.stringify({ type: "layout/events", data: Global.event.getLayout() }))
+
+                        // 发送 bot 数据
+                        ws.send(JSON.stringify({ type: "global/bot", data: Global.bot.list }))
 
                         // 发送 bot list 布局
-                        ws.send(JSON.stringify({ type: "layout/botList", data: Global.getBotListLayout() }))
+                        ws.send(JSON.stringify({ type: "layout/botList", data: Global.bot.getListLayout() }))
 
                         // 发送 bot 编辑布局
-                        ws.send(JSON.stringify({ type: "layout/botEdit", data: Global.getBotEditLayout() }))
+                        ws.send(JSON.stringify({ type: "layout/botEdit", data: Global.bot.getEditLayout() }))
 
                         // 发送 ae list 布局
-                        ws.send(JSON.stringify({ type: "layout/aeList", data: Global.getAeListLayout() }))
+                        ws.send(JSON.stringify({ type: "layout/aeList", data: Global.ae.getListLayout() }))
 
                         // 发送 ae 查看布局
-                        ws.send(JSON.stringify({ type: "layout/aeView", data: Global.getAeViewLayout() }))
+                        ws.send(JSON.stringify({ type: "layout/aeView", data: Global.ae.getViewLayout() }))
 
                         // 发送 ae 编辑布局
-                        ws.send(JSON.stringify({ type: "layout/aeEdit", data: Global.getAeEditLayout() }))
+                        ws.send(JSON.stringify({ type: "layout/aeEdit", data: Global.ae.getEditLayout() }))
 
                     } else {
                         logger.warn(`Invalid token ${json.data.token} for user ${ws.sessionId.substring(0, 8)}`)
@@ -95,12 +98,12 @@ var Websocket = {
                     }
                 } else if (json.type == "data/event") {
                     // 事件数据
-                    let target = Global.eventList.find(event => event.uuid === json.data.uuid)
+                    let target = Global.event.list.find(event => event.uuid === json.data.uuid)
                     if (target) {
-                        let target = Global.eventList.find(event => event.uuid === json.data.uuid)
+                        let target = Global.event.list.find(event => event.uuid === json.data.uuid)
                         if (target) {
                             const event = Object.assign({}, target, json.data)
-                            Global.setEvent(event)
+                            Global.event.set(event)
                         } else {
                             logger.warn(`Trying to update event ${json.data.uuid} but not found`)
                         }
@@ -156,7 +159,7 @@ var Websocket = {
 
                 if (json.type == "auth/request") {
                     // 登录请求
-                    const bot = Global.botList.find(bot => bot.token === json.data.token)
+                    const bot = Global.bot.list.find(bot => bot.token === json.data.token)
                     if (bot) {
                         ws.authenticated = true
                         ws.bot = bot
@@ -173,23 +176,29 @@ var Websocket = {
                 } else {
                     // 如果已登录，处理数据
                     if (json.type == "data/common") {
-                        let target = Global.commonData.find(data => data.uuid === json.data.uuid)
+                        let target = Global.data.list.find(data => data.uuid === json.data.uuid)
                         if (target) {
-                            const data: CommonData = Object.assign({}, target, json.data)
-                            Global.setCommonData(data)
+                            const data: Data = Object.assign({}, target, json.data)
+                            Global.data.set(data)
                         } else {
                             ws.send(JSON.stringify({ "type": "error", "data": "Data not found" }))
                         }
                     } else if (json.type == "data/event") {
-                        let target = Global.eventList.find(event => event.uuid === json.data.uuid)
+                        let target = Global.event.list.find(event => event.uuid === json.data.uuid)
                         if (target) {
                             const event = Object.assign({}, target, json.data)
-                            Global.setEvent(event)
+                            Global.event.set(event)
                         } else {
-                            Global.addEvent(json.data)
+                            Global.event.add(json.data)
                         }
                     } else if (json.type == "component") {
-                        console.log(json.data)
+                        let target = Global.bot.list.find(bot => bot.uuid === ws.bot?.uuid)
+                        if (target) {
+                            const bot = Object.assign({}, target, json.data)
+                            Global.bot.set(bot)
+                        }
+
+
                     } else {
                         logger.warn(`Unknown message type ${json.type}`)
                     }
