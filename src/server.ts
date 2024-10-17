@@ -25,7 +25,7 @@ var Server = {
         })
 
         app.get('/', (req, res) => {
-            ejs.renderFile('views/index/index.ejs', {}, (err, str) => {
+            ejs.renderFile('views/index/index.ejs', { debugMode: config.debug }, (err, str) => {
                 if (err) {
                     logger.error(err)
                     res.sendStatus(500)
@@ -45,3 +45,4 @@ var Server = {
 }
 
 export default Server
+

@@ -1,7 +1,22 @@
 <div id="debug__content" class="panel-content" hidden>
   <div class="grid-full">
+
+    <mdui-card variant="filled" class="card">
+      <div class="card-title" style="margin-bottom: 0.5rem;">Websocket 发送 · 服务端 → OC</div>
+      <mdui-text-field autosize min-rows="3" clearable label="要发送的数据..." id="debug__ws-input"></mdui-text-field>
+      <mdui-select label="选择目标 BOT..." id="debug__ws-select-bot">
+        <mdui-menu-item value="item-1">Item 1</mdui-menu-item>
+        <mdui-menu-item value="item-2">Item 2</mdui-menu-item>
+      </mdui-select>
+      <mdui-chip elevated style="margin-right: auto;margin-top: 0.5rem;" id="debug__ws-button-send">
+        发送
+        <mdui-icon slot="icon" name="send"></mdui-icon>
+      </mdui-chip>
+    </mdui-card>
+
     <mdui-card variant="filled" class="card">
       <code id="debug__log" class="language-css" style="white-space: pre-wrap;font-family: 'Consolas', monospace;"></code>
     </mdui-card>
+
   </div>
 </div>

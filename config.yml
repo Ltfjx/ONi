@@ -11,3 +11,6 @@ mc_server_ip: gtnh.akyuu.cn
 
 ## MC 服务器状态更新间隔 [ 秒 ]
 mc_server_status_update_interval: 60
+
+## 调试模式
+debug: true

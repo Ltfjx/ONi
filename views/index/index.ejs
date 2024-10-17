@@ -34,7 +34,7 @@
 <body style="margin: 0;">
 
   <div>
-    <%- include("navrail.ejs") %>
+    <%- include("navrail.ejs",{debugMode: debugMode}) %>
   </div>
 
   <div style="overflow: hidden;position: relative; ">
@@ -49,7 +49,7 @@
       <%- include("content/ae.ejs") %>
       <%- include("content/bot.ejs") %>
       <%- include("content/stats.ejs") %>
-      <%- include("content/debug.ejs") %>
+      <%- debugMode? include("content/debug.ejs"):"" %>
 
       <script>
         !(function() {
@@ -135,7 +135,7 @@
   <script src="js/content/control.js"></script>
   <script src="js/content/ae.js"></script>
   <script src="js/content/bot.js"></script>
-  <script src="js/content/debug.js"></script>
+  <%- debugMode? '<script src="js/content/debug.js"></script>' : '' %>
 
 
   <script>

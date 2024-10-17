@@ -72,4 +72,5 @@ export interface Config {
     port: number
     mc_server_ip: string
     mc_server_status_update_interval: number
+    debug: boolean
 }

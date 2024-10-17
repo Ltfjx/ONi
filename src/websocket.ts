@@ -109,7 +109,7 @@ var Websocket = {
                         }
                     }
                 } else if (json.type == "oc/task") {
-                    // 转发任务到 oc
+                    // 转发 task 到 oc
                     let ok = false
                     wssOc.clients.forEach(ws => {
                         if ((ws as SessionOc).authenticated && (ws as SessionOc).bot?.uuid == json.target) {
@@ -122,6 +122,18 @@ var Websocket = {
                     })
                     if (!ok) {
                         logger.warn(`Trying to send task to oc but bot ${json.target} not found or offline`)
+                    }
+                } else if (json.type == "oc/forward") {
+                    // debug 转发
+                    let ok = false
+                    wssOc.clients.forEach(ws => {
+                        if ((ws as SessionOc).authenticated && (ws as SessionOc).bot?.uuid == json.target) {
+                            ws.send(JSON.stringify(json.data))
+                            ok = true
+                        }
+                    })
+                    if (!ok) {
+                        logger.warn(`Trying to forward debug message to oc but bot ${json.target} not found or offline`)
                     }
                 } else {
                     logger.warn(`Unknown message type ${json.type}`)

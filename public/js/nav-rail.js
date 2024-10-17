@@ -1,8 +1,17 @@
 // 导轨
 !(function () {
-    const railItems = ["overview", "events", "control", "ae", "bot", "stats", "debug"]
-    const railItemsDisplay = ["总览", "事件", "控制", "AE", "BOT", "统计", "调试"]
-    const railItemsIcon = ["home--outlined", "crisis_alert", "tune--outlined", "grid_on--outlined", "adb--outlined", "insert_chart--outlined", "terminal--outlined"]
+
+    let debugMode = document.getElementById("navi-drawer").querySelector("data").getAttribute("debugMode")
+
+    let railItems = ["overview", "events", "control", "ae", "bot", "stats"]
+    let railItemsDisplay = ["总览", "事件", "控制", "AE", "BOT", "统计"]
+    let railItemsIcon = ["home--outlined", "crisis_alert", "tune--outlined", "grid_on--outlined", "adb--outlined", "insert_chart--outlined"]
+
+    if(debugMode == "true"){
+        railItems.push("debug")
+        railItemsDisplay.push("调试")
+        railItemsIcon.push("terminal--outlined")
+    }
 
     const rail = document.getElementById("navi-rail")
     railItems.forEach((item, i) => {
@@ -27,12 +36,12 @@
             toggleLeftNavi(false)
             document.getElementById("navi-label").innerText = railItemsDisplay[railItems.indexOf(item)]
 
-            if (item == "debug") {
-                // 滚动到底部
-                document.getElementById("main-content-area").scrollTo({ top: document.getElementById("main-content-area").scrollHeight })
-            } else {
+            // if (item == "debug") {
+            //     // 滚动到底部
+            //     document.getElementById("main-content-area").scrollTo({ top: document.getElementById("main-content-area").scrollHeight })
+            // } else {
                 document.getElementById("main-content-area").scrollTo({ top: 0 })
-            }
+            // }
         })
     })
     document.getElementById(`rail-${railItems[0]}`).click()
