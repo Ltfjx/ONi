@@ -4,6 +4,7 @@ local json = require("dkjson")
 
 local component = require("oni/component")
 local redstone = require("oni/redstone")
+local ae = require("oni/ae")
 
 local address = "localhost"
 local port = 5600
@@ -62,13 +63,14 @@ function updateComponent()
                 components = componentList
             }
         }
-        print(json.encode(message))
+        -- print(json.encode(message))
         ws:send(json.encode(message))
     end
 end
 
 --login response
-print(await_message())
+-- print(await_message())
+await_message()
 
 -- 定时检测并上传oc组件的更新信息
 event.timer(5, updateComponent, math.huge)
@@ -79,7 +81,8 @@ event.timer(5, updateComponent, math.huge)
 -- 第二个参数为该任务所需的参数(table)
 local executeMap = {
     component = component.newTask,
-    redstone = redstone.newTask
+    redstone = redstone.newTask,
+    ae = ae.newTask
 }
 
 -- 事件timer对象，用于终止定时任务
