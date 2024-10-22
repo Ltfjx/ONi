@@ -66,12 +66,14 @@ function ae.getCpus(ws, taskUuid, uuid)
             storage = v.storage,
             busy = v.busy,
             active = v.cpu.isActive(),
-            finalOutput = {
+        }
+        if output ~= nil then
+            info.finalOutput = {
                 name = output.name,
                 damage = output.damage,
                 count = output.size
             }
-        }
+        end
 
         message.data.data[#message.data.data + 1] = info
     end
