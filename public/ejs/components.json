@@ -62,10 +62,6 @@
             {
                 "id": "ae-overview",
                 "have_script": true
-            },
-            {
-                "id": "create-ae",
-                "have_script": false
             }
         ],
         "tab": [

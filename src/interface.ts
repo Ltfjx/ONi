@@ -19,6 +19,13 @@ export interface Bot {
 export interface Ae {
     uuid: string
     name: string
+    cpus: [{
+        name: string
+        busy: boolean
+        size: number
+        
+
+    }]
 }
 
 export interface Data {

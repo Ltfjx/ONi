@@ -5,7 +5,7 @@
   </div>
 
   <div class="grid-full">
-    <mdui-card class="card" variant="filled">
+    <mdui-card class="card ae__view-cpus" variant="filled">
       <div style="display: flex;align-items: center;gap: 0.5rem;">
 
         <mdui-icon name="grid_on--outlined" style="font-size: 2rem;"></mdui-icon>
@@ -90,9 +90,9 @@
       </div>
 
       <div style="display: flex;margin-top: 0.5rem;gap: 0.25rem;">
-        <mdui-chip selected elevated icon="category">物品</mdui-chip>
-        <mdui-chip elevated icon="water_drop">流体</mdui-chip>
-        <mdui-chip elevated icon="settings_suggest" onclick="document.getElementById('ae__view-order-dialog').open=true">可合成</mdui-chip>
+        <mdui-chip selected elevated icon="category" selected-icon="category">物品</mdui-chip>
+        <mdui-chip elevated icon="water_drop" selected-icon="water_drop">流体</mdui-chip>
+        <mdui-chip elevated icon="settings_suggest" selected-icon="settings_suggest" onclick="document.getElementById('ae__view-order-dialog').open=true">可合成</mdui-chip>
       </div>
 
       <mdui-text-field style="margin-top: 0.25rem;" label="检索库存..."></mdui-text-field>
@@ -136,8 +136,6 @@
   </div>
 
   <data hidden uuid="<%= uuid %>"></data>
-
-
 
 </div>
 

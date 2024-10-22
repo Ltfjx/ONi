@@ -25,15 +25,6 @@ var ae = {
             content: content
         }]
 
-        _.push({
-            type: "raw",
-            content: [{
-                type: "card",
-                id: "create-ae",
-                config: {}
-            }]
-        })
-
         return _
     },
 
