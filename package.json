@@ -14,7 +14,7 @@
   "devDependencies": {
     "@types/ejs": "^3.1.5",
     "@types/express": "^5.0.0",
-    "@types/node": "^22.8.1",
+    "@types/node": "^22.8.7",
     "@types/ws": "^8.5.12",
     "nodemon": "^3.1.4",
     "tsx": "^4.19.2",
