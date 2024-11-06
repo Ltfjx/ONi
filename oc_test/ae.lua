@@ -92,6 +92,7 @@ end
 --         "taskUuid": "..."
 --     }
 -- }
+-- TODO: 支持含有不同 NBT 的物品合成
 function ae.request(ws, taskUuid, uuid, name, damage, amount)
     local comp = aeComponents[uuid]
 
@@ -119,7 +120,7 @@ function ae.request(ws, taskUuid, uuid, name, damage, amount)
 
     if #craftable > 1 then
         oc_error.raise(ws,
-            "WTF? I can't imagine this will happen. name = " .. name .. ", damage = " .. damage,
+            "Craft same items with different nbt is not supported now. name = " .. name .. ", damage = " .. damage,
             file,
             "request",
             taskUuid
@@ -173,6 +174,7 @@ function ae.check(ws, taskUuid, craftUuid)
     local message = {
         type = "data/craftStatus",
         data = {
+            taskUuid = taskUuid,
             computing = status.isComputing(),
             failed = status.hasFailed(),
             canceled = status.isCanceled(),
@@ -183,10 +185,66 @@ function ae.check(ws, taskUuid, craftUuid)
     ws:send(json.encode(message))
 end
 
+-- 查询网络中存储的所有物品/流体
+-- 返回信息格式为：
+-- {
+--     "type" = "data/aeItemList",
+--     "data" = {
+--         "taskUuid" = taskUuid,
+--         "itemList" = itemList
+--     }
+-- }
+-- 每个物品的格式为：
+-- {
+--     "name": <string>,
+--     "damage": <integer>,
+--     "craftable": <bool>,
+--     "amount": <integer>,
+--     "isFluid": <bool>
+-- }
+-- TODO: 加入 tag 以区分含有不同 NBT 的物品
+function ae.getItems(ws, taskUuid, uuid)
+    local comp = aeComponents[uuid]
+
+    local itemList = {}
+
+    for k, v in pairs(comp.getItemsInNetwork()) do
+        local item = {
+            name = v.name,
+            damage = v.damage,
+            craftable = v.isCraftable,
+            amount = v.amount,
+            isFluid = false
+        }
+        itemList[#itemList + 1] = item
+    end
+
+    for k, v in pairs(comp.getFluidsInNetwork()) do
+        local item = {
+            name = v.name,
+            damage = v.damage, -- fluids seems having no damage, this should be nil
+            craftable = v.isCraftable,
+            amount = v.amount,
+            isFluid = true
+        }
+        itemList[#itemList + 1] = item
+    end
+
+    local message = {
+        type = "data/aeItemList",
+        data = {
+            taskUuid = taskUuid,
+            itemList = itemList
+        }
+    }
+
+    ws:send(json.encode(message))
+end
+
 -- 返回与 config 内容对应的处理任务的函数
--- config 中 mode 参数可以为："getCpus", "request"， "check"
+-- config 中 mode 参数可以为："getCpus", "request", "check", "getItems"
 -- config 参数请查看对应函数的描述
--- TODO: getItems
+-- TODO: 自动写样板
 function ae.newTask(ws, taskUuid, config)
     ae.updateAeComponents()
 
@@ -232,6 +290,10 @@ function ae.newTask(ws, taskUuid, config)
     elseif config.mode == "check" then
         return (function()
             ae.check(ws, taskUuid, config.craftUuid)
+        end)
+    elseif config.mode == "getItems" then
+        return (function()
+            ae.getItems(ws, taskUuid, config.uuid)
         end)
     end
 end
