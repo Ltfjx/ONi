@@ -160,6 +160,7 @@ var Websocket = {
                     json = JSON.parse(message)
                 } catch (e) {
                     logger.warn("Invalid JSON message received:", message)
+                    logger.error(e)
                     return
                 }
 
@@ -209,8 +210,8 @@ var Websocket = {
                             const bot = Object.assign({}, target, json.data)
                             Global.bot.set(bot)
                         }
-
-
+                    } else if (json.type == "data/aeItemList"){
+                        console.log(json.data)
                     } else {
                         logger.warn(`Unknown message type ${json.type}`)
                     }
