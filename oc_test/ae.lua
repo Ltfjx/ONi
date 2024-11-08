@@ -213,7 +213,7 @@ function ae.getItems(ws, taskUuid, uuid)
             name = v.name,
             damage = v.damage,
             craftable = v.isCraftable,
-            amount = v.amount,
+            amount = v.size,
             isFluid = false
         }
         itemList[#itemList + 1] = item
