@@ -1,5 +1,5 @@
 local ocComponent = require("component")
-local oc_error = require("oni/oc_error")
+local oc_info = require("oni/oc_info")
 local json = require("dkjson")
 local ocUuid = require("uuid")
 
@@ -97,7 +97,7 @@ function ae.request(ws, taskUuid, uuid, name, damage, amount)
     local comp = aeComponents[uuid]
 
     if name == nil or damage == nil or amount == nil then
-        oc_error.raise(ws,
+        oc_info.error(ws,
             "missing necessary argument",
             file,
             "request",
@@ -109,7 +109,7 @@ function ae.request(ws, taskUuid, uuid, name, damage, amount)
     local craftable = comp.getCraftables({ name = name, damage = damage })
 
     if #craftable == 0 then
-        oc_error.raise(ws,
+        oc_info.error(ws,
             "no item with name = " .. name .. ", damage = " .. damage,
             file,
             "request",
@@ -119,7 +119,7 @@ function ae.request(ws, taskUuid, uuid, name, damage, amount)
     end
 
     if #craftable > 1 then
-        oc_error.raise(ws,
+        oc_info.error(ws,
             "Craft same items with different nbt is not supported now. name = " .. name .. ", damage = " .. damage,
             file,
             "request",
@@ -162,7 +162,7 @@ function ae.check(ws, taskUuid, craftUuid)
     local status = craftTasks[craftUuid]
 
     if status == nil then
-        oc_error.raise(ws,
+        oc_info.error(ws,
             "invalid craft uuid or uuid expired",
             file,
             "check",
@@ -213,7 +213,7 @@ function ae.getItems(ws, taskUuid, uuid)
             name = v.name,
             damage = v.damage,
             craftable = v.isCraftable,
-            amount = v.amount,
+            amount = v.size,
             isFluid = false
         }
         itemList[#itemList + 1] = item
@@ -256,7 +256,7 @@ function ae.newTask(ws, taskUuid, config)
     end
 
     if config.uuid == nil then
-        oc_error.raise(ws,
+        oc_info.error(ws,
             "no AE component attached",
             file,
             "newTask",
@@ -266,7 +266,7 @@ function ae.newTask(ws, taskUuid, config)
     end
 
     if aeComponents[config.uuid] == nil then
-        oc_error.raise(ws,
+        oc_info.error(ws,
             "AE component with uuid = " .. config.uuid .. " dosen't exist",
             file,
             "newTask",

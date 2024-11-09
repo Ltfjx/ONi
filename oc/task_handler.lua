@@ -2,6 +2,7 @@ local webSocket = require("ws")
 local event = require("event")
 local json = require("dkjson")
 
+local oc_info = require("oni/oc_info")
 local component = require("oni/component")
 local redstone = require("oni/redstone")
 local ae = require("oni/ae")
@@ -11,6 +12,8 @@ local port = 5600
 local path = "/ws/oc"
 
 local uuid = "12345678-1234-1234-1234-123456789abc"
+
+local file = "task_handler.lua"
 
 local ws = webSocket.new({
     address = address,
@@ -96,6 +99,20 @@ function cleanTask()
     end
 end
 
+function cancel(taskUuid)
+    if taskList[taskUuid] == nil then
+        oc_info.info(
+            "task with uuid: " .. taskUuid .. " dosen't exist",
+            file,
+            "cancel",
+            taskUuid
+        )
+        return
+    end
+    event.cancel(taskList[taskUuid])
+    taskList[taskUuid] = nil
+end
+
 print("start listening tasks")
 
 while true do
@@ -112,6 +129,11 @@ while true do
 
     local list = tasks.data
 
+    -- 如果任务列表为空，则终止所有任务
+    if #list == 0 then
+        cleanTask()
+    end
+
     -- 如果任务列表包含任何重复任务，则终止此前的所有定时任务
     for k, v in pairs(list) do
         if v.interval ~= -1 then
@@ -126,7 +148,7 @@ while true do
         else
             -- math.huge为一个非常大的数，可以认为是无限循环
             local timerHandle = event.timer(v.interval, executeMap[v.task](ws, v.taskUuid, v.config), math.huge)
-            table.insert(taskList, timerHandle)
+            taskList[v.taskUuid] = timerHandle
         end
     end
 

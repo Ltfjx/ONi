@@ -1,5 +1,4 @@
 local computer = require("computer")
-local thread = require("thread")
 local json = require("dkjson")
 
 component = {}
