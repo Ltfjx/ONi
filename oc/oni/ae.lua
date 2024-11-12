@@ -190,7 +190,7 @@ end
 -- {
 --     "type" = "data/aeItemList",
 --     "data" = {
---         "taskUuid" = taskUuid,
+--         "uuid" = targetAeUuid,
 --         "itemList" = itemList
 --     }
 -- }
@@ -203,7 +203,7 @@ end
 --     "isFluid": <bool>
 -- }
 -- TODO: 加入 tag 以区分含有不同 NBT 的物品
-function ae.getItems(ws, taskUuid, uuid)
+function ae.getItems(ws, taskUuid, uuid, targetAeUuid)
     local comp = aeComponents[uuid]
 
     local itemList = {}
@@ -233,7 +233,7 @@ function ae.getItems(ws, taskUuid, uuid)
     local message = {
         type = "data/aeItemList",
         data = {
-            taskUuid = taskUuid,
+            uuid = targetAeUuid,
             itemList = itemList
         }
     }
@@ -293,7 +293,7 @@ function ae.newTask(ws, taskUuid, config)
         end)
     elseif config.mode == "getItems" then
         return (function()
-            ae.getItems(ws, taskUuid, config.uuid)
+            ae.getItems(ws, taskUuid, config.uuid, config.targetAeUuid)
         end)
     end
 end

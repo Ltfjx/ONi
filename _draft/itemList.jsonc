@@ -1,0 +1,16 @@
+{
+  "taskUuid": "00000000-0000-000000000000",
+  "itemList": [
+    {
+      "name": "minecraft:grass",
+      "isFluid": false,
+      "amount": 1,
+      "damage": 0,
+      "craftable": false
+    }
+    // ...
+    ,
+    { "name": "water", "isFluid": true, "amount": 3000, "craftable": false },
+    { "name": "lava", "isFluid": true, "amount": 2000, "craftable": false }
+  ]
+}

@@ -1,6 +1,8 @@
 import { Ae, Config } from "../interface"
 import fs from "fs"
 import { loggerGlobal as logger } from "../logger"
+import { wsWebBroadcast } from "../websocket"
+import { deepEqual } from "../utils"
 
 var ae = {
     // AE 列表
@@ -70,6 +72,18 @@ var ae = {
         }]
 
         return _
+    },
+
+    set(ae: Ae) {
+        this.list.forEach((item, index) => {
+            if (item.uuid == ae.uuid) {
+                if (!deepEqual(this.list[index], ae)) {
+                    this.list[index] = ae
+                    wsWebBroadcast("data/ae", [ae])
+                }
+                return
+            }
+        })
     },
 
     init(config: Config) {

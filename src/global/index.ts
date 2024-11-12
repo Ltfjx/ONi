@@ -5,6 +5,7 @@ import data from "./data"
 import redstone from "./redstone"
 import event from "./event"
 import mcServerStatus from "./mcServerStatus"
+import staticResources from "./staticResources"
 
 import { Config } from "../interface"
 
@@ -16,6 +17,7 @@ var Global = {
     redstone: redstone,
     event: event,
     mcServerStatus: mcServerStatus,
+    staticResources: staticResources,
 
     init(config: Config) {
         user.init(config)
@@ -25,6 +27,7 @@ var Global = {
         redstone.init(config)
         event.init(config)
         mcServerStatus.init(config)
+        staticResources.init(config)
     }
 }
 

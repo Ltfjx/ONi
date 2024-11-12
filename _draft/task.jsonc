@@ -1,0 +1,14 @@
+{
+    "type": "task",
+    "data": [
+        {
+            "task": "ae",
+            "interval": 10,
+            "taskUuid": "00000000-0000-000000000000",
+            "config": {
+                "mode": "getItems",
+                "targetAeUuid": "961bd7fd-89e6-47c4-a4a9-94bd52911c37"
+            }
+        }
+    ]
+}

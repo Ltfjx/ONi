@@ -23,8 +23,13 @@ export interface Ae {
         name: string
         busy: boolean
         size: number
-        
-
+    }]
+    itemList: [{
+        name: string
+        isFluid: boolean
+        amount: number
+        damage?: number
+        craftable: boolean
     }]
 }
 

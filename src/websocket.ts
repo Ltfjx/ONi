@@ -82,6 +82,9 @@ var Websocket = {
                         // 发送 bot 编辑布局
                         ws.send(JSON.stringify({ type: "layout/botEdit", data: Global.bot.getEditLayout() }))
 
+                        // 发送 ae 数据
+                        ws.send(JSON.stringify({ type: "global/ae", data: Global.ae.list }))
+
                         // 发送 ae list 布局
                         ws.send(JSON.stringify({ type: "layout/aeList", data: Global.ae.getListLayout() }))
 
@@ -210,8 +213,25 @@ var Websocket = {
                             const bot = Object.assign({}, target, json.data)
                             Global.bot.set(bot)
                         }
-                    } else if (json.type == "data/aeItemList"){
-                        console.log(json.data)
+                    } else if (json.type == "data/aeItemList") {
+                        let target = Global.ae.list.find(ae => ae.uuid === json.data.uuid)
+                        if (target) {
+                            json.data.itemList.forEach((item: any) => {
+                                if (!item.isFluid) {
+                                    const itemPanelItem = Global.staticResources.itemPanel.find(itemPanelItem => itemPanelItem.name == item.name)
+                                    if (itemPanelItem) {
+                                        item.id = itemPanelItem.id
+                                        item.display = itemPanelItem.display
+                                    } else {
+                                        logger.warn(`Item ${item.name} not found in staticResources.itemPanel`)
+                                    }
+                                } else {
+                                    // TODO: fluid processing
+                                }
+                            })
+                            const ae = Object.assign({}, target, json.data)
+                            Global.ae.set(ae)
+                        }
                     } else {
                         logger.warn(`Unknown message type ${json.type}`)
                     }
