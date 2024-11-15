@@ -40,9 +40,14 @@ function aeEdit__renderItemList(target, ae) {
 
     if (ae.itemList) {
         ae.itemList.forEach(item => {
+            if (item.isFluid) {
+                link = `fluid/${item.id}.png`
+            } else {
+                link = `item/${item.id}_${item.damage}.png`
+            }
             _ += `
             <div style="position: relative;">
-              <img src="./resources/itempanel/png/${item.id}_${item.damage}.png" style="height: 3rem;"></img>
+              <img src="./resources/itempanel/${link}" style="height: 3rem;"></img>
               <div style="position: absolute;bottom: 0;right: 6px;text-align: right;">${item.amount}</div>
             </div>
             `

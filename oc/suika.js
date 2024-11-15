@@ -69,5 +69,24 @@ ws.onopen = () => {
         }))
     }, 10000)
 
+    ws.send(JSON.stringify({
+        type: "data/aeItemList",
+        data: {
+            uuid: "961bd7fd-89e6-47c4-a4a9-94bd52911c37",
+            itemList: [
+                {
+                    "name": "minecraft:grass",
+                    "isFluid": false,
+                    "amount": 1,
+                    "damage": 0,
+                    "craftable": false
+                }
+                // ...
+                ,
+                { "name": "water", "isFluid": true, "amount": 3000, "craftable": false },
+                { "name": "lava", "isFluid": true, "amount": 2000, "craftable": false }
+            ]
+        }
+    }))
 
 }

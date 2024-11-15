@@ -10,15 +10,23 @@ interface ItemPanelItem {
     display: string
 }
 
+interface ItemPanelLiquid {
+    name: string
+    id: number
+    display: string
+}
+
 var staticResources = {
-    itemPanel: [] as ItemPanelItem[],
+
+    itemPanelItem: [] as ItemPanelItem[],
+    itemPanelFluid: [] as ItemPanelLiquid[],
 
     init(config: Config) {
-        const itmePanelRaw = fs.readFileSync('./data/itempanel/itempanel.csv', 'utf8')
-        let itemPanel = itmePanelRaw.split('\r\n').map(line => line.split(','))
+        const itmePanelItemRaw = fs.readFileSync('./data/itempanel/item.csv', 'utf8')
+        let itemPanel = itmePanelItemRaw.split('\r\n').map(line => line.split(','))
         itemPanel.shift() // remove header row
         itemPanel.forEach(row => {
-            this.itemPanel.push({
+            this.itemPanelItem.push({
                 name: row[0],
                 id: parseInt(row[1]),
                 damage: parseInt(row[2]),
@@ -26,7 +34,12 @@ var staticResources = {
                 display: row[4]
             })
         })
-        logger.trace("staticResourcesItemPanel", this.itemPanel)
+        logger.trace("staticResourcesItemPanelItem", this.itemPanelItem)
+
+        const itemPanelFluidRaw = fs.readFileSync('./data/itempanel/liquid.json', 'utf8')
+        this.itemPanelFluid = JSON.parse(itemPanelFluidRaw)
+        logger.trace("staticResourcesItemPanelFluid", this.itemPanelFluid)
+        
     }
 }
 

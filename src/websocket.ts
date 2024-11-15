@@ -218,7 +218,7 @@ var Websocket = {
                         if (target) {
                             json.data.itemList.forEach((item: any) => {
                                 if (!item.isFluid) {
-                                    const itemPanelItem = Global.staticResources.itemPanel.find(itemPanelItem => itemPanelItem.name == item.name)
+                                    const itemPanelItem = Global.staticResources.itemPanelItem.find(itemPanelItem => itemPanelItem.name == item.name)
                                     if (itemPanelItem) {
                                         item.id = itemPanelItem.id
                                         item.display = itemPanelItem.display
@@ -226,7 +226,13 @@ var Websocket = {
                                         logger.warn(`Item ${item.name} not found in staticResources.itemPanel`)
                                     }
                                 } else {
-                                    // TODO: fluid processing
+                                    const itemPanelFluid = Global.staticResources.itemPanelFluid.find(itemPanelFluid => itemPanelFluid.name == item.name)
+                                    if (itemPanelFluid) {
+                                        item.id = itemPanelFluid.id
+                                        item.display = itemPanelFluid.display
+                                    } else {
+                                        logger.warn(`Fluid ${item.name} not found in staticResources.itemPanel`)
+                                    }
                                 }
                             })
                             const ae = Object.assign({}, target, json.data)

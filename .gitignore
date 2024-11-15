@@ -130,4 +130,5 @@ dist
 .pnp.*
 
 # Oni
-public/resources/itempanel/png/
+public/resources/itempanel/item/
+public/resources/itempanel/fluid/

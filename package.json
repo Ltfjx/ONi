@@ -21,11 +21,12 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
+    "axios": "^1.7.7",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
     "log4js": "^6.9.1",
+    "minecraftstatuspinger": "^1.1.5",
     "ws": "^8.18.0",
-    "yaml": "^2.5.1",
-    "minecraftstatuspinger": "^1.1.5"
+    "yaml": "^2.5.1"
   }
 }
