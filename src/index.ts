@@ -5,9 +5,10 @@ import Server from "./server"
 import Logger from "./logger"
 import { Config } from "./interface"
 import { loggerMain as logger } from "./logger"
-import Websocket, { wsWebBroadcast } from "./websocket"
+import Websocket from "./websocket"
 import TaskMcServerStatus from "./task/mcServerStatus"
 
+logger.level = "TRACE"
 logger.info("Starting Oni...")
 
 var config: Config
