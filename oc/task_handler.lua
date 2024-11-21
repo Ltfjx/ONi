@@ -6,6 +6,7 @@ local oc_info = require("oni/oc_info")
 local component = require("oni/component")
 local redstone = require("oni/redstone")
 local ae = require("oni/ae")
+local gt_machine = require("oni/gt_machine")
 
 local address = "localhost"
 local port = 5600
@@ -85,7 +86,8 @@ event.timer(5, updateComponent, math.huge)
 local executeMap = {
     component = component.newTask,
     redstone = redstone.newTask,
-    ae = ae.newTask
+    ae = ae.newTask,
+    gt_machine = gt_machine.newTask
 }
 
 -- 事件timer对象，用于终止定时任务

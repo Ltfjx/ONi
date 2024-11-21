@@ -244,7 +244,7 @@ end
 -- 返回与 config 内容对应的处理任务的函数
 -- config 中 mode 参数可以为："getCpus", "request", "check", "getItems"
 -- config 参数请查看对应函数的描述
--- TODO: 自动写样板
+-- TODO: 自动写样板，库存维持
 function ae.newTask(ws, taskUuid, config)
     ae.updateAeComponents()
 

@@ -1,12 +1,12 @@
 oc_info = {}
 
-oc_info.debug = false
+oc_info.debugMode = false
 
-function oc_info.error(ws, error_message, file, location, taskUuid)
+function oc_info.error(ws, message, file, location, taskUuid)
     local message = {
         type = "oc/error",
         data = {
-            message = error_message,
+            message = message,
             file = file,
             location = location,
             taskUuid = taskUuid
@@ -16,11 +16,25 @@ function oc_info.error(ws, error_message, file, location, taskUuid)
     ws:send(message)
 end
 
-function oc_info.log(ws, error_message, file, location, taskUuid)
+function oc_info.warn(ws, message, file, location, taskUuid)
+    local message = {
+        type = "oc/warn",
+        data = {
+            message = message,
+            file = file,
+            location = location,
+            taskUuid = taskUuid
+        }
+    }
+
+    ws:send(message)
+end
+
+function oc_info.log(ws, message, file, location, taskUuid)
     local message = {
         type = "oc/info",
         data = {
-            message = error_message,
+            message = message,
             file = file,
             location = location,
             taskUuid = taskUuid
@@ -30,15 +44,15 @@ function oc_info.log(ws, error_message, file, location, taskUuid)
     ws:send(message)
 end
 
-function oc_info.trace(ws, error_message, file, location, taskUuid)
-    if ~debug then
+function oc_info.trace(ws, message, file, location, taskUuid)
+    if ~oc_info.debugMode then
         return
     end
 
     local message = {
         type = "oc/trace",
         data = {
-            message = error_message,
+            message = message,
             file = file,
             location = location,
             taskUuid = taskUuid
