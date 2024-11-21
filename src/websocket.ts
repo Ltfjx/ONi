@@ -213,7 +213,7 @@ var Websocket = {
                             const bot = Object.assign({}, target, json.data)
                             Global.bot.set(bot)
                         }
-                    } else if (json.type == "data/aeItemList") {
+                    } else if (json.type == "data/ae/itemList") {
                         let target = Global.ae.list.find(ae => ae.uuid === json.data.uuid)
                         if (target) {
                             json.data.itemList.forEach((item: any) => {
@@ -235,6 +235,12 @@ var Websocket = {
                                     }
                                 }
                             })
+                            const ae = Object.assign({}, target, json.data)
+                            Global.ae.set(ae)
+                        }
+                    } else if (json.type == "data/ae/cpus") {
+                        let target = Global.ae.list.find(ae => ae.uuid === json.data.uuid)
+                        if (target) {
                             const ae = Object.assign({}, target, json.data)
                             Global.ae.set(ae)
                         }

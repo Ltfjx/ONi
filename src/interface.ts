@@ -21,8 +21,15 @@ export interface Ae {
     name: string
     cpus: [{
         name: string
+        coproccessors: number
+        storage: number
         busy: boolean
-        size: number
+        active: boolean
+        finalOutput?: {
+            name: string
+            damage: number
+            amount: number
+        }
     }]
     itemList: [{
         name: string

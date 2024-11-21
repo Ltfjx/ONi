@@ -44,43 +44,13 @@
       <div class="card-title">
         CPU 列表
       </div>
-      <mdui-list style="margin-left: -0.5rem;margin-right: -0.5rem;margin-bottom: -0.5rem;">
-        <mdui-list-item>
-          <div style="display: flex;align-items: center;margin-top: 0.25rem;">
-            <mdui-icon name="settings_suggest"></mdui-icon>
-            &nbsp;&nbsp;
-            <div>
-              <div>CPU 15 <span style="opacity: 0.7">- "ARROW RAIN"</span></div>
-              <div style="font-weight: normal;font-size: .8rem;opacity: 0.5">合成中 · 59 分钟</div>
-            </div>
-          </div>
-          <div style="margin-top: .5rem;margin-bottom: .5rem;"><b>Electric Motor (UHV)</b> - 278 / 400</div>
 
-          <div style="display: flex;align-items: center;margin-bottom: 0.25rem;">
-            <div style="opacity: 0.5;">69%&nbsp;&nbsp;</div>
-            <mdui-linear-progress value="69" max="100"></mdui-linear-progress>
-          </div>
-        </mdui-list-item>
+      <div class="ae__view-cpu-list" style="display: grid;margin-top: 0.5rem;grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));gap: 0.5rem;">
+      </div>
 
-        <mdui-list-item>
-          <div style="display: flex;align-items: center;margin-top: 0.25rem;">
-            <mdui-icon name="settings_suggest"></mdui-icon>
-            &nbsp;&nbsp;
-            <div>
-              <div>CPU 15 <span style="opacity: 0.7">- "ARROW RAIN"</span></div>
-              <div style="font-weight: normal;font-size: .8rem;opacity: 0.5">合成中 · 59 分钟</div>
-            </div>
-          </div>
-          <div style="margin-top: .5rem;margin-bottom: .5rem;"><b>Electric Motor (UHV)</b> - 278 / 400</div>
+      <mdui-chip class="ae__view-cpu-list-more-button" elevated icon="keyboard_arrow_down" style="padding: 0.5rem;height: auto;">展开 CPU 列表</mdui-chip>
 
-          <div style="display: flex;align-items: center;margin-bottom: 0.25rem;">
-            <div style="opacity: 0.5;">69%&nbsp;&nbsp;</div>
-            <mdui-linear-progress value="69" max="100"></mdui-linear-progress>
-          </div>
-        </mdui-list-item>
-        <mdui-list-item style="display: flex;margin-top: 0.5rem;" icon="keyboard_arrow_down" rounded>展开 CPU 列表
-        </mdui-list-item>
-      </mdui-list>
+
     </mdui-card>
 
 
@@ -105,6 +75,12 @@
 
       <mdui-card class="ae__view-item-list" style="display: grid;padding: 0.75rem;grid-template-columns: repeat(auto-fill, minmax(3rem, 1fr));gap: 0.25rem;">
       </mdui-card>
+
+      <mdui-card class="ae__view-item-list-nothing" style="display: none;padding: 0.75rem;">
+        <div style="text-align: center;opacity: 0.5;margin-top: 0.75rem;margin-bottom: 0.75rem;">没有找到符合条件的物品</div>
+      </mdui-card>
+
+      <mdui-chip class="ae__view-item-list-more-button" elevated icon="keyboard_arrow_down" style="padding: 0.5rem;height: auto;">显示更多...</mdui-chip>
 
     </mdui-card>
 
