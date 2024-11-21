@@ -3,18 +3,40 @@
         "uuid": "308f3581-1e64-4d10-953a-39d1103c9ddb",
         "name": "Suika",
         "token": "CWN78VN0MB00WFYIL8AN",
-        "components": []
+        "components": [],
+        "tasks": [
+            {
+                "task": "ae",
+                "interval": 10,
+                "taskUuid": "00000000-0000-000000000000",
+                "config": {
+                    "mode": "getItems",
+                    "targetAeUuid": "961bd7fd-89e6-47c4-a4a9-94bd52911c37"
+                }
+            },
+            {
+                "task": "ae",
+                "interval": 10,
+                "taskUuid": "00000000-0000-000000000001",
+                "config": {
+                    "mode": "getCpus",
+                    "targetAeUuid": "961bd7fd-89e6-47c4-a4a9-94bd52911c37"
+                }
+            }
+        ]
     },
     {
         "uuid": "74a1ae32-7a48-44ed-a77c-a8298f8281b0",
         "name": "Yugi",
         "token": "J5TZON0UZ8MNU5VHAO3P",
-        "components": []
+        "components": [],
+        "tasks": []
     },
     {
         "uuid": "643a0448-2e67-49fd-bba7-9ef422928002",
         "name": "Kasen",
         "token": "08YBU1ICJGW91C3VNPXZ",
-        "components": []
+        "components": [],
+        "tasks": []
     }
 ]

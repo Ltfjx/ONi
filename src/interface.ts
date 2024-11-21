@@ -14,6 +14,13 @@ export interface Bot {
         class: string
         uuid: string
     }]
+
+    tasks: [{
+        task: string
+        interval: number
+        taskUuid: string
+        config?: any
+    }]
 }
 
 export interface Ae {
@@ -29,6 +36,8 @@ export interface Ae {
             name: string
             damage: number
             amount: number
+            id: number
+            display: string
         }
     }]
     itemList: [{
@@ -37,6 +46,8 @@ export interface Ae {
         amount: number
         damage?: number
         craftable: boolean
+        id: number
+        display: string
     }]
 }
 

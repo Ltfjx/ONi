@@ -180,11 +180,12 @@ var Websocket = {
                         ws.authenticated = true
                         ws.bot = bot
                         // 返回用户信息
-                        ws.send(JSON.stringify({ type: "auth/response", data: { bot: ws.bot } }))
+                        ws.send(JSON.stringify({ type: "auth/response", data: { bot: bot } }))
+                        // 发送 tasks 数据
+                        ws.send(JSON.stringify({ type: "task", data: bot.tasks }))
                     } else {
                         logger.warn(`Invalid token ${json.data.token} for bot ${ws.sessionId.substring(0, 8)}`)
                         ws.send(JSON.stringify({ type: "auth/response", data: { bot: undefined } }))
-
                     }
                 } else if (!ws.authenticated) {
                     // 如果未登录
@@ -241,6 +242,21 @@ var Websocket = {
                     } else if (json.type == "data/ae/cpus") {
                         let target = Global.ae.list.find(ae => ae.uuid === json.data.uuid)
                         if (target) {
+                            json.data.cpus.forEach((cpu: any) => {
+                                if (cpu.busy) {
+                                    const itemPanelItem = Global.staticResources.itemPanelItem.find(itemPanelItem => itemPanelItem.name == cpu.finalOutput.name)
+                                    const itemPanelFluid = Global.staticResources.itemPanelFluid.find(itemPanelFluid => itemPanelFluid.name == cpu.finalOutput.name)
+                                    if (itemPanelItem) {
+                                        cpu.finalOutput.id = itemPanelItem.id
+                                        cpu.finalOutput.display = itemPanelItem.display
+                                    } else if (itemPanelFluid) {
+                                        cpu.finalOutput.id = itemPanelFluid.id
+                                        cpu.finalOutput.display = itemPanelFluid.display
+                                    } else {
+                                        logger.warn(`Item/Fluid ${cpu.finalOutput.name} not found in staticResources.itemPanel`)
+                                    }
+                                }
+                            })
                             const ae = Object.assign({}, target, json.data)
                             Global.ae.set(ae)
                         }

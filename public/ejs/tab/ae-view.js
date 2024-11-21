@@ -1,5 +1,6 @@
-var aeView__storageFilter = []
+var aeView__filter = []
 var aeView__itemsPerPage = 40
+var aeView__cpusPerPage = 8
 
 document.querySelectorAll(".ae__view-back").forEach(element => {
     element.addEventListener("click", event => {
@@ -10,7 +11,7 @@ document.querySelectorAll(".ae__view-back").forEach(element => {
 })
 
 globalAe.forEach(ae => {
-    aeView__storageFilter.push({
+    aeView__filter.push({
         uuid: ae.uuid,
         filter: {
             type: "all", // all | item | fluid | vis
@@ -18,7 +19,8 @@ globalAe.forEach(ae => {
             sort: "amount", // amount | amountr | id | idr
             word: "", // 搜索词
             page: 1 // 页码
-        }
+        },
+        cpusShowMore: false
     })
 
     aeView__renderCpusList(ae.uuid, ae)
@@ -29,7 +31,7 @@ globalAe.forEach(ae => {
 document.querySelectorAll(".ae__view").forEach(aeview => {
 
     const uuid = aeview.querySelector("data").getAttribute("uuid")
-    let filter = aeView__storageFilter.find(ae => ae.uuid == uuid).filter
+    let filter = aeView__filter.find(ae => ae.uuid == uuid).filter
 
     aeview.querySelectorAll(".ae__view-storage-filter-button").forEach(button => {
         button.addEventListener("click", event => {
@@ -100,6 +102,20 @@ document.querySelectorAll(".ae__view").forEach(aeview => {
         filter.page += 1
         aeView__renderItemList(uuid)
     })
+
+    aeview.querySelector(".ae__view-cpu-list-more-button").addEventListener("click", event => {
+        aeView__filter.find(ae => ae.uuid == uuid).cpusShowMore = true
+        aeview.querySelector(".ae__view-cpu-list-more-button").style["display"] = "none"
+        aeview.querySelector(".ae__view-cpu-list-less-button").style["display"] = "block"
+        aeView__renderCpusList(uuid)
+    })
+
+    aeview.querySelector(".ae__view-cpu-list-less-button").addEventListener("click", event => {
+        aeView__filter.find(ae => ae.uuid == uuid).cpusShowMore = false
+        aeview.querySelector(".ae__view-cpu-list-more-button").style["display"] = "block"
+        aeview.querySelector(".ae__view-cpu-list-less-button").style["display"] = "none"
+        aeView__renderCpusList(uuid)
+    })
 })
 
 ws.addEventListener("message", async (event) => {
@@ -120,36 +136,80 @@ function aeView__renderCpusList(target, ae) {
         .find(element => element.querySelector("data").getAttribute("uuid") === target)
         .querySelector(".ae__view-cpu-list")
 
+    let targetElementNothing = Array.from(
+        document.querySelectorAll(".ae__view"))
+        .find(element => element.querySelector("data").getAttribute("uuid") === target)
+        .querySelector(".ae__view-cpu-list-nothing")
+
+    let targetElementShowMore = Array.from(
+        document.querySelectorAll(".ae__view"))
+        .find(element => element.querySelector("data").getAttribute("uuid") === target)
+        .querySelector(".ae__view-cpu-list-more-button")
+
+    let targetElementShowLess = Array.from(
+        document.querySelectorAll(".ae__view"))
+        .find(element => element.querySelector("data").getAttribute("uuid") === target)
+        .querySelector(".ae__view-cpu-list-less-button")
+
     if (!ae) {
         ae = globalAe.find(a => a.uuid === target)
     }
 
-    ae.cpus.forEach((cpu, i) => {
-        const icon = cpu.busy ? "settings_suggest" : "download_done"
-        const nameStr = cpu.name ? `- "${cpu.name}"` : ""
-        const statusStr = cpu.busy ? "合成中 · 1 分钟" : `空闲 · ${cpu.storage / 1024}K`
-        const finalOutput = cpu.busy ? `<div style="margin-top: .5rem;margin-bottom: .5rem;"><b>${cpu.finalOutput.name}</b> - 0 / 1</div>` : ""
-        const progressBar = cpu.busy ? `
-        <div style="display: flex;align-items: center;margin-bottom: 0.25rem;">
-            <div style="opacity: 0.5;">69%&nbsp;&nbsp;</div>
-            <mdui-linear-progress value="0" max="1"></mdui-linear-progress>
-        </div>` : ""
-
-        _ += `
-        <mdui-card style="padding-top: 1rem;padding-bottom: 1rem;padding-left: 1.5rem;padding-right: 1.5rem;">
-          <div style="display: flex;align-items: center;margin-top: 0.25rem;">
-            <mdui-icon name="${icon}"></mdui-icon>
-            &nbsp;&nbsp;
-            <div>
-              <div>CPU ${i} <span style="opacity: 0.7">${nameStr}</span></div>
-              <div style="font-weight: normal;font-size: .8rem;opacity: 0.5">${statusStr}</div>
-            </div>
-          </div>
-          ${finalOutput}
-          ${progressBar}
-        </mdui-card>
-        `
+    var aeCpus = ae.cpus.sort((a, b) => {
+        if (a.busy && b.busy) {
+            return 0
+        } else if (a.busy) {
+            return -1
+        }
     })
+
+    if (aeCpus.length <= aeView__cpusPerPage) {
+        targetElementShowMore.style["display"] = "none"
+        targetElementShowLess.style["display"] = "none"
+    }
+
+    if (!aeView__filter.find(ae => ae.uuid === target).cpusShowMore) {
+        aeCpus = aeCpus.slice(0, aeView__cpusPerPage)
+    }
+
+    if (aeCpus.length === 0) {
+        targetElementNothing.style["display"] = "block"
+        targetElement.style["display"] = "none"
+    } else {
+        targetElementNothing.style["display"] = "none"
+        targetElement.style["display"] = "grid"
+
+        aeCpus.forEach((cpu, i) => {
+            const icon = cpu.busy ? "settings_suggest" : "download_done"
+            const iconBig = cpu.busy ? "hourglass_bottom" : "schedule"
+            const nameStr = cpu.name ? `- "${cpu.name}"` : ""
+            const statusStr = cpu.busy ? "合成中 · 1 分钟" : `空闲 · ${cpu.storage / 1024}K`
+            const finalOutput = cpu.busy ? `<div style="margin-top: .5rem;margin-bottom: .5rem;"><b>${cpu.finalOutput.display}</b> - 0 / 1</div>` : ""
+            const progressBar = cpu.busy ? `
+            <div style="display: flex;align-items: center;margin-bottom: 0.25rem;">
+                <div style="opacity: 0.5;">69%&nbsp;&nbsp;</div>
+                <mdui-linear-progress value="0" max="1"></mdui-linear-progress>
+            </div>` : ""
+
+            _ += `
+            <mdui-card style="padding: 1rem;padding-left: 1.25rem;padding-right: 1.25rem">
+              <div style="display: flex;align-items: center;">
+                <mdui-icon name="${iconBig}" style="position: absolute;top: 1rem;right: 1rem;opacity: 0.1;font-size: 3rem;"></mdui-icon>
+                <mdui-icon name="${icon}"></mdui-icon>
+                &nbsp;&nbsp;
+                <div>
+                  <div>CPU ${i} <span style="opacity: 0.7">${nameStr}</span></div>
+                  <div style="font-weight: normal;font-size: .8rem;opacity: 0.5">${statusStr}</div>
+                </div>
+              </div>
+              ${finalOutput}
+              ${progressBar}
+            </mdui-card>
+            `
+        })
+
+    }
+
 
     targetElement.innerHTML = _
 
@@ -180,7 +240,7 @@ function aeView__renderItemList(target, ae) {
         ae = globalAe.find(a => a.uuid === target)
     }
 
-    const filter = aeView__storageFilter.find(ae => ae.uuid === target).filter
+    const filter = aeView__filter.find(ae => ae.uuid === target).filter
 
     const itemListFiltered = ae.itemList.filter(item => {
         if (filter.type === "all") {
