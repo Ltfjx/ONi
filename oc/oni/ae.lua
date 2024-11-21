@@ -30,7 +30,7 @@ end
 
 function ae.getAeComponents(ws, taskUuid)
     local message = {
-        type = "data/AE",
+        type = "data/ae/components",
         data = {
             taskUuid = taskUuid,
             components = {}
@@ -44,15 +44,14 @@ function ae.getAeComponents(ws, taskUuid)
     ws:send(json.encode(message))
 end
 
-function ae.getCpus(ws, taskUuid, uuid)
+function ae.getCpus(ws, taskUuid, uuid, targetAeUuid)
     local comp = aeComponents[uuid]
 
     local message = {
-        type = "data/ae",
+        type = "data/ae/cpus",
         data = {
-            type = "cpus",
-            taskUuid = taskUuid,
-            data = {}
+            uuid = targetAeUuid,
+            cpus = {}
         }
     }
 
@@ -61,7 +60,7 @@ function ae.getCpus(ws, taskUuid, uuid)
     for k, v in pairs(cpus) do
         local output = v.cpu.finalOutput()
         local info = {
-            cpuName = v.name,
+            name = v.name,
             coproccessors = v.coproccessors,
             storage = v.storage,
             busy = v.busy,
@@ -71,11 +70,11 @@ function ae.getCpus(ws, taskUuid, uuid)
             info.finalOutput = {
                 name = output.name,
                 damage = output.damage,
-                count = output.size
+                amount = output.size
             }
         end
 
-        message.data.data[#message.data.data + 1] = info
+        message.data.cpus[#message.data.cpus + 1] = info
     end
 
     ws:send(json.encode(message))
@@ -86,7 +85,7 @@ end
 -- 发送一个包含 craftUuid 的信息，用于调用 check 函数查询合成状态
 -- 发送的信息格式如下：
 -- {
---     "type": "data/craftRequest",
+--     "type": "data/ae/craftRequest",
 --     "data": {
 --         "craftUuid": "...",
 --         "taskUuid": "..."
@@ -136,7 +135,7 @@ function ae.request(ws, taskUuid, uuid, name, damage, amount)
     craftTasks[carftTaskQueue[queuePointer]] = craftable[1].request(amount)
 
     local message = {
-        type = "data/craftRequest",
+        type = "data/ae/craftRequest",
         data = {
             taskUuid = taskUuid,
             craftUuid = carftTaskQueue[queuePointer]
@@ -155,7 +154,7 @@ end
 -- 使用 craft uuid 查询合成状态
 -- 发送的合成信息格式如下：
 -- {
---     "type": "data/craftStatus",
+--     "type": "data/ae/craftStatus",
 --     "data": { "canceled": false, "done": true, "computing": false, "failed": false }
 -- }
 function ae.check(ws, taskUuid, craftUuid)
@@ -172,7 +171,7 @@ function ae.check(ws, taskUuid, craftUuid)
     end
 
     local message = {
-        type = "data/craftStatus",
+        type = "data/ae/craftStatus",
         data = {
             taskUuid = taskUuid,
             computing = status.isComputing(),
@@ -188,7 +187,7 @@ end
 -- 查询网络中存储的所有物品/流体
 -- 返回信息格式为：
 -- {
---     "type" = "data/aeItemList",
+--     "type" = "data/ae/itemList",
 --     "data" = {
 --         "uuid" = targetAeUuid,
 --         "itemList" = itemList
@@ -231,7 +230,7 @@ function ae.getItems(ws, taskUuid, uuid, targetAeUuid)
     end
 
     local message = {
-        type = "data/aeItemList",
+        type = "data/ae/itemList",
         data = {
             uuid = targetAeUuid,
             itemList = itemList
@@ -277,7 +276,7 @@ function ae.newTask(ws, taskUuid, config)
 
     if config.mode == "getCpus" then
         return (function()
-            ae.getCpus(ws, taskUuid, config.uuid)
+            ae.getCpus(ws, taskUuid, config.uuid, config.targetAeUuid)
         end)
     elseif config.mode == "getComponent" then
         return (function()

@@ -82,6 +82,7 @@ mdui-card[variant="filled"] {
   font-weight: bold;
   display: flex;
   align-items: center;
+  vertical-align: middle;
 }
 
 /* 样式覆盖 */
