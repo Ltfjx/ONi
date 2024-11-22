@@ -15,7 +15,17 @@
     </mdui-card>
 
     <mdui-card variant="filled" class="card">
-      <code id="debug__log" class="language-css" style="white-space: pre-wrap;font-family: 'Consolas', monospace;"></code>
+      <div class="card-title" style="margin-bottom: 0.5rem;">Dialog</div>
+      <div style="display: flex;flex-wrap: wrap;gap: 0.5rem;">
+        <mdui-chip elevated style="margin-top: 0.5rem;" onclick="document.getElementById('ae__order-dialog').open=true">
+          ae__order-dialog
+          <mdui-icon slot="icon" name="grid_on"></mdui-icon>
+        </mdui-chip>
+        <mdui-chip elevated style="margin-top: 0.5rem;" onclick="document.getElementById('bot__task-dialog').open=true">
+          bot__task-dialog
+          <mdui-icon slot="icon" name="add_task"></mdui-icon>
+        </mdui-chip>
+      </div>
     </mdui-card>
 
   </div>

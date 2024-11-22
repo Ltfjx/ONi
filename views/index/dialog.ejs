@@ -1,0 +1,81 @@
+<mdui-dialog id="ae__order-dialog" style="padding: 0 !important;">
+  <div class="card-title">
+    主网 - 请求订单
+  </div>
+
+  <mdui-card style="display: flex;align-items: center;gap: 0.5rem;margin-top: 1rem;padding: 1rem;">
+    <img src="./resources/itempanel/item/8207_0.png" style="height: 3rem;"></img>
+    <div>海珀珍</div>
+    <div style="margin-left: auto;opacity: 0.5;">库存数量：111</div>
+  </mdui-card>
+
+  <div style="display: flex;align-items: center;gap: 0.25rem;margin-top: 1rem;">
+    <div style="display: flex;align-items: center;flex-direction: column;">
+      <mdui-button-icon icon="remove"></mdui-button-icon>
+      <div style="font-size: x-small;margin-top: -0.8rem;opacity: 0.5;">-100</div>
+    </div>
+    <div style="display: flex;align-items: center;flex-direction: column;">
+      <mdui-button-icon icon="remove"></mdui-button-icon>
+      <div style="font-size: x-small;margin-top: -0.8rem;opacity: 0.5;">-10</div>
+    </div>
+    <div style="display: flex;align-items: center;flex-direction: column;">
+      <mdui-button-icon icon="remove"></mdui-button-icon>
+      <div style="font-size: x-small;margin-top: -0.8rem;opacity: 0.5;">-1</div>
+    </div>
+    <mdui-text-field style="margin-top: 0.25rem;" label="数量" value="1"></mdui-text-field>
+    <div style="display: flex;align-items: center;flex-direction: column;">
+      <mdui-button-icon icon="add"></mdui-button-icon>
+      <div style="font-size: x-small;margin-top: -0.8rem;opacity: 0.5;">+1</div>
+    </div>
+    <div style="display: flex;align-items: center;flex-direction: column;">
+      <mdui-button-icon icon="add"></mdui-button-icon>
+      <div style="font-size: x-small;margin-top: -0.8rem;opacity: 0.5;">+10</div>
+    </div>
+    <div style="display: flex;align-items: center;flex-direction: column;">
+      <mdui-button-icon icon="add"></mdui-button-icon>
+      <div style="font-size: x-small;margin-top: -0.8rem;opacity: 0.5;">+100</div>
+    </div>
+  </div>
+
+  <div style="display: flex;gap: 0.5rem;margin-top: 1rem;">
+    <mdui-button full-width variant="outlined" style="flex: 1" onclick="this.parentElement.parentElement.open=false">取消</mdui-button>
+    <mdui-button full-width style="flex: 4">下一步</mdui-button>
+  </div>
+
+  <data hidden></data>
+
+</mdui-dialog>
+
+
+<mdui-dialog id="bot__task-dialog" style="padding: 0 !important;">
+  <div class="card-title" style="display: flex;align-items: center;margin-bottom: 0.5rem;">
+    <mdui-icon name="tips_and_updates" style="margin-right: 0.5rem;"></mdui-icon>
+    <div>Suika - 添加任务向导</div>
+  </div>
+
+  <div style="opacity: 0.5;">
+    选择要添加的任务类型...
+  </div>
+
+
+
+  <mdui-card style="display: flex;align-items: center;gap: 0.5rem;margin-top: 1rem;padding: 1rem;width: 30rem;">
+
+    <mdui-list style="width: 100%;">
+      <mdui-collapse id="bot__task-dialog-list" accordion="">
+      </mdui-collapse>
+    </mdui-list>
+
+  </mdui-card>
+
+  <div style="display: flex;align-items: center;gap: 0.5rem;margin-top: 1rem;">
+    <mdui-switch id="bot__task-dialog-show-hidden-switch"></mdui-switch>
+    <div style="opacity: 0.5;">显示隐藏的任务</div>
+  </div>
+
+  <div style="display: flex;gap: 0.5rem;margin-top: 1rem;">
+    <mdui-button full-width variant="outlined" style="flex: 1" onclick="this.parentElement.parentElement.open=false">取消</mdui-button>
+    <mdui-button full-width style="flex: 4">下一步</mdui-button>
+  </div>
+
+</mdui-dialog>

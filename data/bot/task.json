@@ -1,0 +1,322 @@
+[
+    {
+        "id": "ae",
+        "display": "AE 任务",
+        "description": "AE 管理相关的任务，如查询库存、CPU信息、请求合成等。",
+        "icon": "grid_on",
+        "mode": [
+            {
+                "id": "getCpus",
+                "description": "查询 CPU 信息",
+                "hidden": false,
+                "config": [
+                    {
+                        "id": "targetAeUuid",
+                        "type": "aeUuid",
+                        "description": "目标 AE 的 UUID",
+                        "required": true
+                    },
+                    {
+                        "id": "uuid",
+                        "type": "string",
+                        "description": "目标 AE 组件的 UUID",
+                        "required": false
+                    }
+                ]
+            },
+            {
+                "id": "getComponent",
+                "description": "查询组件信息",
+                "hidden": true,
+                "config": []
+            },
+            {
+                "id": "request",
+                "description": "请求合成",
+                "hidden": true,
+                "config": [
+                    {
+                        "id": "uuid",
+                        "type": "string",
+                        "description": "目标 AE 组件的 UUID",
+                        "required": false
+                    },
+                    {
+                        "id": "name",
+                        "type": "string",
+                        "description": "合成物品的名称",
+                        "required": true
+                    },
+                    {
+                        "id": "damage",
+                        "type": "number",
+                        "description": "合成的物品的 meta 值",
+                        "required": true
+                    },
+                    {
+                        "id": "amount",
+                        "type": "number",
+                        "description": "合成的物品的数量",
+                        "required": true
+                    }
+                ]
+            },
+            {
+                "id": "check",
+                "description": "查询合成状态",
+                "hidden": true,
+                "config": [
+                    {
+                        "id": "craftUuid",
+                        "type": "string",
+                        "description": "合成请求的 UUID",
+                        "required": true
+                    }
+                ]
+            },
+            {
+                "id": "getItems",
+                "description": "查询库存",
+                "hidden": false,
+                "config": [
+                    {
+                        "id": "uuid",
+                        "type": "string",
+                        "description": "目标 AE 组件的 UUID",
+                        "required": false
+                    },
+                    {
+                        "id": "targetAeUuid",
+                        "type": "aeUuid",
+                        "description": "目标 AE 的 UUID",
+                        "required": true
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "gt_machine",
+        "display": "GT 机器任务",
+        "description": "GT 机器相关的任务，如获取机器信息、电量、流体等。",
+        "icon": "precision_manufacturing",
+        "mode": [
+            {
+                "id": "getMachine",
+                "description": "查询连接到该 OC 设备的所有 GT 机器信息",
+                "hidden": true,
+                "config": []
+            },
+            {
+                "id": "getEUInfo",
+                "description": "查询 GT 机器的电量信息",
+                "hidden": false,
+                "config": [
+                    {
+                        "id": "uuid",
+                        "type": "string",
+                        "description": "GT 机器的 UUID",
+                        "required": true
+                    }
+                ]
+            },
+            {
+                "id": "getFluidInfo",
+                "description": "查询 GT 机器的流体信息",
+                "hidden": false,
+                "config": [
+                    {
+                        "id": "uuid",
+                        "type": "string",
+                        "description": "GT 机器的 UUID",
+                        "required": true
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "component",
+        "display": "组件任务",
+        "description": "查询 BOT 连接的所有组件",
+        "icon": "smart_toy",
+        "mode": [
+            {
+                "id": "",
+                "description": "",
+                "hidden": true,
+                "config": []
+            }
+        ]
+    },
+    {
+        "id": "redstone",
+        "display": "红石信号任务",
+        "description": "查询、修改红石信号的输入、输出状态等",
+        "icon": "sensors",
+        "mode": [
+            {
+                "id": "getComponent",
+                "description": "查询红石相关组件信息",
+                "hidden": true,
+                "config": []
+            },
+            {
+                "id": "isRedstoneEnabled",
+                "description": "查询红石信号是否启用",
+                "hidden": true,
+                "config": []
+            },
+            {
+                "id": "updateComponent",
+                "description": "更新连接的红石相关组件信息",
+                "hidden": true,
+                "config": []
+            },
+            {
+                "id": "setOutput",
+                "description": "设置红石信号的输出状态",
+                "hidden": false,
+                "config": [
+                    {
+                        "id": "uuid",
+                        "type": "redstoneUuid",
+                        "description": "目标红石设备的 UUID",
+                        "required": true
+                    },
+                    {
+                        "id": "side",
+                        "type": "string",
+                        "description": "目标红石信号的输出面，留空即所有面",
+                        "required": false
+                    },
+                    {
+                        "id": "strength",
+                        "type": "number",
+                        "description": "目标红石信号的输出强度，留空即最高强度",
+                        "required": false
+                    }
+                ]
+            },
+            {
+                "id": "setBundledOutput",
+                "description": "设置 ProjectRed 集束线缆红石信号的输出状态",
+                "hidden": false,
+                "config": [
+                    {
+                        "id": "uuid",
+                        "type": "redstoneUuid",
+                        "description": "目标红石设备的 UUID",
+                        "required": true
+                    },
+                    {
+                        "id": "side",
+                        "type": "string",
+                        "description": "目标红石信号的输出面，留空即所有面",
+                        "required": false
+                    },
+                    {
+                        "id": "color",
+                        "type": "string",
+                        "description": "目标红石信号的颜色，留空即所有颜色",
+                        "required": false
+                    },
+                    {
+                        "id": "strength",
+                        "type": "number",
+                        "description": "目标红石信号的输出强度，留空即最高强度",
+                        "required": false
+                    }
+                ]
+            },
+            {
+                "id": "getInput",
+                "description": "查询红石信号的输入状态",
+                "hidden": false,
+                "config": [
+                    {
+                        "id": "uuid",
+                        "type": "redstoneUuid",
+                        "description": "目标红石设备的 UUID",
+                        "required": true
+                    },
+                    {
+                        "id": "side",
+                        "type": "string",
+                        "description": "目标红石信号的输入面，留空即所有面",
+                        "required": false
+                    }
+                ]
+            },
+            {
+                "id": "getBundledInput",
+                "description": "查询 ProjectRed 集束线缆红石信号的输入状态",
+                "hidden": false,
+                "config": [
+                    {
+                        "id": "uuid",
+                        "type": "redstoneUuid",
+                        "description": "目标红石设备的 UUID",
+                        "required": true
+                    },
+                    {
+                        "id": "side",
+                        "type": "string",
+                        "description": "目标红石信号的输入面，留空即所有面",
+                        "required": false
+                    },
+                    {
+                        "id": "color",
+                        "type": "string",
+                        "description": "目标红石信号的颜色，留空即所有颜色",
+                        "required": false
+                    }
+                ]
+            },
+            {
+                "id": "getOutput",
+                "description": "查询红石信号的输出状态",
+                "hidden": true,
+                "config": [
+                    {
+                        "id": "uuid",
+                        "type": "redstoneUuid",
+                        "description": "目标红石设备的 UUID",
+                        "required": true
+                    },
+                    {
+                        "id": "side",
+                        "type": "string",
+                        "description": "目标红石信号的输出面，留空即所有面",
+                        "required": false
+                    }
+                ]
+            },
+            {
+                "id": "getBundledOutput",
+                "description": "查询 ProjectRed 集束线缆红石信号的输出状态",
+                "hidden": true,
+                "config": [
+                    {
+                        "id": "uuid",
+                        "type": "redstoneUuid",
+                        "description": "目标红石设备的 UUID",
+                        "required": true
+                    },
+                    {
+                        "id": "side",
+                        "type": "string",
+                        "description": "目标红石信号的输出面，留空即所有面",
+                        "required": false
+                    },
+                    {
+                        "id": "color",
+                        "type": "string",
+                        "description": "目标红石信号的颜色，留空即所有颜色",
+                        "required": false
+                    }
+                ]
+            }
+        ]
+    }
+]
