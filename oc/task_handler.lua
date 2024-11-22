@@ -16,38 +16,65 @@ local uuid = "12345678-1234-1234-1234-123456789abc"
 
 local file = "task_handler.lua"
 
-local ws = webSocket.new({
-    address = address,
-    port = port,
-    path = path
-})
+local ws
 
--- 等待从服务器发送的web socket消息，会阻塞线程
+function connect()
+    local ws = webSocket.new({
+        address = address,
+        port = port,
+        path = path
+    })
+
+    -- 等待web socket连接建立完毕
+    while true do
+        os.sleep(0.05)
+        local connected, err = ws:finishConnect()
+        if connected then
+            break
+        end
+
+        if err then
+            print("failed to connect:" .. err)
+            return nil
+        end
+    end
+
+    print("Successfully connected to " .. address .. ":" .. port .. path)
+    return ws
+end
+
+-- 等待从服务器发送的web socket消息
 function await_message()
     while true do
         local messageType, message, err = ws:readMessage()
+
+        if err == "connection lost" then
+            while true do
+                ws = connect()
+
+                if ws ~= nil then
+                    break;
+                end
+            end
+            err = nil
+        end
+
         if err then return print('Websocket Error: ' .. err) end
         if messageType == webSocket.MESSAGE_TYPES.TEXT then
             print('Message Received: ' .. message)
             return message
         end
-        os.sleep(0.2)
+        os.sleep(0.05)
     end
 end
 
--- 等待web socket连接建立完毕
 while true do
-    local connected, err = ws:finishConnect()
-    if connected then
-        break
-    end
+    ws = connect()
 
-    if err then
-        return print("failed to connect:" .. err)
+    if ws ~= nil then
+        break;
     end
 end
-
-print("Successfully connected to " .. address .. ":" .. port .. path)
 
 -- 发送登录验证信息
 ws:send(json.encode({
@@ -103,7 +130,7 @@ end
 
 function cancel(taskUuid)
     if taskList[taskUuid] == nil then
-        oc_info.info(
+        oc_info.warn(
             "task with uuid: " .. taskUuid .. " dosen't exist",
             file,
             "cancel",
@@ -118,8 +145,12 @@ end
 print("start listening tasks")
 
 while true do
-    os.sleep(0.2)
+    os.sleep(0.1)
     local message = await_message()
+
+    if message == nil then
+        print("unknown message error occured")
+    end
 
     local tasks = json.decode(message)
 
