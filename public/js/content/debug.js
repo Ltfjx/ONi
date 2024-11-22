@@ -16,4 +16,4 @@ document.getElementById("debug__ws-button-send").addEventListener("click", async
     ws.send(JSON.stringify({ type: "oc/forward", target: target, data: JSON.parse(data) }))
 })
 
-document.getElementById('bot__task-dialog').open = true
+document.getElementById('bot__task-dialog-step1').open = true
