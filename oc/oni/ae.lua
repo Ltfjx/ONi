@@ -247,35 +247,40 @@ end
 function ae.newTask(ws, taskUuid, config)
     ae.updateAeComponents()
 
-    if config.uuid == nil then
-        for k, v in pairs(aeComponents) do
-            config.uuid = k
-            break
+    local function checkUuid(uuid)
+        if uuid == nil then
+            for k, v in pairs(aeComponents) do
+                uuid = k
+                break
+            end
+        end
+
+        if uuid == nil then
+            oc_info.error(ws,
+                "no AE component attached",
+                file,
+                "newTask",
+                taskUuid
+            )
+            return function() end
+        end
+
+        if aeComponents[uuid] == nil then
+            oc_info.error(ws,
+                "AE component with uuid = " .. uuid .. " dosen't exist",
+                file,
+                "newTask",
+                taskUuid
+            )
+            return function() end
         end
     end
 
-    if config.uuid == nil then
-        oc_info.error(ws,
-            "no AE component attached",
-            file,
-            "newTask",
-            taskUuid
-        )
-        return function() end
-    end
 
-    if aeComponents[config.uuid] == nil then
-        oc_info.error(ws,
-            "AE component with uuid = " .. config.uuid .. " dosen't exist",
-            file,
-            "newTask",
-            taskUuid
-        )
-        return function() end
-    end
 
     if config.mode == "getCpus" then
         return (function()
+            checkUuid(config.uuid)
             ae.getCpus(ws, taskUuid, config.uuid, config.targetAeUuid)
         end)
     elseif config.mode == "getComponent" then
@@ -284,6 +289,7 @@ function ae.newTask(ws, taskUuid, config)
         end)
     elseif config.mode == "request" then
         return (function()
+            checkUuid(config.uuid)
             ae.request(ws, taskUuid, config.uuid, config.name, config.damage, config.amount)
         end)
     elseif config.mode == "check" then
@@ -292,6 +298,7 @@ function ae.newTask(ws, taskUuid, config)
         end)
     elseif config.mode == "getItems" then
         return (function()
+            checkUuid(config.uuid)
             ae.getItems(ws, taskUuid, config.uuid, config.targetAeUuid)
         end)
     end
