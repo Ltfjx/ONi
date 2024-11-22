@@ -1,25 +1,3 @@
-var debug__log = ""
-
-function debug__addLog(text) {
-    const e = document.getElementById('debug__log')
-    debug__log += text + "\n"
-    e.textContent = debug__log
-    debug__highlightLog()
-}
-
-function debug__highlightLog() {
-    const e = document.getElementById('debug__log')
-    e.removeAttribute("data-highlighted")
-    hljs.highlightElement(e)
-}
-
-ws.addEventListener('message', async (event) => {
-    const json = JSON.parse(event.data)
-    if (json.type == "event/log") {
-        debug__addLog(json.data)
-    }
-})
-
 ws.addEventListener('message', async (event) => {
     const json = JSON.parse(event.data)
     if (json.type == "global/bot") {
@@ -37,3 +15,5 @@ document.getElementById("debug__ws-button-send").addEventListener("click", async
     const target = document.getElementById("debug__ws-select-bot").value
     ws.send(JSON.stringify({ type: "oc/forward", target: target, data: JSON.parse(data) }))
 })
+
+document.getElementById('bot__task-dialog').open = true

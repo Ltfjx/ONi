@@ -1,7 +1,9 @@
 var globalCommonData = []
 var globalMcServerStatus = {}
 var globalBot = []
+var globalBotTask = []
 var globalAe = []
+
 
 ws.addEventListener('message', function (event) {
     const json = JSON.parse(event.data)
@@ -30,6 +32,9 @@ ws.addEventListener('message', function (event) {
                 globalBot.push(element)
             }
         })
+    } else if (json.type == "global/botTask") {
+        globalBotTask = json.data
+        dialog__botTaskUpdate()
     }
 
     else if (json.type == "global/ae") {

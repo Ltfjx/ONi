@@ -37,7 +37,8 @@ var Websocket = {
                 try {
                     json = JSON.parse(message)
                 } catch (e) {
-                    logger.warn("Invalid JSON message received:", message)
+                    logger.error("Invalid JSON message received:", message)
+                    logger.error(e)
                     return
                 }
 
@@ -79,6 +80,9 @@ var Websocket = {
                         // 发送 bot list 布局
                         ws.send(JSON.stringify({ type: "layout/botList", data: Global.bot.getListLayout() }))
 
+                        // 发送 bot task 列表
+                        ws.send(JSON.stringify({ type: "global/botTask", data: Global.staticResources.botTask }))
+
                         // 发送 bot 编辑布局
                         ws.send(JSON.stringify({ type: "layout/botEdit", data: Global.bot.getEditLayout() }))
 
@@ -94,10 +98,10 @@ var Websocket = {
                         // 发送 ae 编辑布局
                         ws.send(JSON.stringify({ type: "layout/aeEdit", data: Global.ae.getEditLayout() }))
 
+
                     } else {
                         logger.warn(`Invalid token ${json.data.token} for user ${ws.sessionId.substring(0, 8)}`)
                         ws.send(JSON.stringify({ type: "auth/response", data: { user: undefined } }))
-
                     }
                 } else if (json.type == "data/event") {
                     // 事件数据
@@ -162,16 +166,12 @@ var Websocket = {
                 try {
                     json = JSON.parse(message)
                 } catch (e) {
-                    logger.warn("Invalid JSON message received:", message)
+                    logger.error("Invalid JSON message received:", message)
                     logger.error(e)
                     return
                 }
 
-                if (ws.authenticated) {
-                    logger.trace("OC RECEIVED", json)
-                } else {
-                    logger.warn("OC RECEIVED UNAUTHENTICATED", json)
-                }
+                logger.trace("OC RECEIVED", json)
 
                 if (json.type == "auth/request") {
                     // 登录请求

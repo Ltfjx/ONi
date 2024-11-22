@@ -16,10 +16,29 @@ interface ItemPanelLiquid {
     display: string
 }
 
+interface BotTask {
+    id: string
+    display: string
+    description: string
+    icon: string
+    mode: [{
+        id: string
+        description: string
+        hidden: boolean
+        config: [{
+            id: string
+            type: string
+            description: string
+            required: boolean
+        }]
+    }]
+}
+
 var staticResources = {
 
     itemPanelItem: [] as ItemPanelItem[],
     itemPanelFluid: [] as ItemPanelLiquid[],
+    botTask: [] as BotTask[],
 
     init(config: Config) {
         const itmePanelItemRaw = fs.readFileSync('./data/itempanel/item.csv', 'utf8')
@@ -39,7 +58,10 @@ var staticResources = {
         const itemPanelFluidRaw = fs.readFileSync('./data/itempanel/liquid.json', 'utf8')
         this.itemPanelFluid = JSON.parse(itemPanelFluidRaw)
         logger.trace("staticResourcesItemPanelFluid", this.itemPanelFluid)
-        
+
+        const botTaskRaw = fs.readFileSync('./data/bot/task.json', 'utf8')
+        this.botTask = JSON.parse(botTaskRaw)
+        logger.trace("staticResourcesBotTask", this.botTask)
     }
 }
 
