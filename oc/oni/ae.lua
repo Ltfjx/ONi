@@ -245,9 +245,9 @@ end
 -- config 参数请查看对应函数的描述
 -- TODO: 自动写样板，库存维持
 function ae.newTask(ws, taskUuid, config)
-    ae.updateAeComponents()
-
     local function checkUuid(uuid)
+        ae.updateAeComponents()
+
         if uuid == nil then
             for k, v in pairs(aeComponents) do
                 uuid = k
@@ -256,23 +256,25 @@ function ae.newTask(ws, taskUuid, config)
         end
 
         if uuid == nil then
-            oc_info.error(ws,
+            oc_info.error(
+                ws,
                 "no AE component attached",
                 file,
                 "newTask",
                 taskUuid
             )
-            return function() end
+            return nil
         end
 
         if aeComponents[uuid] == nil then
-            oc_info.error(ws,
+            oc_info.error(
+                ws,
                 "AE component with uuid = " .. uuid .. " dosen't exist",
                 file,
                 "newTask",
                 taskUuid
             )
-            return function() end
+            return nil
         end
     end
 
@@ -280,7 +282,7 @@ function ae.newTask(ws, taskUuid, config)
 
     if config.mode == "getCpus" then
         return (function()
-            checkUuid(config.uuid)
+            config.uuid = checkUuid(config.uuid)
             ae.getCpus(ws, taskUuid, config.uuid, config.targetAeUuid)
         end)
     elseif config.mode == "getComponent" then
@@ -289,7 +291,7 @@ function ae.newTask(ws, taskUuid, config)
         end)
     elseif config.mode == "request" then
         return (function()
-            checkUuid(config.uuid)
+            config.uuid = checkUuid(config.uuid)
             ae.request(ws, taskUuid, config.uuid, config.name, config.damage, config.amount)
         end)
     elseif config.mode == "check" then
@@ -298,7 +300,7 @@ function ae.newTask(ws, taskUuid, config)
         end)
     elseif config.mode == "getItems" then
         return (function()
-            checkUuid(config.uuid)
+            config.uuid = checkUuid(config.uuid)
             ae.getItems(ws, taskUuid, config.uuid, config.targetAeUuid)
         end)
     end

@@ -31,6 +31,8 @@ local function extractNumber(ws, taskUuid, str, ord)
         "extractNumber",
         taskUuid
     )
+
+    return "0"
 end
 
 function gt_machine.updateMachine()

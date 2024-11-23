@@ -18,6 +18,20 @@ local file = "task_handler.lua"
 
 local ws
 
+function login(ws)
+    -- 发送登录验证信息
+    ws:send(json.encode({
+        type = "auth/request",
+        data = {
+            token = "CWN78VN0MB00WFYIL8AN"
+        }
+    }))
+
+    --login response
+    -- print(await_message())
+    await_message()
+end
+
 function connect()
     local ws = webSocket.new({
         address = address,
@@ -38,6 +52,8 @@ function connect()
             return nil
         end
     end
+
+    login(ws)
 
     print("Successfully connected to " .. address .. ":" .. port .. path)
     return ws
@@ -76,13 +92,7 @@ while true do
     end
 end
 
--- 发送登录验证信息
-ws:send(json.encode({
-    type = "auth/request",
-    data = {
-        token = "CWN78VN0MB00WFYIL8AN"
-    }
-}))
+
 
 -- 检测oc组件是否更新并上传组件信息
 function updateComponent()
@@ -98,10 +108,6 @@ function updateComponent()
         ws:send(json.encode(message))
     end
 end
-
---login response
--- print(await_message())
-await_message()
 
 -- 定时检测并上传oc组件的更新信息
 event.timer(5, updateComponent, math.huge)
@@ -150,6 +156,7 @@ while true do
 
     if message == nil then
         print("unknown message error occured")
+        goto task_loop_continue
     end
 
     local tasks = json.decode(message)
