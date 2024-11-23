@@ -1,5 +1,6 @@
-import log4js, { Config } from "log4js"
-import { wsWebBroadcast } from "./websocket"
+import log4js from "log4js"
+import { Config } from "./interface.js"
+import { wsWebBroadcast } from "./websocket.js"
 
 var Logger = {
     init(config: Config) {
@@ -22,7 +23,7 @@ var Logger = {
                 oni_ws: { type: wsLoggerAppender }
             },
             categories: {
-                default: { appenders: ["file", "console", "oni_ws"], level: "trace" }
+                default: { appenders: ["file", "console", "oni_ws"], level: config.log_level || "trace" }
             },
         })
     }

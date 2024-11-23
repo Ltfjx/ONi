@@ -1,6 +1,6 @@
-import { Config, Event } from "../interface"
+import { Config, Event } from "../interface.js"
 import fs from "fs"
-import { wsWebBroadcast } from "../websocket"
+import { wsWebBroadcast } from "../websocket.js"
 
 var event = {
     // 事件

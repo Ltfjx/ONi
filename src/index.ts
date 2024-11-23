@@ -1,15 +1,15 @@
 import yaml from "yaml"
 import fs from "fs"
-import Global from "./global"
-import Server from "./server"
-import Logger from "./logger"
-import { Config } from "./interface"
-import { loggerMain as logger } from "./logger"
-import Websocket from "./websocket"
-import TaskMcServerStatus from "./task/mcServerStatus"
+import Global from "./global/index.js"
+import Server from "./server.js"
+import Logger from "./logger.js"
+import { Config } from "./interface.js"
+import { loggerMain as logger } from "./logger.js"
+import Websocket from "./websocket.js"
+import TaskMcServerStatus from "./task/mcServerStatus.js"
 
 logger.level = "TRACE"
-logger.info("Starting Oni...")
+logger.info("Starting ONi...")
 
 var config: Config
 
@@ -32,10 +32,21 @@ logger.info("Config file loaded.")
 logger.trace("config", config)
 
 // 初始化模块
-Logger.init(config)
-Global.init(config)
-Server.init(config)
-Websocket.init(config)
+const initializeModule = (module: any, moduleName: string) => {
+    try {
+        module.init(config)
+        logger.info(`${moduleName} module initialized.`)
+    } catch (error) {
+        logger.error(`Failed to initialize ${moduleName.toLowerCase()} module, please check the log.`)
+        logger.error(error)
+        process.exit(1)
+    }
+}
+
+initializeModule(Logger, 'Logger')
+initializeModule(Global, 'Global')
+initializeModule(Server, 'Server')
+initializeModule(Websocket, 'Websocket')
 
 // 启动定时任务
 TaskMcServerStatus.init(config)

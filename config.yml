@@ -1,7 +1,7 @@
 # Oni Configuration File
 
 ## 日志等级 [ TRACE | DEBUG | INFO | WARNING | ERROR | FATAL ]
-log_level: TRACE
+log_level: DEBUG
 
 ## Oni 端口 [ 1024 - 65535 ]
 port: 5600

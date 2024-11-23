@@ -1,9 +1,9 @@
 import { WebSocket, WebSocketServer } from "ws"
 import http from "http"
 import fs from "fs"
-import { User, Bot, Data } from "./interface"
-import { loggerWebsocket as logger } from "./logger"
-import Global from "./global"
+import { User, Bot, Data } from "./interface.js"
+import { loggerWebsocket as logger } from "./logger.js"
+import Global from "./global/index.js"
 import { Config } from "log4js"
 
 interface SessionWeb extends WebSocket {

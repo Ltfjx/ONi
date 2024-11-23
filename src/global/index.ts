@@ -1,13 +1,13 @@
-import user from "./user"
-import bot from "./bot"
-import ae from "./ae"
-import data from "./data"
-import redstone from "./redstone"
-import event from "./event"
-import mcServerStatus from "./mcServerStatus"
-import staticResources from "./staticResources"
+import user from "./user.js"
+import bot from "./bot.js"
+import ae from "./ae.js"
+import data from "./data.js"
+import redstone from "./redstone.js"
+import event from "./event.js"
+import mcServerStatus from "./mcServerStatus.js"
+import staticResources from "./staticResources.js"
 
-import { Config } from "../interface"
+import { Config } from "../interface.js"
 
 var Global = {
     user: user,

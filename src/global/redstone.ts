@@ -1,6 +1,6 @@
-import { Config, Redstone } from "../interface"
+import { Config, Redstone } from "../interface.js"
 import fs from "fs"
-import { loggerGlobal as logger } from "../logger"
+import { loggerGlobal as logger } from "../logger.js"
 
 var redstone = {
     // 红石控制组件
@@ -48,8 +48,14 @@ var redstone = {
     },
 
     init(config: Config) {
-        this.list = JSON.parse(fs.readFileSync('./data/variable/redstone_control.json', 'utf8'))
-        logger.trace("redstone", this.list)
+        try {
+            this.list = JSON.parse(fs.readFileSync('./data/variable/redstone_control.json', 'utf8'))
+            logger.debug("redstone", "Json initialized successfully.")
+            logger.trace("redstone", this.list)
+        } catch (e) {
+            logger.error("redstone", "Json initialization failed.")
+            logger.error("redstone", e)
+        }
     }
 }
 

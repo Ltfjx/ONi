@@ -1,9 +1,9 @@
 import express from "express"
 import ejs from "ejs"
 import http from "http"
-import { wssWeb, wssOc } from "./websocket"
-import { loggerServer as logger } from "./logger"
-import { Config } from "./interface"
+import { wssWeb, wssOc } from "./websocket.js"
+import { loggerServer as logger } from "./logger.js"
+import { Config } from "./interface.js"
 
 var Server = {
     init(config: Config) {
@@ -39,7 +39,7 @@ var Server = {
         app.use(express.static('public'))
 
         server.listen(config.port, () => {
-            logger.info(`Server started on port ${config.port}.`)
+            logger.info(`ONi server started on port ${config.port}.`)
         })
     }
 }

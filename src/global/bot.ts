@@ -1,7 +1,7 @@
-import { Bot, Config } from "../interface"
+import { Bot, Config } from "../interface.js"
 import fs from "fs"
-import { loggerGlobal as logger } from "../logger"
-import { wsWebBroadcast } from "../websocket"
+import { loggerGlobal as logger } from "../logger.js"
+import { wsWebBroadcast } from "../websocket.js"
 
 var bot = {
     // BOT 列表
@@ -71,8 +71,14 @@ var bot = {
     },
 
     init(config: Config) {
-        this.list = JSON.parse(fs.readFileSync('./data/bot/bot.json', 'utf8'))
-        logger.trace("botList", this.list)
+        try {
+            this.list = JSON.parse(fs.readFileSync('./data/bot/bot.json', 'utf8'))
+            logger.debug("bot", "Json initialized successfully.")
+            logger.trace("bot", this.list)
+        } catch (e) {
+            logger.error("bot", "Json initialization failed.")
+            logger.error("bot", e)
+        }
     }
 }
 
