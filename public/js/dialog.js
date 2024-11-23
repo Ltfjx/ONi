@@ -3,9 +3,14 @@
 })()
 
 var dialog__botTaskShowHidden = false
+var dialog__botTaskSelectedTask = null
 
 function dialog__botTaskUpdate(data) {
-    var taskListElement = document.getElementById("bot__task-dialog-list")
+    let btnNext = document.getElementById("bot__task-dialog-step1-next-button")
+    btnNext.disabled = true
+    btnNext.innerHTML = "下一步"
+
+    var taskListElement = document.getElementById("bot__task-dialog-step1-list")
     var taskString = ""
     if (!data) { data = globalBotTask }
     data.forEach(task => {
@@ -14,17 +19,19 @@ function dialog__botTaskUpdate(data) {
             if (mode.hidden == true && !dialog__botTaskShowHidden) { return false } else { return true }
         }).forEach(mode => {
             modeString += `
-            <mdui-list-item style="opacity: ${mode.hidden ? 0.4 : 1};">
+            <mdui-list-item style="opacity: ${mode.hidden ? 0.4 : 1};" value="${mode.id}" class="bot__task-task-mode-item">
                 <div>${mode.id}</div>
                 <div style="opacity: 0.5;">${mode.description}</div>
+                <mdui-icon slot="end-icon" name="radio_button_unchecked"></mdui-icon>
             </mdui-list-item>
             `
         })
         taskString += `
-        <mdui-collapse-item>
+        <mdui-collapse-item value="${task.id}">
             <mdui-list-item slot="header" icon="${task.icon}">
                 <div>${task.id}</div>
                 <div style="opacity: 0.5;">${task.description}</div>
+                <mdui-icon slot="end-icon" name="keyboard_arrow_down"></mdui-icon>
             </mdui-list-item>
             <div style="margin-left: 3rem">
                 ${modeString}
@@ -33,10 +40,150 @@ function dialog__botTaskUpdate(data) {
         `
     })
     taskListElement.innerHTML = taskString
+
+    document.getElementById("bot__task-dialog-step1-list").addEventListener("change", event => {
+        Array.from(document.getElementById("bot__task-dialog-step1-list").children).forEach(element => {
+            if (element.value == event.target.value) {
+                element.querySelector("mdui-icon").setAttribute("name", "keyboard_arrow_up")
+            } else {
+                element.querySelector("mdui-icon").setAttribute("name", "keyboard_arrow_down")
+            }
+        })
+    })
+
+    Array.from(document.querySelectorAll(".bot__task-task-mode-item")).forEach(element1 => {
+        element1.addEventListener("click", event => {
+            Array.from(document.querySelectorAll(".bot__task-task-mode-item")).forEach(element2 => {
+                element2.querySelector("mdui-icon").setAttribute("name", "radio_button_unchecked")
+            })
+            event.currentTarget.querySelector("mdui-icon").setAttribute("name", "radio_button_checked")
+            dialog__botTaskSelectedTask = `${event.currentTarget.parentNode.parentNode.value}.${event.currentTarget.getAttribute("value")}`
+
+            btnNext.disabled = false
+            btnNext.innerHTML = `下一步 (${dialog__botTaskSelectedTask})`
+        })
+    })
 }
 
 
-document.getElementById("bot__task-dialog-show-hidden-switch").addEventListener("change", event => {
+
+
+document.getElementById("bot__task-dialog-step1-show-hidden-switch").addEventListener("change", event => {
     dialog__botTaskShowHidden = event.target.checked
     dialog__botTaskUpdate()
-})  
+})
+
+document.getElementById("bot__task-dialog-step1-next-button").addEventListener("click", event => {
+
+    step1Element = document.getElementById("bot__task-dialog-step1")
+    step2Element = document.getElementById("bot__task-dialog-step2")
+
+    let mode = globalBotTask.find(task => task.id == dialog__botTaskSelectedTask.split(".")[0])
+        .mode.find(mode => mode.id == dialog__botTaskSelectedTask.split(".")[1])
+
+    const icon = globalBotTask.find(task => task.id == dialog__botTaskSelectedTask.split(".")[0]).icon
+
+    document.getElementById("bot__task-dialog-step2-icon").setAttribute("name", icon)
+    document.getElementById("bot__task-dialog-step2-id").innerHTML = dialog__botTaskSelectedTask
+    document.getElementById("bot__task-dialog-step2-description").innerHTML = mode.description
+
+    let configString = ""
+
+    if (mode.config.length == 0) {
+        configString = `
+        <div style="margin-top: 1rem;opacity: 0.5;text-align: center;">
+            此模式无配置项
+        </div>`
+    } else {
+        mode.config.forEach(config => {
+            const title = config.id
+            const type = `${config.type}${!config.required ? "?" : ""}`
+            const description = config.description
+            if (config.type == "string") {
+                configString += `
+                <div style="display: flex;margin-top: 1rem;align-items: center;">
+                    <div>
+                        <div>${title}<span style="margin-left: 0.5rem;opacity: 0.5;font-size: small;">${type}</span></div>
+                        <div style="opacity: 0.5;font-size: small;">${description}</div>
+                    </div>
+                    <mdui-text-field style="margin-left: auto;width: 10rem;" variant="outlined" clearable></mdui-text-field>
+                </div>
+                `
+            } else if (config.type == "number") {
+                configString += `
+                <div style="display: flex;margin-top: 1rem;align-items: center;">
+                    <div>
+                        <div>${title}<span style="margin-left: 0.5rem;opacity: 0.5;font-size: small;">${type}</span></div>
+                        <div style="opacity: 0.5;font-size: small;">${description}</div>
+                    </div>
+                    <mdui-text-field style="margin-left: auto;width: 10rem;" type="number" variant="outlined" clearable></mdui-text-field>
+                </div>
+                `
+            } else if (config.type == "boolean") {
+                configString += `
+                <div style="display: flex;margin-top: 1rem;align-items: center;">
+                    <div>
+                        <div>${title}<span style="margin-left: 0.5rem;opacity: 0.5;font-size: small;">${type}</span></div>
+                        <div style="opacity: 0.5;font-size: small;">${description}</div>
+                    </div>
+                    <mdui-switch checked style="margin-left: auto;"></mdui-switch>
+                </div>
+                `
+            } else if (config.type == "redstoneUuid") {
+                configString += `
+                <div style="display: flex;margin-top: 1rem;align-items: center;">
+                    <div>
+                        <div>${title}<span style="margin-left: 0.5rem;opacity: 0.5;font-size: small;">${type}</span></div>
+                        <div style="opacity: 0.5;font-size: small;">${description}</div>
+                    </div>
+                    <mdui-select end-icon="keyboard_arrow_down" style="margin-left: auto;width: 10rem;" variant="outlined" value="item-1">
+                        <mdui-menu-item value="item-1">Item 1</mdui-menu-item>
+                        <mdui-menu-item value="item-2">Item 2</mdui-menu-item>
+                    </mdui-select>
+                </div>
+                `
+            } else if (config.type == "aeUuid") {
+                configString += `
+                <div style="display: flex;margin-top: 1rem;align-items: center;">
+                    <div>
+                        <div>${title}<span style="margin-left: 0.5rem;opacity: 0.5;font-size: small;">${type}</span></div>
+                        <div style="opacity: 0.5;font-size: small;">${description}</div>
+                    </div>
+                    <mdui-select end-icon="keyboard_arrow_down" style="margin-left: auto;width: 10rem;" variant="outlined" value="item-1">
+                        <mdui-menu-item value="item-1">Item 1</mdui-menu-item>
+                        <mdui-menu-item value="item-2">Item 2</mdui-menu-item>
+                    </mdui-select>
+                </div>
+                `
+            }
+        })
+    }
+
+    document.getElementById("bot__task-dialog-step2-config-list").innerHTML = configString
+
+    step1Element.open = false
+    setTimeout(() => {
+        step2Element.open = true
+    }, 100)
+})
+
+document.getElementById("bot__task-dialog-step2-back-button").addEventListener("click", event => {
+    document.getElementById("bot__task-dialog-step2").open = false
+    setTimeout(() => {
+        document.getElementById("bot__task-dialog-step1").open = true
+    }, 100)
+})
+
+document.getElementById("bot__task-dialog-step2-next-button").addEventListener("click", event => {
+    document.getElementById("bot__task-dialog-step2").open = false
+    setTimeout(() => {
+        document.getElementById("bot__task-dialog-step3").open = true
+    }, 100)
+})
+
+document.getElementById("bot__task-dialog-step3-back-button").addEventListener("click", event => {
+    document.getElementById("bot__task-dialog-step3").open = false
+    setTimeout(() => {
+        document.getElementById("bot__task-dialog-step2").open = true
+    }, 100)
+})

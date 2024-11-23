@@ -1,6 +1,6 @@
-import { Config, User } from "../interface"
+import { Config, User } from "../interface.js"
 import fs from "fs"
-import { loggerGlobal as logger } from "../logger"
+import { loggerGlobal as logger } from "../logger.js"
 
 var user = {
     // 用户列表

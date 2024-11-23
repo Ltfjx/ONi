@@ -1,8 +1,8 @@
-import { Ae, Config } from "../interface"
+import { Ae, Config } from "../interface.js"
 import fs from "fs"
-import { loggerGlobal as logger } from "../logger"
-import { wsWebBroadcast } from "../websocket"
-import { deepEqual } from "../utils"
+import { loggerGlobal as logger } from "../logger.js"
+import { wsWebBroadcast } from "../websocket.js"
+import { deepEqual } from "../utils.js"
 
 var ae = {
     // AE 列表
@@ -87,8 +87,14 @@ var ae = {
     },
 
     init(config: Config) {
-        this.list = JSON.parse(fs.readFileSync('./data/ae/ae.json', 'utf8'))
-        logger.trace("aeList", this.list)
+        try {
+            this.list = JSON.parse(fs.readFileSync('./data/ae/ae.json', 'utf8'))
+            logger.debug("ae", "Json initialized successfully.")
+            logger.trace("ae", this.list)
+        } catch (e) {
+            logger.error("ae", "Json initialization failed.")
+            logger.error("ae", e)
+        }
     }
 }
 

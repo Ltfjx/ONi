@@ -1,12 +1,18 @@
-import Global from "../global"
-import { Config, McServerStatus } from "../interface"
-import { loggerTask as logger } from "../logger"
+import Global from "../global/index.js"
+import { Config, McServerStatus } from "../interface.js"
+import { loggerTask as logger } from "../logger.js"
 
 var mcServerStatus = {
     init(config: Config) {
         // 定时更新 MC 服务器状态
-        setInterval(mcServerStatusUpdate, config.mc_server_status_update_interval * 1000)
-        mcServerStatusUpdate()
+
+        if (config.mc_server_ip) {
+            setInterval(mcServerStatusUpdate, config.mc_server_status_update_interval * 1000)
+            mcServerStatusUpdate()
+        } else {
+            logger.warn("mcServerStatus", "mc_server_ip is not set, mcServerStatusUpdate will not be executed.")
+        }
+
 
         async function mcServerStatusUpdate() {
             try {

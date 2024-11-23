@@ -1,7 +1,7 @@
-import { Config, Data } from "../interface"
+import { Config, Data } from "../interface.js"
 import fs from "fs"
-import { loggerGlobal as logger } from "../logger"
-import { wsWebBroadcast } from "../websocket"
+import { loggerGlobal as logger } from "../logger.js"
+import { wsWebBroadcast } from "../websocket.js"
 
 var data = {
     // 通用数据
@@ -18,8 +18,14 @@ var data = {
     },
 
     init(config: Config) {
-        this.list = JSON.parse(fs.readFileSync('./data/variable/common_data.json', 'utf8'))
-        logger.trace("data", this.list)
+        try {
+            this.list = JSON.parse(fs.readFileSync('./data/variable/common_data.json', 'utf8'))
+            logger.debug("data", "Json initialized successfully.")
+            logger.trace("data", this.list)
+        } catch (e) {
+            logger.error("data", "Json initialization failed.")
+            logger.error("data", e)
+        }
     }
 }
 

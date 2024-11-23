@@ -1,6 +1,6 @@
-import { Config, McServerStatus } from "../interface"
-import { loggerGlobal as logger } from "../logger"
-import { wsWebBroadcast } from "../websocket"
+import { Config, McServerStatus } from "../interface.js"
+import { loggerGlobal as logger } from "../logger.js"
+import { wsWebBroadcast } from "../websocket.js"
 
 var mcServerStatus = {
     // MC 服务器状态
@@ -21,8 +21,14 @@ var mcServerStatus = {
     },
 
     init(config: Config) {
-        this.status.ip = config.mc_server_ip
-        logger.trace("mcServerStatus", mcServerStatus)
+        if(!config.mc_server_ip) {
+            logger.warn("mcServerStatus", "mc_server_ip is not set in config.")
+        } else {
+            this.status.ip = config.mc_server_ip
+            logger.debug("mcServerStatus", "mc_server_ip is set to " + config.mc_server_ip)
+            logger.trace("mcServerStatus", mcServerStatus)
+        }
+        
     }
 }
 

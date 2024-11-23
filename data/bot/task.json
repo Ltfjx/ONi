@@ -2,7 +2,7 @@
     {
         "id": "ae",
         "display": "AE 任务",
-        "description": "AE 管理相关的任务，如查询库存、CPU信息、请求合成等。",
+        "description": "AE 管理相关的任务，如查询库存、CPU 信息、请求合成等。",
         "icon": "grid_on",
         "mode": [
             {
