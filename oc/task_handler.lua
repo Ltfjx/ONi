@@ -29,7 +29,7 @@ function login(ws)
 
     --login response
     -- print(await_message())
-    await_message()
+    await_message(ws)
 end
 
 function connect()
@@ -66,11 +66,14 @@ function await_message()
 
         if err == "connection lost" then
             while true do
-                ws = connect()
+                local newWs = connect()
 
-                if ws ~= nil then
+                if newWs ~= nil then
+                    ws = newWs
                     break;
                 end
+
+                os.sleep(0.5)
             end
             err = nil
         end
@@ -90,6 +93,8 @@ while true do
     if ws ~= nil then
         break;
     end
+
+    os.sleep(0.5)
 end
 
 
