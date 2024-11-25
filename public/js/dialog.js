@@ -4,6 +4,7 @@
 
 var dialog__botTaskShowHidden = false
 var dialog__botTaskSelectedTask = null
+var dialog__botTaskOutput = ""
 
 function dialog__botTaskUpdate(data) {
     let btnNext = document.getElementById("bot__task-dialog-step1-next-button")
@@ -101,7 +102,7 @@ document.getElementById("bot__task-dialog-step1-next-button").addEventListener("
             const description = config.description
             if (config.type == "string") {
                 configString += `
-                <div style="display: flex;margin-top: 1rem;align-items: center;">
+                <div style="display: flex;margin-top: 1rem;align-items: center;" config-id="${config.id}" config-type="${config.type}" config-required="${config.required}">
                     <div>
                         <div>${title}<span style="margin-left: 0.5rem;opacity: 0.5;font-size: small;">${type}</span></div>
                         <div style="opacity: 0.5;font-size: small;">${description}</div>
@@ -111,7 +112,7 @@ document.getElementById("bot__task-dialog-step1-next-button").addEventListener("
                 `
             } else if (config.type == "number") {
                 configString += `
-                <div style="display: flex;margin-top: 1rem;align-items: center;">
+                <div style="display: flex;margin-top: 1rem;align-items: center;" config-id="${config.id}" config-type="${config.type}" config-required="${config.required}">
                     <div>
                         <div>${title}<span style="margin-left: 0.5rem;opacity: 0.5;font-size: small;">${type}</span></div>
                         <div style="opacity: 0.5;font-size: small;">${description}</div>
@@ -121,7 +122,7 @@ document.getElementById("bot__task-dialog-step1-next-button").addEventListener("
                 `
             } else if (config.type == "boolean") {
                 configString += `
-                <div style="display: flex;margin-top: 1rem;align-items: center;">
+                <div style="display: flex;margin-top: 1rem;align-items: center;" config-id="${config.id}" config-type="${config.type}" config-required="${config.required}">
                     <div>
                         <div>${title}<span style="margin-left: 0.5rem;opacity: 0.5;font-size: small;">${type}</span></div>
                         <div style="opacity: 0.5;font-size: small;">${description}</div>
@@ -131,7 +132,7 @@ document.getElementById("bot__task-dialog-step1-next-button").addEventListener("
                 `
             } else if (config.type == "redstoneUuid") {
                 configString += `
-                <div style="display: flex;margin-top: 1rem;align-items: center;">
+                <div style="display: flex;margin-top: 1rem;align-items: center;" config-id="${config.id}" config-type="${config.type}" config-required="${config.required}">
                     <div>
                         <div>${title}<span style="margin-left: 0.5rem;opacity: 0.5;font-size: small;">${type}</span></div>
                         <div style="opacity: 0.5;font-size: small;">${description}</div>
@@ -144,7 +145,7 @@ document.getElementById("bot__task-dialog-step1-next-button").addEventListener("
                 `
             } else if (config.type == "aeUuid") {
                 configString += `
-                <div style="display: flex;margin-top: 1rem;align-items: center;">
+                <div style="display: flex;margin-top: 1rem;align-items: center;" config-id="${config.id}" config-type="${config.type}" config-required="${config.required}">
                     <div>
                         <div>${title}<span style="margin-left: 0.5rem;opacity: 0.5;font-size: small;">${type}</span></div>
                         <div style="opacity: 0.5;font-size: small;">${description}</div>
@@ -175,10 +176,89 @@ document.getElementById("bot__task-dialog-step2-back-button").addEventListener("
 })
 
 document.getElementById("bot__task-dialog-step2-next-button").addEventListener("click", event => {
-    document.getElementById("bot__task-dialog-step2").open = false
-    setTimeout(() => {
-        document.getElementById("bot__task-dialog-step3").open = true
-    }, 100)
+    let ok = true
+
+    let config = {}
+    Array.from(document.getElementById("bot__task-dialog-step2-config-list").children).forEach(element => {
+        const id = element.getAttribute("config-id")
+        const type = element.getAttribute("config-type")
+        const required = element.getAttribute("config-required")
+
+        let value = null
+
+        if (type == "string") {
+            value = element.querySelector("mdui-text-field").value
+        } else if (type == "number") {
+            value = element.querySelector("mdui-text-field").value
+        } else if (type == "boolean") {
+            value = element.querySelector("mdui-switch").checked
+        } else if (type == "redstoneUuid") {
+            value = element.querySelector("mdui-select").value
+        } else if (type == "aeUuid") {
+            value = element.querySelector("mdui-select").value
+        }
+
+        if (!value && required == "true") {
+            if (element.classList.contains("animate__animated") == false) {
+                element.classList.add("animate__animated", "animate__headShake")
+                setTimeout(() => {
+                    element.classList.remove("animate__animated", "animate__headShake")
+                }, 1000)
+            }
+            ok = false
+            return
+        } else if (value) {
+            config[id] = value
+        }
+    })
+
+    let globalConfig = {}
+    Array.from(document.getElementById("bot__task-dialog-step2-global-config-list").children).forEach(element => {
+        const id = element.getAttribute("global-config-id")
+        const type = element.getAttribute("global-config-type")
+        const required = element.getAttribute("global-config-required")
+
+        let value = null
+
+        if (type == "string") {
+            value = element.querySelector("mdui-text-field").value
+        } else if (type == "number") {
+            value = element.querySelector("mdui-text-field").value
+        } else if (type == "boolean") {
+            value = element.querySelector("mdui-switch").checked
+        }
+
+        if (!value && required == "true") {
+            if (element.classList.contains("animate__animated") == false) {
+                element.classList.add("animate__animated", "animate__headShake")
+                setTimeout(() => {
+                    element.classList.remove("animate__animated", "animate__headShake")
+                }, 1000)
+            }
+            ok = false
+            return
+        } else if (value) {
+            globalConfig[id] = value
+        }
+
+    })
+
+
+
+    console.log(config, globalConfig)
+
+    if (ok) {
+        dialog__botTaskOutput = {
+            task: dialog__botTaskSelectedTask.split(".")[0],
+            ...globalConfig,
+            config: { mode: dialog__botTaskSelectedTask.split(".")[1], ...config }
+        }
+        document.getElementById("bot__task-dialog-step3-preview").innerHTML = JSON.stringify(dialog__botTaskOutput, null, 4)
+        document.getElementById("bot__task-dialog-step2").open = false
+        setTimeout(() => {
+            document.getElementById("bot__task-dialog-step3").open = true
+        }, 100)
+    }
 })
 
 document.getElementById("bot__task-dialog-step3-back-button").addEventListener("click", event => {

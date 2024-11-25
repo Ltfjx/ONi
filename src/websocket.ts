@@ -30,6 +30,14 @@ var Websocket = {
 
             logger.info(`New WEB WebSocket connection ${ws.sessionId.substring(0, 8)}`)
 
+            ws.on('close', (code: number, reason: string) => {
+                logger.info(`WEB WebSocket connection ${ws.sessionId.substring(0, 8)} closed with code ${code} and reason ${reason}`)
+            })
+
+            ws.on('error', (error: Error) => {
+                logger.error(`WEB WebSocket connection ${ws.sessionId.substring(0, 8)} error`, error)
+            })
+
             ws.on('message', (message: string) => {
 
                 // 解析 JSON
@@ -158,6 +166,14 @@ var Websocket = {
 
             logger.info(`New OC WebSocket connection ${ws.sessionId.substring(0, 8)}`)
 
+            ws.on('close', (code: number, reason: string) => {
+                logger.info(`OC WebSocket connection ${ws.sessionId.substring(0, 8)} closed with code ${code} and reason ${reason}`)
+            })
+
+            ws.on('error', (error: Error) => {
+                logger.error(`OC WebSocket connection ${ws.sessionId.substring(0, 8)} error`, error)
+            })
+
             ws.on('message', (message: string) => {
 
 
@@ -243,8 +259,9 @@ var Websocket = {
                         let target = Global.ae.list.find(ae => ae.uuid === json.data.uuid)
                         if (target) {
                             json.data.cpus.forEach((cpu: any) => {
-                                if (cpu.busy) {
-                                    const itemPanelItem = Global.staticResources.itemPanelItem.find(itemPanelItem => itemPanelItem.name == cpu.finalOutput.name)
+                                if (cpu.busy && cpu.finalOutput) {
+                                    console.log(cpu.finalOutput)
+                                    const itemPanelItem = Global.staticResources.itemPanelItem.find(itemPanelItem =>(itemPanelItem.name == cpu.finalOutput.name)&&(itemPanelItem.damage == cpu.finalOutput.damage))
                                     const itemPanelFluid = Global.staticResources.itemPanelFluid.find(itemPanelFluid => itemPanelFluid.name == cpu.finalOutput.name)
                                     if (itemPanelItem) {
                                         cpu.finalOutput.id = itemPanelItem.id
@@ -267,6 +284,7 @@ var Websocket = {
 
             })
         })
+
     }
 }
 

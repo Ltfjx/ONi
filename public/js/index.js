@@ -120,3 +120,20 @@ function generateLayoutAnimation(element) {
         }
     })
 }
+
+function numberDisplayConvert(number) {
+    const unitList = ["", "K", "M", "G", "T", "P"]
+
+    var digit = Math.floor(Math.log10(number))
+    var grade = (digit - digit % 3) / 3
+
+    if (number < 10000) {
+        return number
+    }
+
+    if (digit % 3 == 0) {
+        return (number / Math.pow(10, digit)).toFixed(1) + unitList[grade]
+    }
+
+    return (number / Math.pow(10, grade * 3)).toFixed(0) + unitList[grade]
+}

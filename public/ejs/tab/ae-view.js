@@ -166,6 +166,14 @@ function aeView__renderCpusList(target, ae) {
     if (aeCpus.length <= aeView__cpusPerPage) {
         targetElementShowMore.style["display"] = "none"
         targetElementShowLess.style["display"] = "none"
+    } else {
+        if (aeView__filter.find(ae => ae.uuid === target).cpusShowMore) {
+            targetElementShowMore.style["display"] = "none"
+            targetElementShowLess.style["display"] = "block"
+        } else {
+            targetElementShowMore.style["display"] = "block"
+            targetElementShowLess.style["display"] = "none"
+        }
     }
 
     if (!aeView__filter.find(ae => ae.uuid === target).cpusShowMore) {
@@ -184,7 +192,7 @@ function aeView__renderCpusList(target, ae) {
             const iconBig = cpu.busy ? "hourglass_bottom" : "schedule"
             const nameStr = cpu.name ? `- "${cpu.name}"` : ""
             const statusStr = cpu.busy ? "合成中 · 1 分钟" : `空闲 · ${cpu.storage / 1024}K`
-            const finalOutput = cpu.busy ? `<div style="margin-top: .5rem;margin-bottom: .5rem;"><b>${cpu.finalOutput.display}</b> - 0 / 1</div>` : ""
+            const finalOutput = cpu.busy ? `<div style="margin-top: .5rem;margin-bottom: .5rem;"><b>${cpu.finalOutput.display}</b> - 0 / ${cpu.finalOutput.amount}</div>` : ""
             const progressBar = cpu.busy ? `
             <div style="display: flex;align-items: center;margin-bottom: 0.25rem;">
                 <div style="opacity: 0.5;">69%&nbsp;&nbsp;</div>
@@ -327,7 +335,7 @@ function aeView__renderItemList(target, ae) {
         itemListFilteredSliced.forEach(item => {
 
             let link = ""
-            let amount = item.amount
+            let amount = numberDisplayConvert(item.amount)
 
             if (item.isFluid) {
                 link = `fluid/${item.id}.png`
@@ -342,7 +350,7 @@ function aeView__renderItemList(target, ae) {
             _ += `
             <div style="position: relative;">
               <img src="./resources/itempanel/${link}" style="height: 3rem;"></img>
-              <div style="position: absolute;bottom: 0;right: 6px;text-align: right;">${amount}</div>
+              <div style="position: absolute;bottom: 1px;right: 1px;text-align: right;text-shadow: 0px 0px 4px rgba(0,0,0,1);">${amount}</div>
             </div>
             `
         })

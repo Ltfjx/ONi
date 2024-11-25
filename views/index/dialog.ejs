@@ -102,38 +102,28 @@
 
 
     <mdui-list id="bot__task-dialog-step2-config-list" style="margin-top: -1rem;margin-bottom: -0.5rem;padding: 0.5rem;">
+    </mdui-list>
 
-      <div style="margin-top: 1rem;opacity: 0.5;text-align: center;">
-        此模式无配置项
+  </mdui-card>
+
+  <mdui-card style="margin-top: 1rem;padding: 1rem;max-width: 100%;width: 40rem;">
+
+    <div style="display: flex;align-items: center;gap: 0.5rem;margin-bottom: 0.5rem;">
+      <mdui-icon id="bot__task-dialog-step2-icon" name="public"></mdui-icon>
+      <div style="margin-left: 0.25rem;">
+        <div id="bot__task-dialog-step2-id" style="font-weight: bold;">global</div>
+        <div id="bot__task-dialog-step2-description" style="opacity: 0.5;font-size: small;">全局配置</div>
       </div>
+    </div>
 
-      <div style="display: flex;margin-top: 1rem;align-items: center;">
+    <mdui-list id="bot__task-dialog-step2-global-config-list" style="margin-top: -1rem;margin-bottom: -0.5rem;padding: 0.5rem;">
+      <div style="display: flex;margin-top: 1rem;align-items: center;" global-config-id="interval" global-config-type="number" global-config-required="true">
         <div>
-          <div>Text Field</div>
-          <div style="opacity: 0.5;font-size: small;">Supporting text</div>
+          <div>interval<span style="margin-left: 0.5rem;opacity: 0.5;font-size: small;">number</span></div>
+          <div style="opacity: 0.5;font-size: small;">任务执行的间隔时间，单位为秒。</div>
         </div>
-        <mdui-text-field style="margin-left: auto;width: 10rem;" variant="outlined" clearable></mdui-text-field>
+        <mdui-text-field style="margin-left: auto;width: 10rem;" type="number" variant="outlined" clearable></mdui-text-field>
       </div>
-
-      <div style="display: flex;margin-top: 1rem;align-items: center;">
-        <div>
-          <div>Switch</div>
-          <div style="opacity: 0.5;font-size: small;">Supporting text</div>
-        </div>
-        <mdui-switch checked style="margin-left: auto;"></mdui-switch>
-      </div>
-
-      <div style="display: flex;margin-top: 1rem;align-items: center;">
-        <div>
-          <div>Select</div>
-          <div style="opacity: 0.5;font-size: small;">Supporting text</div>
-        </div>
-        <mdui-select end-icon="keyboard_arrow_down" style="margin-left: auto;width: 10rem;" variant="outlined" value="item-1">
-          <mdui-menu-item value="item-1">Item 1</mdui-menu-item>
-          <mdui-menu-item value="item-2">Item 2</mdui-menu-item>
-        </mdui-select>
-      </div>
-
     </mdui-list>
 
   </mdui-card>
@@ -157,9 +147,10 @@
     请确认添加的任务正确无误：
   </div>
 
+
   <mdui-card style="margin-top: 1rem;padding: 1rem;max-width: 100%;width: 40rem;">
-
-
+    <pre id="bot__task-dialog-step3-preview" style="font-family: Noto Sans Mono;">
+    </pre>
   </mdui-card>
 
   <div style="display: flex;gap: 0.5rem;margin-top: 1rem;">
