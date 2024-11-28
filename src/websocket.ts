@@ -234,15 +234,15 @@ var Websocket = {
                         let target = Global.ae.list.find(ae => ae.uuid === json.data.uuid)
                         if (target) {
                             json.data.itemList.forEach((item: any) => {
-                                if (!item.isFluid) {
-                                    const itemPanelItem = Global.staticResources.itemPanelItem.find(itemPanelItem => itemPanelItem.name == item.name)
+                                if (item.type == "item") {
+                                    const itemPanelItem = Global.staticResources.itemPanelItem.find(itemPanelItem => (itemPanelItem.name == item.name) && (itemPanelItem.damage == item.damage))
                                     if (itemPanelItem) {
                                         item.id = itemPanelItem.id
                                         item.display = itemPanelItem.display
                                     } else {
                                         logger.warn(`Item ${item.name} not found in staticResources.itemPanel`)
                                     }
-                                } else {
+                                } else if (item.type == "fluid") {
                                     const itemPanelFluid = Global.staticResources.itemPanelFluid.find(itemPanelFluid => itemPanelFluid.name == item.name)
                                     if (itemPanelFluid) {
                                         item.id = itemPanelFluid.id
@@ -250,6 +250,10 @@ var Websocket = {
                                     } else {
                                         logger.warn(`Fluid ${item.name} not found in staticResources.itemPanel`)
                                     }
+                                } else if (item.type == "vis") {
+                                    // TODO: 处理 vis 类型
+                                } else {
+                                    logger.warn(`Unknown item type ${item.type}`)
                                 }
                             })
                             const ae = Object.assign({}, target, json.data)
@@ -261,7 +265,7 @@ var Websocket = {
                             json.data.cpus.forEach((cpu: any) => {
                                 if (cpu.busy && cpu.finalOutput) {
                                     console.log(cpu.finalOutput)
-                                    const itemPanelItem = Global.staticResources.itemPanelItem.find(itemPanelItem =>(itemPanelItem.name == cpu.finalOutput.name)&&(itemPanelItem.damage == cpu.finalOutput.damage))
+                                    const itemPanelItem = Global.staticResources.itemPanelItem.find(itemPanelItem => (itemPanelItem.name == cpu.finalOutput.name) && (itemPanelItem.damage == cpu.finalOutput.damage))
                                     const itemPanelFluid = Global.staticResources.itemPanelFluid.find(itemPanelFluid => itemPanelFluid.name == cpu.finalOutput.name)
                                     if (itemPanelItem) {
                                         cpu.finalOutput.id = itemPanelItem.id

@@ -121,6 +121,7 @@ function generateLayoutAnimation(element) {
     })
 }
 
+// 将数字转换成 GTNH 风格的显示方式
 function numberDisplayConvert(number) {
     const unitList = ["", "K", "M", "G", "T", "P"]
 
@@ -136,4 +137,46 @@ function numberDisplayConvert(number) {
     }
 
     return (number / Math.pow(10, grade * 3)).toFixed(0) + unitList[grade]
+}
+
+// 将时间戳转换成 xxx 秒前、xxx 分钟前、xxx 小时前 的显示风格
+function timePassedDisplayConvert(timestamp) {
+    const now = new Date().getTime()
+    const passed = now - timestamp
+    const minute = 60 * 1000
+    const hour = 60 * minute
+    const day = 24 * hour
+    const month = 30 * day
+    const year = 365 * day
+
+    if (timestamp == 0) {
+        return "无数据"
+    } else if (passed < 10 * 1000) {
+        return "刚刚"
+    } else if (passed < minute) {
+        return Math.floor(passed / 1000) + " 秒前"
+    } else if (passed < hour) {
+        return Math.floor(passed / minute) + " 分钟前"
+    } else if (passed < day) {
+        return Math.floor(passed / hour) + " 小时前"
+    } else if (passed < month) {
+        return Math.floor(passed / day) + " 天前"
+    } else if (passed < year) {
+        return Math.floor(passed / month) + " 月前"
+    } else {
+        return "很久以前"
+    }
+}
+
+// 将时间戳转换成 yyyy-mm-dd hh:mm:ss 的显示风格
+function timeDisplayConvert(timestamp) {
+    const date = new Date(timestamp)
+    const year = date.getFullYear()
+    const month = date.getMonth() + 1
+    const day = date.getDate()
+    const hour = date.getHours()
+    const minute = date.getMinutes()
+    const second = date.getSeconds()
+
+    return `${year}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")} ${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}:${second.toString().padStart(2, "0")}`
 }

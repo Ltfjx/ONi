@@ -77,10 +77,12 @@ var ae = {
     set(ae: Ae) {
         this.list.forEach((item, index) => {
             if (item.uuid == ae.uuid) {
-                if (!deepEqual(this.list[index], ae)) {
-                    this.list[index] = ae
-                    wsWebBroadcast("data/ae", [ae])
-                }
+
+                this.list[index] = ae
+                this.list[index].timeUpdated = new Date().getTime()
+
+                wsWebBroadcast("data/ae", [ae])
+
                 return
             }
         })

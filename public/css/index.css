@@ -86,6 +86,15 @@ mdui-card[variant="filled"] {
 }
 
 /* 样式覆盖 */
-.animate__animated.animate__faster{
+.animate__animated.animate__faster {
   animation-duration: 0.4s;
+}
+
+.hover-highlight {
+  transition: background-color 0.3s;
+  /* 添加过渡效果 */
+}
+
+.hover-highlight:hover {
+  background-color: rgba(255, 255, 255, 0.05);
 }

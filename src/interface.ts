@@ -8,6 +8,7 @@ export interface Bot {
     uuid: string
     name: string
     token: string
+    timeCreated: number
 
     components: [{
         description: string
@@ -26,6 +27,9 @@ export interface Bot {
 export interface Ae {
     uuid: string
     name: string
+    timeCreated: number
+    timeUpdated: number
+
     cpus: [{
         name: string
         coproccessors: number
@@ -42,7 +46,7 @@ export interface Ae {
     }]
     itemList: [{
         name: string
-        isFluid: boolean
+        type: string
         amount: number
         damage?: number
         craftable: boolean

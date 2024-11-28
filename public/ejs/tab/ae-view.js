@@ -23,6 +23,7 @@ globalAe.forEach(ae => {
         cpusShowMore: false
     })
 
+    aeView__renderStatusText(ae.uuid, ae)
     aeView__renderCpusList(ae.uuid, ae)
     aeView__renderItemList(ae.uuid, ae)
 })
@@ -32,6 +33,7 @@ document.querySelectorAll(".ae__view").forEach(aeview => {
 
     const uuid = aeview.querySelector("data").getAttribute("uuid")
     let filter = aeView__filter.find(ae => ae.uuid == uuid).filter
+    let ae = globalAe.find(ae => ae.uuid === uuid)
 
     aeview.querySelectorAll(".ae__view-storage-filter-button").forEach(button => {
         button.addEventListener("click", event => {
@@ -116,17 +118,45 @@ document.querySelectorAll(".ae__view").forEach(aeview => {
         aeview.querySelector(".ae__view-cpu-list-less-button").style["display"] = "none"
         aeView__renderCpusList(uuid)
     })
+
+
 })
 
 ws.addEventListener("message", async (event) => {
     const json = JSON.parse(event.data)
     if (json.type == "data/ae") {
         json.data.forEach(ae => {
+            aeView__renderStatusText(ae.uuid, ae)
             aeView__renderCpusList(ae.uuid, ae)
             aeView__renderItemList(ae.uuid, ae)
         })
     }
 })
+
+setInterval(() => {
+    globalAe.forEach(ae => {
+        tick(ae.uuid, ae)
+    })
+}, 1000)
+
+function aeView__renderStatusText(target, ae) {
+
+    if (!ae) {
+        ae = globalAe.find(a => a.uuid === target)
+    }
+
+    const aeview = Array.from(document.querySelectorAll(".ae__view")).find(element => element.querySelector("data").getAttribute("uuid") === target)
+
+    aeview.querySelector(".ae__view-time-updated").innerHTML = `数据更新 - ${timePassedDisplayConvert(ae.timeUpdated)}`
+    aeview.querySelector(".ae__view-time-created").innerHTML = `创建于 ${timeDisplayConvert(ae.timeCreated)}`
+    aeview.querySelector(".ae__view-cpu-status").innerHTML = `${ae.cpus.filter(cpu => cpu.busy).length} / ${ae.cpus.length} 核心空闲`
+
+}
+
+function tick(target, ae) {
+    const aeview = Array.from(document.querySelectorAll(".ae__view")).find(element => element.querySelector("data").getAttribute("uuid") === target)
+    aeview.querySelector(".ae__view-time-updated").innerHTML = `数据更新 - ${timePassedDisplayConvert(ae.timeUpdated)}`
+}
 
 function aeView__renderCpusList(target, ae) {
     let _ = ""
@@ -254,13 +284,13 @@ function aeView__renderItemList(target, ae) {
         if (filter.type === "all") {
             return true
         } else if (filter.type === "item") {
-            if (item.isFluid) {
-                return false
-            } else {
+            if (item.type == "item") {
                 return true
+            } else {
+                return false
             }
         } else if (filter.type === "fluid") {
-            if (item.isFluid) {
+            if (item.type == "fluid") {
                 return true
             } else {
                 return false
@@ -335,12 +365,18 @@ function aeView__renderItemList(target, ae) {
         itemListFilteredSliced.forEach(item => {
 
             let link = ""
+            let type = ""
             let amount = numberDisplayConvert(item.amount)
 
-            if (item.isFluid) {
-                link = `fluid/${item.id}.png`
-            } else {
+            if (item.type == "item") {
                 link = `item/${item.id}_${item.damage}.png`
+                type = "item"
+            } else if (item.type == "fluid") {
+                link = `fluid/${item.id}.png`
+                type = "fluid"
+            } else if (item.type == "vis") {
+                // TODO: VIS 显示实现
+                return
             }
 
             if (item.craftable) {
@@ -348,7 +384,7 @@ function aeView__renderItemList(target, ae) {
             }
 
             _ += `
-            <div style="position: relative;">
+            <div class="hover-highlight" style="position: relative;cursor: pointer;" onclick="dialog__aeShowItemInfo('${target}','${item.id}','${type}')">
               <img src="./resources/itempanel/${link}" style="height: 3rem;"></img>
               <div style="position: absolute;bottom: 1px;right: 1px;text-align: right;text-shadow: 0px 0px 4px rgba(0,0,0,1);">${amount}</div>
             </div>
