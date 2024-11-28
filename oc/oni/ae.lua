@@ -199,7 +199,7 @@ end
 --     "damage": <integer>,
 --     "craftable": <bool>,
 --     "amount": <integer>,
---     "isFluid": <bool>
+--     "type": <string>
 -- }
 -- TODO: 加入 tag 以区分含有不同 NBT 的物品
 function ae.getItems(ws, taskUuid, uuid, targetAeUuid)
@@ -213,7 +213,7 @@ function ae.getItems(ws, taskUuid, uuid, targetAeUuid)
             damage = v.damage,
             craftable = v.isCraftable,
             amount = v.size,
-            isFluid = false
+            type = "item"
         }
         itemList[#itemList + 1] = item
     end
@@ -224,7 +224,7 @@ function ae.getItems(ws, taskUuid, uuid, targetAeUuid)
             damage = v.damage, -- fluids seems having no damage, this should be nil
             craftable = v.isCraftable,
             amount = v.amount,
-            isFluid = true
+            type = "fluid"
         }
         itemList[#itemList + 1] = item
     end
